@@ -217,8 +217,7 @@ void processMidiIn() {
 }
 
 void checkExpression() {
-	if ((globalExpresionMode == GLOBAL_MODE_1_EXPRESSION)
-			|| (globalExpresionMode == GLOBAL_MODE_2_EXPRESSION)) {
+	if ((globalExpresionMode == GLOBAL_MODE_1_EXPRESSION) || (globalExpresionMode == GLOBAL_MODE_2_EXPRESSION)) {
 		int value = analogRead(PIN_EXPRESSION_1);
 		byte bValue = map(value, 0, 1023, 0, 127);
 		if (!between(bValue, expression_1 - 1, expression_1 + 1)) {
