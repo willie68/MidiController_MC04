@@ -71,8 +71,8 @@ void on_prgSequenz_selected(MenuComponent* p_menu_component);
 void on_prgMid_selected(MenuComponent* p_menu_component);
 
 Menu muGlobal("Global Settings", &on_global_selected);
-NumericMenuItem miGloBtnMode("Button Mode", &on_gloBtnMode_selected, 0, 0, 1, 1.0);
-NumericMenuItem miGloExpression("Expression", &on_gloExp_selected, 0, 0, 2, 1.0);
+NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 1, 1.0);
+NumericMenuItem miGloExpression("Pedals", &on_gloExp_selected, 0, 0, 2, 1.0);
 
 Menu muProgram("Program Settings");
 MenuItem miPrgName("Name", &on_item1_selected);
@@ -232,9 +232,9 @@ public:
 			}
 		} else if (&menu_item == &miGloBtnMode) {
 			if (value == 0) {
-				lcd.print(F("4 Button"));
+				lcd.print(F("4"));
 			} else {
-				lcd.print(F("6 Button"));
+				lcd.print(F("6"));
 			}
 		} else {
 			lcd.print(value);

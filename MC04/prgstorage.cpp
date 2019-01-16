@@ -26,9 +26,17 @@ byte PrgStorage::getDataVersion() {
 	return EEPROM.read(0);
 }
 
+void PrgStorage::init() {
+	scanPrograms();
+}
+
 // getting the button mode for this
 byte PrgStorage::getGlobalButtonMode() {
-	return EEPROM.read(ADDRESS_GLOBAL_BUTTON_MODE);
+	byte value = EEPROM.read(ADDRESS_GLOBAL_BUTTON_MODE);
+	if (value == 0xff) {
+		value = GLOBAL_MODE_4_BUTTON;
+	}
+	return value;
 }
 
 // setting a new Button mode
@@ -38,16 +46,16 @@ void PrgStorage::setGlobalButtonMode(byte mode) {
 
 // getting the expression pedal mode for this
 byte PrgStorage::getGlobalExpressionMode() {
-	return EEPROM.read(ADDRESS_GLOBAL_EXPRESSION_MODE);
+	byte value = EEPROM.read(ADDRESS_GLOBAL_EXPRESSION_MODE);
+	if (value == 0xff) {
+		value = GLOBAL_MODE_0_EXPRESSION;
+	}
+	return value;
 }
 
 // setting the expression pedal mode for this
 void PrgStorage::setGlobalExpressionMode(byte mode) {
 	EEPROM.write(ADDRESS_GLOBAL_EXPRESSION_MODE, mode);
-}
-
-void PrgStorage::init() {
-	scanPrograms();
 }
 
 void PrgStorage::scanPrograms() {
@@ -210,32 +218,4 @@ void PrgStorage::saveRAM2Prg() {
 	unsigned int address = (prgNumber * PRG_SIZE) + 1;
 	for (i = 0; i < PRG_SIZE; i++)
 		EEPROM.write(address++, *p++);
-}
-
-// getting the button mode for this
-byte PrgStorage::getGlobalButtonMode() {
-	byte value = EEPROM.read(ADDRESS_GLOBAL_BUTTON_MODE);
-	if (value == 0xff) {
-		value = GLOBAL_MODE_4_BUTTON;
-	}
-	return value;
-}
-
-// setting a new Button mode
-void PrgStorage::setGlobalButtonMode(byte mode) {
-	EEPROM.write(ADDRESS_GLOBAL_BUTTON_MODE, mode);
-}
-
-// getting the expression pedal mode for this
-byte PrgStorage::getGlobalExpressionMode() {
-	byte value = EEPROM.read(ADDRESS_GLOBAL_EXPRESSION_MODE);
-	if (value == 0xff) {
-		value = GLOBAL_MODE_0_EXPRESSION;
-	}
-	return value;
-}
-
-// setting the expression pedal mode for this
-void PrgStorage::setGlobalExpressionMode(byte mode) {
-	EEPROM.write(ADDRESS_GLOBAL_EXPRESSION_MODE, mode);
 }
