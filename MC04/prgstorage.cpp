@@ -7,10 +7,8 @@
 #include <avr/eeprom.h>
 //#include "tools.h"
 
-const byte btn_use_0[6] = { SINGLE_CLICK, DOUBLE_CLICK, LONG_CLICK, PUSHED,
-		RELEASED, 0x00 };
-const byte btn_use_1[6] = { SINGLE_CLICK | DOUBLE_CLICK, DOUBLE_CLICK
-		| LONG_CLICK | RELEASED, 0x00, 0x00, 0x00, 0x00 };
+const byte btn_use_0[6] = { SINGLE_CLICK, DOUBLE_CLICK, LONG_CLICK, PUSHED, RELEASED, 0x00 };
+const byte btn_use_1[6] = { SINGLE_CLICK | DOUBLE_CLICK, DOUBLE_CLICK | LONG_CLICK | RELEASED, 0x00, 0x00, 0x00, 0x00 };
 
 const byte PC_0 = 0x13;
 const byte PC_1 = 0xff;
@@ -196,7 +194,11 @@ void PrgStorage::saveRAM2Prg() {
 
 // getting the button mode for this
 byte PrgStorage::getGlobalButtonMode() {
-	return EEPROM.read(ADDRESS_GLOBAL_BUTTON_MODE);
+	byte value = EEPROM.read(ADDRESS_GLOBAL_BUTTON_MODE);
+	if (value == 0xff) {
+		value = GLOBAL_MODE_4_BUTTON;
+	}
+	return value;
 }
 
 // setting a new Button mode
@@ -206,7 +208,11 @@ void PrgStorage::setGlobalButtonMode(byte mode) {
 
 // getting the expression pedal mode for this
 byte PrgStorage::getGlobalExpressionMode() {
-	return EEPROM.read(ADDRESS_GLOBAL_EXPRESSION_MODE);
+	byte value = EEPROM.read(ADDRESS_GLOBAL_EXPRESSION_MODE);
+	if (value == 0xff) {
+		value = GLOBAL_MODE_0_EXPRESSION;
+	}
+	return value;
 }
 
 // setting the expression pedal mode for this
