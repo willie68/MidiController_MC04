@@ -161,28 +161,28 @@ public:
 				lcd.print(F("internal"));
 				break;
 			case 1:
-				lcd.print(F("Switch 1"));
+				lcd.print(F("Button 1"));
 				break;
 			case 2:
-				lcd.print(F("Switch 2"));
+				lcd.print(F("Button 2"));
 				break;
 			case 3:
-				lcd.print(F("Switch 3"));
+				lcd.print(F("Button 3"));
 				break;
 			case 4:
-				lcd.print(F("Switch 4"));
+				lcd.print(F("Button 4"));
 				break;
 			case 5:
-				lcd.print(F("Switch 5"));
+				lcd.print(F("Button 5"));
 				break;
 			case 6:
-				lcd.print(F("Switch 6"));
+				lcd.print(F("Button 6"));
 				break;
 			case 7:
-				lcd.print(F("Expression 1"));
+				lcd.print(F("Pedal 1"));
 				break;
 			case 8:
-				lcd.print(F("Expression 2"));
+				lcd.print(F("Pedal 2"));
 				break;
 			}
 		} else if (&menu_item == &miMidEvent) {
@@ -203,13 +203,13 @@ public:
 				lcd.print(F("Click"));
 				break;
 			case 5:
-				lcd.print(F("Long Click"));
+				lcd.print(F("LongClk"));
 				break;
 			case 6:
-				lcd.print(F("DblClick"));
+				lcd.print(F("DblClk"));
 				break;
 			case 7:
-				lcd.print(F("ValueChange"));
+				lcd.print(F("ValueChg"));
 				break;
 			case 8:
 				lcd.print(F("CC"));
@@ -236,10 +236,24 @@ public:
 			} else {
 				lcd.print(F("6"));
 			}
+		} else if (&menu_item == &miGloBtnMode) {
+			switch (value) {
+			case 0:
+				lcd.print(F("none"));
+				break;
+			default:
+				lcd.print(value);
+				break;
+			}
 		} else {
 			lcd.print(value);
 		}
 	}
+//	void render_textedit_menu_item(TextEditMenuItem const& menu_item) const {
+//		lcd.print(menu_item.get_name());
+//		lcd.print(": ");
+//		byte value = (byte) menu_item.get_value();
+//	}
 
 	void render_menu(Menu const& menu) const {
 		lcd.print(menu.get_name());

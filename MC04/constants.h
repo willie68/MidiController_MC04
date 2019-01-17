@@ -3,7 +3,7 @@
 #ifndef CONSTANTS_H
 #define CONSTANTS_H
 
-#define VERSION F("V0.1.1")
+#define VERSION F("V0.1.2")
 
 // Hardware mappings
 const byte PIN_SWITCH_1 = 5;
