@@ -23,6 +23,4 @@ public:
     void render_menu(Menu const& menu) const;
 };
 
-
-
 #endif /* MYRENDERER_H_ */

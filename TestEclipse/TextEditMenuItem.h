@@ -29,13 +29,12 @@ public:
 
     char* get_value() const;
     uint8_t get_size() const;
+    uint8_t get_pos() const;
 
     void set_value(char* value);
     void set_size(byte size);
 
     virtual void render(MenuComponentRenderer const& renderer) const;
-
-    bool has_focus();
 
 protected:
     virtual bool next(bool loop=false);
@@ -44,8 +43,11 @@ protected:
     virtual Menu* select();
 
 protected:
+public:
     char* _value;
     uint8_t _size;
+    uint8_t _pos;
+    bool _editing;
 };
 
 #endif /* TEXTEDITMENUITEM_H_ */

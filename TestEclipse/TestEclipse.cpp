@@ -1,15 +1,16 @@
 #include <Arduino.h>
 #include <MenuSystem.h>
-#include "TextEditMEnuItem.h"
+#include "TextEditMenuItem.h"
 #include "MyRenderer.h"
 
 // Forward declarations
 void on_item1_selected(MenuComponent* p_menu_component);
 void on_gloBtnMode_selected(MenuComponent* p_menu_component);
 
+char buffer[12];
 Menu muGlobal("Global Settings");
 NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 9, 1.0);
-NumericMenuItem miGloExpression("Pedals", &on_item1_selected, 0, 0, 2, 1.0);
+TextEditMenuItem miGloExpression("Pedals", &on_item1_selected, buffer, 12);
 
 MyRenderer my_renderer;
 
@@ -83,7 +84,8 @@ void loop() {
 
 // Menu callback function
 void on_item1_selected(MenuComponent* p_menu_component) {
-	Serial.println(F("Item1 Selected  "));
+	Serial.print(F("s:"));
+	Serial.println(miGloExpression.get_value());
 }
 
 void on_gloBtnMode_selected(MenuComponent* p_menu_component) {

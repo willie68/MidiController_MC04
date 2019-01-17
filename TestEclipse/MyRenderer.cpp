@@ -34,8 +34,16 @@ void MyRenderer::render_numeric_menu_item(NumericMenuItem const& menu_item) cons
 void MyRenderer::render_text_edit_menu_item(TextEditMenuItem const& menu_item) const {
 	Serial.print(menu_item.get_name());
 	Serial.print(": ");
+	Serial.print(menu_item.get_pos());
+	Serial.print(": ");
 	char* value = menu_item.get_value();
 	Serial.println(value);
+	Serial.print(menu_item.get_pos());
+	Serial.print(" ");
+	Serial.print(menu_item.has_focus() ? "f":"x");
+	Serial.print(" ");
+	Serial.print(menu_item._editing ? "e":"x");
+	Serial.println();
 }
 
 void MyRenderer::render_menu(Menu const& menu) const {
