@@ -1,6 +1,7 @@
 #include <Arduino.h>
 #include <MenuSystem.h>
 #include "TextEditMEnuItem.h"
+#include "MyRenderer.h"
 
 // Forward declarations
 void on_item1_selected(MenuComponent* p_menu_component);
@@ -10,43 +11,6 @@ Menu muGlobal("Global Settings");
 NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 9, 1.0);
 NumericMenuItem miGloExpression("Pedals", &on_item1_selected, 0, 0, 2, 1.0);
 
-class MyRenderer: public MenuComponentRenderer {
-public:
-	void render(Menu const& menu) const {
-		Serial.print(menu.get_name());
-		Serial.print(": ");
-		menu.get_current_component()->render(*this);
-	}
-
-	void render_menu_item(MenuItem const& menu_item) const {
-		Serial.println(menu_item.get_name());
-	}
-
-	void render_back_menu_item(BackMenuItem const& menu_item) const {
-		Serial.println(menu_item.get_name());
-	}
-
-	void render_numeric_menu_item(NumericMenuItem const& menu_item) const {
-		Serial.print(menu_item.get_name());
-		if (menu_item.has_focus()) {
-			Serial.print(": ");
-			byte value = (byte) menu_item.get_value();
-			Serial.print(value);
-		}
-		Serial.println();
-	}
-
-	void render_textedit_menu_item(TextEditMenuItem const& menu_item) const {
-		Serial.print(menu_item.get_name());
-		Serial.print(": ");
-		char* value = menu_item.get_value();
-		Serial.println(value);
-	}
-
-	void render_menu(Menu const& menu) const {
-		Serial.print(menu.get_name());
-	}
-};
 MyRenderer my_renderer;
 
 // Menu variables
@@ -120,7 +84,6 @@ void loop() {
 // Menu callback function
 void on_item1_selected(MenuComponent* p_menu_component) {
 	Serial.println(F("Item1 Selected  "));
-	delay(1500); // so we can look the result on the LCD
 }
 
 void on_gloBtnMode_selected(MenuComponent* p_menu_component) {
