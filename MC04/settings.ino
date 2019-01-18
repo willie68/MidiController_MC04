@@ -125,6 +125,7 @@ class MyRenderer: public MenuComponentRenderer {
 public:
 	void render(Menu const& menu) const {
 		lcd.clear();
+		lcd.noCursor();
 		lcd.setCursor(0, 0);
 		lcd.print(menu.get_name());
 		if (&menu == &muProgram) {
@@ -253,9 +254,15 @@ public:
 	}
 
 	void render_text_edit_menu_item(TextEditMenuItem const& menu_item) const {
+		lcd.setCursor(0, 1);
 		lcd.print(menu_item.get_name());
 		lcd.print(": ");
-		byte value = (byte) menu_item.get_value();
+		char* value = menu_item.get_value();
+		lcd.print(value);
+		if (menu_item._editing_state == EDITING) {
+			lcd.setCursor(menu_item.get_pos(), 1);
+			lcd.cursor();
+		}
 	}
 
 	void render_menu(Menu const& menu) const {
