@@ -78,7 +78,6 @@ void display_help() {
 	Serial.println("***************");
 	Serial.println("w: go to previus item (up)");
 	Serial.println("s: go to next item (down)");
-	Serial.println("a: go back (right)");
 	Serial.println("d: select \"selected\" item");
 	Serial.println("?: print this help");
 	Serial.println("h: print this help");

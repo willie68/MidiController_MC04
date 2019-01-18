@@ -52,6 +52,8 @@ public:
 	// getting name of button <number>
 	char* getButtonName(byte number, char* buf);
 
+	void setButtonName(byte number, char* buf);
+
 	// getting color of button <number>
 	byte getButtonColor(byte number);
 

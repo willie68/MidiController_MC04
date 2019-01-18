@@ -133,6 +133,19 @@ char* PrgStorage::getButtonName(byte number, char* buf) {
 	return buf;
 }
 
+void PrgStorage::setButtonName(byte number, char* buf) {
+	char* p = buf;
+	byte* m = prgMemory;
+	m = m + 15 + (number * (BUTTON_NAME_SIZE + 1));
+	byte i = 0;
+	char value;
+	do {
+		value = *p++;
+		*m++ = value;
+		i++;
+	} while ((i < BUTTON_NAME_SIZE) && value > 0);
+}
+
 // getting the defined buttons
 byte PrgStorage::getButtonColor(byte button) {
 	return *(prgMemory + 1 + 14 + (button * 9) + 8);

@@ -56,6 +56,7 @@ void on_prgIntMidi_selected(MenuComponent* p_menu_component);
 void on_prgExtMidi_selected(MenuComponent* p_menu_component);
 void on_prgBtn_selected(MenuComponent* p_menu_component);
 void on_prgBtnNumber_selected(MenuComponent* p_menu_component);
+void on_prgBtnName_selected(MenuComponent* p_menu_component);
 void on_prgBtnType_selected(MenuComponent* p_menu_component);
 void on_prgBtnColor_selected(MenuComponent* p_menu_component);
 void on_prgBtnBright_selected(MenuComponent* p_menu_component);
@@ -443,9 +444,17 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 			// alten Button speichern.
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten des neuen Buttons gefüllt werden
+		storage.getButtonName(value, nameBuffer);
+		buttonActive = value;
 	}
 	buttonActive = value;
 	buttonDirty = false;
+}
+
+void on_prgBtnName_selected(MenuComponent* p_menu_component) {
+  storage.setButtonName(buttonActive, nameBuffer);
+	buttonDirty = true;
+	setSettingsDirty();
 }
 
 void on_prgBtnType_selected(MenuComponent* p_menu_component) {
