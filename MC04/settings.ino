@@ -255,13 +255,19 @@ public:
 
 	void render_text_edit_menu_item(TextEditMenuItem const& menu_item) const {
 		lcd.setCursor(0, 1);
+		byte lenght = sizeof(menu_item.get_name());
 		lcd.print(menu_item.get_name());
-		lcd.print(": ");
+		lenght++;
+		lcd.print(":");
 		char* value = menu_item.get_value();
 		lcd.print(value);
-		if (menu_item._editing_state == EDITING) {
-			lcd.setCursor(menu_item.get_pos(), 1);
-			lcd.cursor();
+		if ((menu_item._editing_state == EDITING) || (menu_item._editing_state == SELECTION)) {
+			if (menu_item.get_pos() > 0) {
+				lcd.setCursor(menu_item.get_pos() - 1 + lenght, 1);
+				lcd.cursor();
+			} else {
+				lcd.noCursor();
+			}
 		}
 	}
 
