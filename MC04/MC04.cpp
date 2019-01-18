@@ -34,8 +34,8 @@ Switch switch_6 = Switch(PIN_SWITCH_6, INPUT_PULLUP, LOW);
 void doSerialProgram();
 
 #include "serialprg.ino"
-#include "Settings.ino"
-#include "LED.ino"
+#include "settings.ino"
+#include "led.ino"
 
 byte buttonAction[] = { 0x00, 0x00, 0x00, 0x00, 0x00, 0x00 };
 int expression_1 = 0;

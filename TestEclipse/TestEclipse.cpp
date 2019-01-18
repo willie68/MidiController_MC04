@@ -7,7 +7,7 @@
 void on_item1_selected(MenuComponent* p_menu_component);
 void on_gloBtnMode_selected(MenuComponent* p_menu_component);
 
-char buffer[12];
+char buffer[13] = "HausMeister1";
 Menu muGlobal("Global Settings");
 NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 9, 1.0);
 TextEditMenuItem miGloExpression("Pedals", &on_item1_selected, buffer, 12);
@@ -43,12 +43,12 @@ void serial_handler() {
 			ms.display();
 			Serial.println("");
 			break;
-		case 'a': // Back presed
+		case 'a': // Back pressed
 			ms.back();
 			ms.display();
 			Serial.println("");
 			break;
-		case 'd': // Select presed
+		case 'd': // Select pressed
 			ms.select();
 			ms.display();
 			Serial.println("");

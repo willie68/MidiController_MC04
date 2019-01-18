@@ -1,4 +1,5 @@
 #include <MenuSystem.h>
+#include "TextEditMenuItem.h"
 #include <LiquidCrystal_I2C.h>
 #include "constants.h"
 #include "globals.h"
@@ -70,12 +71,14 @@ void on_serialPrg_selected(MenuComponent* p_menu_component);
 void on_prgSequenz_selected(MenuComponent* p_menu_component);
 void on_prgMid_selected(MenuComponent* p_menu_component);
 
+char nameBuffer[13] = "            ";
+
 Menu muGlobal("Global Settings", &on_global_selected);
 NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 1, 1.0);
 NumericMenuItem miGloExpression("Pedals", &on_gloExp_selected, 0, 0, 2, 1.0);
 
 Menu muProgram("Program Settings");
-MenuItem miPrgName("Name", &on_item1_selected);
+TextEditMenuItem miPrgName("Name", &on_item1_selected, nameBuffer, 12);
 
 NumericMenuItem miPrgNumber("Number", &on_prgNumber_selected, 0, 0, 127, 1.0);
 NumericMenuItem miPrgInternalMidi("int. Midi", &on_prgIntMidi_selected, 0, 0, 127, 1.0);
@@ -83,7 +86,7 @@ NumericMenuItem miPrgExternalMidi("ext. Midi", &on_prgExtMidi_selected, 0, 0, 12
 
 Menu muButtons("Buttons", &on_prgBtn_selected);
 NumericMenuItem miBtnNumber("Number", &on_prgBtnNumber_selected, 1, 1, 6, 1.0);
-MenuItem miBtnName("Name", &on_item1_selected);
+TextEditMenuItem miBtnName("Name", &on_item1_selected, nameBuffer, 12);
 NumericMenuItem miBtnType("Type", &on_prgBtnType_selected, 0, 0, 1, 1.0);
 NumericMenuItem miBtnColor("Color", &on_prgBtnColor_selected, 0, 0, 63, 1.0);
 NumericMenuItem miBtnBright("Bright", &on_prgBtnBright_selected, 0, 0, 3, 1.0);

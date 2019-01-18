@@ -40,9 +40,23 @@ void MyRenderer::render_text_edit_menu_item(TextEditMenuItem const& menu_item) c
 	Serial.println(value);
 	Serial.print(menu_item.get_pos());
 	Serial.print(" ");
-	Serial.print(menu_item.has_focus() ? "f":"x");
+	Serial.print(menu_item.has_focus() ? "f" : "x");
 	Serial.print(" ");
-	Serial.print(menu_item._editing ? "e":"x");
+	switch (menu_item._editing_state) {
+	case FOCUSED:
+		Serial.print("f");
+		break;
+	case SELECTION:
+		Serial.print("s");
+		break;
+	case EDITING:
+		Serial.print("e");
+		break;
+	}
+	if (menu_item._pos > 0) {
+		char c = menu_item._value[menu_item._pos - 1];
+		Serial.print(c);
+	}
 	Serial.println();
 }
 
