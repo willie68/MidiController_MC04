@@ -12,7 +12,7 @@ Menu muGlobal("Global Settings");
 NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 9, 1.0);
 TextEditMenuItem miGloExpression("Pedals", &on_item1_selected, buffer, 12);
 
-MyRenderer my_renderer;
+MyMenuRenderer my_renderer;
 
 // Menu variables
 MenuSystem ms(my_renderer);

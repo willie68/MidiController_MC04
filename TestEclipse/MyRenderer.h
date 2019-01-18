@@ -13,7 +13,7 @@
 
 class CustomNumericMenuItem;
 
-class MyRenderer : public MenuComponentRenderer {
+class MyMenuRenderer : public MenuComponentRenderer {
 public:
     void render(Menu const& menu) const;
     void render_menu_item(MenuItem const& menu_item) const;

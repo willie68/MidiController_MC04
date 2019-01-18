@@ -109,7 +109,7 @@ bool TextEditMenuItem::prev(bool loop) {
 }
 
 void TextEditMenuItem::render(MenuComponentRenderer const& renderer) const {
-	MyRenderer const& my_renderer = static_cast<MyRenderer const&>(renderer);
+	MyMenuRenderer const& my_renderer = static_cast<MyMenuRenderer const&>(renderer);
 	my_renderer.render_text_edit_menu_item(*this);
 }
 

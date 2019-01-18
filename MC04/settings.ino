@@ -1,5 +1,4 @@
 #include <MenuSystem.h>
-#include "TextEditMenuItem.h"
 #include <LiquidCrystal_I2C.h>
 #include "constants.h"
 #include "globals.h"
@@ -252,16 +251,18 @@ public:
 			lcd.print(value);
 		}
 	}
-//	void render_textedit_menu_item(TextEditMenuItem const& menu_item) const {
-//		lcd.print(menu_item.get_name());
-//		lcd.print(": ");
-//		byte value = (byte) menu_item.get_value();
-//	}
+
+	void render_text_edit_menu_item(TextEditMenuItem const& menu_item) const {
+		lcd.print(menu_item.get_name());
+		lcd.print(": ");
+		byte value = (byte) menu_item.get_value();
+	}
 
 	void render_menu(Menu const& menu) const {
 		lcd.print(menu.get_name());
 	}
 };
+
 MyRenderer my_renderer;
 
 // Menu variables
