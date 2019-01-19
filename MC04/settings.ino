@@ -48,6 +48,7 @@ void on_item1_selected(MenuComponent* p_menu_component);
 void on_global_selected(MenuComponent* p_menu_component);
 void on_gloBtnMode_selected(MenuComponent* p_menu_component);
 void on_gloExp_selected(MenuComponent* p_menu_component);
+void on_prgName_selected(MenuComponent* p_menu_component);
 void on_prgNumber_selected(MenuComponent* p_menu_component);
 void on_version_selected(MenuComponent* p_menu_component);
 void on_back_selected(MenuComponent* p_menu_component);
@@ -73,12 +74,16 @@ void on_prgMid_selected(MenuComponent* p_menu_component);
 
 char nameBuffer[13] = "            ";
 
+void resetNameBuffer() {
+	strcpy(nameBuffer, "            ");
+}
+
 Menu muGlobal("Global Settings", &on_global_selected);
 NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 1, 1.0);
 NumericMenuItem miGloExpression("Pedals", &on_gloExp_selected, 0, 0, 2, 1.0);
 
 Menu muProgram("Program Settings");
-TextEditMenuItem miPrgName("Name", &on_item1_selected, nameBuffer, 12);
+TextEditMenuItem miPrgName("Name", &on_prgName_selected, nameBuffer, 12);
 
 NumericMenuItem miPrgNumber("Number", &on_prgNumber_selected, 0, 0, 127, 1.0);
 NumericMenuItem miPrgInternalMidi("int. Midi", &on_prgIntMidi_selected, 0, 0, 127, 1.0);
@@ -251,6 +256,13 @@ public:
 			}
 		} else {
 			lcd.print(value);
+			if (menu_item.has_focus()) {
+				byte lenght = strlen(menu_item.get_name()) + 2;
+				lcd.setCursor(lenght, 1);
+				lcd.cursor();
+			} else {
+				lcd.noCursor();
+			}
 		}
 	}
 
@@ -264,7 +276,7 @@ public:
 		lcd.print(value);
 		if ((menu_item._editing_state == EDITING) || (menu_item._editing_state == SELECTION)) {
 			if (menu_item.get_pos() > 0) {
-				lcd.setCursor(menu_item.get_pos() - 1 + lenght, 1);
+				lcd.setCursor(menu_item.get_pos() + 1 + lenght, 1);
 				lcd.cursor();
 			} else {
 				lcd.noCursor();
@@ -338,6 +350,12 @@ void showMenu() {
 	miPrgNumber.set_value((float) storage.getPCNumber());
 	miPrgInternalMidi.set_value((float) storage.getInternalMidiChannel());
 	miPrgExternalMidi.set_value((float) storage.getExternalMidiChannel());
+	resetNameBuffer();
+	storage.getName(nameBuffer);
+	Serial.print("name: ");
+	Serial.println(nameBuffer);
+	miPrgName.set_value(nameBuffer);
+	miPrgName.set_size(12);
 	ms.reset();
 	ms.display();
 }
@@ -345,10 +363,10 @@ void showMenu() {
 bool doMenuWork() {
 	menuValue = encoder.getValue();
 	if (menuValue > 0) {
-		ms.next();
+		ms.next(true);
 		ms.display();
 	} else if (menuValue < 0) {
-		ms.prev();
+		ms.prev(true);
 		ms.display();
 	}
 	ClickEncoder::Button b = encoder.getButton();
@@ -402,6 +420,13 @@ void on_back_selected(MenuComponent* p_menu_component) {
 	endMenu = true;
 }
 
+void on_prgName_selected(MenuComponent* p_menu_component) {
+	Serial.print("Name: ");
+	Serial.println(nameBuffer);
+	storage.setName(nameBuffer);
+	setSettingsDirty();
+}
+
 void on_prgNumber_selected(MenuComponent* p_menu_component) {
 	byte value = miPrgNumber.get_value();
 	storage.setPCNumber(value);
@@ -430,6 +455,9 @@ void setButtonSettings() {
 void on_prgBtn_selected(MenuComponent* p_menu_component) {
 	miBtnNumber.set_value(1);
 	buttonActive = 1;
+	resetNameBuffer();
+	storage.getButtonName(buttonActive, nameBuffer);
+	miBtnName.set_value(nameBuffer);
 	setButtonSettings();
 	buttonDirty = false;
 }
@@ -444,6 +472,7 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 			// alten Button speichern.
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten des neuen Buttons gefüllt werden
+		resetNameBuffer();
 		storage.getButtonName(value, nameBuffer);
 		buttonActive = value;
 	}
@@ -452,7 +481,7 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 }
 
 void on_prgBtnName_selected(MenuComponent* p_menu_component) {
-  storage.setButtonName(buttonActive, nameBuffer);
+	storage.setButtonName(buttonActive, nameBuffer);
 	buttonDirty = true;
 	setSettingsDirty();
 }

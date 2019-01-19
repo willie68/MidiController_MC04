@@ -104,6 +104,11 @@ void PrgStorage::setProgram(byte number) {
 	copyPrg2RAM();
 }
 
+
+byte PrgStorage::getNumber() {
+	return prgNumber;
+}
+
 // getting name of actual program
 char* PrgStorage::getName(char* buf) {
 	char* p = buf;
@@ -116,6 +121,18 @@ char* PrgStorage::getName(char* buf) {
 		i++;
 	} while ((i < NAME_SIZE) && value > 0);
 	return buf;
+}
+
+void PrgStorage::setName(char* buf) {
+	char* p = buf;
+	byte* m = prgMemory;
+	byte i = 0;
+	char value;
+	do {
+		value = *p++;
+		*m++ = value;
+		i++;
+	} while ((i < NAME_SIZE) && value > 0);
 }
 
 // getting name of button <number>

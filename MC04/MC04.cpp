@@ -60,6 +60,7 @@ void checkSwitches();
 void checkExpression();
 void processMidiIn();
 bool checkMidiIn();
+void printActualPrgName();
 
 // timer interrupt routines
 void timerIsr() {
@@ -134,7 +135,7 @@ void loop() {
 		settingsActive = !doMenuWork();
 		if (!settingsActive) {
 			lcd.clear();
-			printPrgName(prg);
+			printActualPrgName();
 			lcd.setCursor(0, 1);
 			lcd.print(F("saving data"));
 			if (settingsDirty) {
@@ -397,6 +398,23 @@ void printPrgName(byte value) {
 	row[2] = ':';
 	row[3] = 0;
 	storage.getNameOfPrg(value, line);
+	strncat(row, line, 12);
+	lcd.setCursor(0, 0);
+	lcd.print(row);
+}
+
+void printActualPrgName() {
+	byte value = storage.getNumber();
+	char row[17];
+	lcd.setCursor(0, 0);
+	lcd.print("                ");
+	itoa(value, row, 10);
+	if (value < 10) {
+		row[1] = ' ';
+	}
+	row[2] = ':';
+	row[3] = 0;
+	storage.getName(line);
 	strncat(row, line, 12);
 	lcd.setCursor(0, 0);
 	lcd.print(row);

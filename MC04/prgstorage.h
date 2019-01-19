@@ -40,8 +40,13 @@ public:
 	// setting storage to program
 	void setProgram(byte number);
 
+	// getting the number of the actual program
+	byte getNumber();
+
 	// getting name of actual program
 	char* getName(char* buf);
+
+	void setName(char* buf);
 
 	// this is the midi channel this unit will respond to.
 	byte getInternalMidiChannel();
