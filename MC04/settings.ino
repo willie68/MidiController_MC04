@@ -44,7 +44,6 @@
  */
 
 // Forward declarations
-void on_item1_selected(MenuComponent* p_menu_component);
 void on_global_selected(MenuComponent* p_menu_component);
 void on_gloBtnMode_selected(MenuComponent* p_menu_component);
 void on_gloExp_selected(MenuComponent* p_menu_component);
@@ -91,7 +90,7 @@ NumericMenuItem miPrgExternalMidi("ext. Midi", &on_prgExtMidi_selected, 0, 0, 12
 
 Menu muButtons("Buttons", &on_prgBtn_selected);
 NumericMenuItem miBtnNumber("Number", &on_prgBtnNumber_selected, 1, 1, 6, 1.0);
-TextEditMenuItem miBtnName("Name", &on_item1_selected, nameBuffer, 12);
+TextEditMenuItem miBtnName("Name", &on_prgBtnName_selected, nameBuffer, 12);
 NumericMenuItem miBtnType("Type", &on_prgBtnType_selected, 0, 0, 1, 1.0);
 NumericMenuItem miBtnColor("Color", &on_prgBtnColor_selected, 0, 0, 63, 1.0);
 NumericMenuItem miBtnBright("Bright", &on_prgBtnBright_selected, 0, 0, 3, 1.0);
@@ -381,12 +380,6 @@ bool doMenuWork() {
 }
 
 // Menu callback function
-void on_item1_selected(MenuComponent* p_menu_component) {
-	lcd.setCursor(0, 1);
-	lcd.print(F("Item1 Selected  "));
-	delay(1500); // so we can look the result on the LCD
-}
-
 void on_global_selected(MenuComponent* p_menu_component) {
 	byte value = storage.getGlobalButtonMode();
 	miGloBtnMode.set_value(value);
@@ -449,14 +442,14 @@ void setButtonSettings() {
 	//TODO Hier müssen noch die anderen Menüpunkte mit den Werten des 1. Buttons gefüllt werden
 	// set name to text menu
 	byte switchTypes = storage.getSwitchSettings();
-	switchTypes = switchTypes & (1 << buttonActive);
+	switchTypes = switchTypes & (1 << buttonActive - 1);
 }
 
 void on_prgBtn_selected(MenuComponent* p_menu_component) {
 	miBtnNumber.set_value(1);
 	buttonActive = 1;
 	resetNameBuffer();
-	storage.getButtonName(buttonActive, nameBuffer);
+	storage.getButtonName(buttonActive - 1, nameBuffer);
 	miBtnName.set_value(nameBuffer);
 	setButtonSettings();
 	buttonDirty = false;
@@ -473,7 +466,8 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten des neuen Buttons gefüllt werden
 		resetNameBuffer();
-		storage.getButtonName(value, nameBuffer);
+		storage.getButtonName(value - 1, nameBuffer);
+		miBtnType.set_value((float) storage.getButtonType(value - 1));
 		buttonActive = value;
 	}
 	buttonActive = value;
@@ -481,15 +475,13 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 }
 
 void on_prgBtnName_selected(MenuComponent* p_menu_component) {
-	storage.setButtonName(buttonActive, nameBuffer);
+	storage.setButtonName(buttonActive - 1, nameBuffer);
 	buttonDirty = true;
 	setSettingsDirty();
 }
 
 void on_prgBtnType_selected(MenuComponent* p_menu_component) {
-	lcd.setCursor(0, 1);
-	lcd.print(F("Todo prgBtnType"));
-	delay(1000);
+	storage.setButtonType(buttonActive - 1, (byte) miBtnType.get_value());
 	buttonDirty = true;
 	setSettingsDirty();
 }

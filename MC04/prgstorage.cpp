@@ -104,7 +104,6 @@ void PrgStorage::setProgram(byte number) {
 	copyPrg2RAM();
 }
 
-
 byte PrgStorage::getNumber() {
 	return prgNumber;
 }
@@ -163,6 +162,36 @@ void PrgStorage::setButtonName(byte number, char* buf) {
 	} while ((i < BUTTON_NAME_SIZE) && value > 0);
 }
 
+// getting name of button <number>
+byte PrgStorage::getButtonType(byte number) {
+	byte switchSettings = getSwitchSettings();
+	switchSettings = switchSettings & (0x01 << number);
+	if (switchSettings > 0) {
+		return 1;
+	}
+	return 0;
+}
+
+void PrgStorage::setButtonType(byte number, byte value) {
+	Serial.print("set Button ");
+	Serial.print(number);
+	Serial.print(" type:");
+	Serial.print(value);
+	Serial.print(",");
+
+	byte switchSettings = getSwitchSettings();
+
+	Serial.print(switchSettings, BIN);
+	Serial.print(",");
+	if (value == 1) {
+		switchSettings = switchSettings | (0x01 << number);
+	} else {
+		switchSettings = switchSettings ^ (0x01 << number);
+	}
+	setSwitchSettings(switchSettings);
+	Serial.print(switchSettings, BIN);
+}
+
 // getting the defined buttons
 byte PrgStorage::getButtonColor(byte button) {
 	return *(prgMemory + 1 + 14 + (button * 9) + 8);
@@ -212,6 +241,10 @@ void PrgStorage::setExternalMidiChannel(byte extMidi) {
 
 byte PrgStorage::getSwitchSettings() {
 	return *(prgMemory + 69);
+}
+
+void PrgStorage::setSwitchSettings(byte value) {
+	*(prgMemory + 69) = value;
 }
 
 bool PrgStorage::getEvent(byte eventnumber, byte eventData[]) {

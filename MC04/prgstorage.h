@@ -59,6 +59,10 @@ public:
 
 	void setButtonName(byte number, char* buf);
 
+	byte getButtonType(byte number);
+
+	void setButtonType(byte number, byte value);
+
 	// getting color of button <number>
 	byte getButtonColor(byte number);
 
@@ -67,6 +71,8 @@ public:
 
 	// this will return the settings (momentary or switch) of each switch
 	byte getSwitchSettings();
+
+	void setSwitchSettings(byte value);
 
 	// this will return the program change number
 	byte getPCNumber();
