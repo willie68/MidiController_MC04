@@ -4,6 +4,7 @@
 #include "globals.h"
 #include "prgstorage.h"
 
+
 /**
  menu struktur
 
@@ -11,8 +12,8 @@
  button mode: [4 Button, 6 Button]
  Expression: [0..2]
  1..2:
- min value: [0..126] Einstellbar Ã¼ber Schweller
- max value: [1..127] Einstellbar Ã¼ber Schweller
+ min value: [0..126] Einstellbar über Schweller
+ max value: [1..127] Einstellbar über Schweller
  back
  program settings xx
  Name: <12 Zeichen>
@@ -522,6 +523,7 @@ void on_prgMidNumber_selected(MenuComponent* p_menu_component) {
 	seqActive = value;
 	seqDirty = false;
 }
+
 void on_prgSequenz_selected(MenuComponent* p_menu_component) {
 	seqActive = 0;
 }
