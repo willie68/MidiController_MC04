@@ -22,7 +22,7 @@
  1..6 Buttons
  Name: <8 Zeichen>
  Type: [Switch, Momentary]
- Color: [0..64]
+ Color: [0..63]
  Bright: [0..3]
  back
  1..16: Midi Sequenz
@@ -48,7 +48,7 @@ void on_global_selected(MenuComponent* p_menu_component);
 void on_gloBtnMode_selected(MenuComponent* p_menu_component);
 void on_gloExp_selected(MenuComponent* p_menu_component);
 void on_prgName_selected(MenuComponent* p_menu_component);
-void on_prgNumber_selected(MenuComponent* p_menu_component);
+void on_prgPCNumber_selected(MenuComponent* p_menu_component);
 void on_version_selected(MenuComponent* p_menu_component);
 void on_back_selected(MenuComponent* p_menu_component);
 void on_nothing_selected(MenuComponent* p_menu_component);
@@ -89,7 +89,7 @@ NumericMenuItem miGloExpression("Pedals", &on_gloExp_selected, 0, 0, 2, 1.0);
 Menu muProgram("Program Settings");
 TextEditMenuItem miPrgName("Name", &on_prgName_selected, prgNameBuffer, 12);
 
-NumericMenuItem miPrgNumber("Number", &on_prgNumber_selected, 0, 0, 127, 1.0);
+NumericMenuItem miPrgPCNumber("Number", &on_prgPCNumber_selected, 0, 0, 127, 1.0);
 NumericMenuItem miPrgInternalMidi("int. Midi", &on_prgIntMidi_selected, 0, 0, 127, 1.0);
 NumericMenuItem miPrgExternalMidi("ext. Midi", &on_prgExtMidi_selected, 0, 0, 127, 1.0);
 
@@ -310,7 +310,7 @@ void initMenuSystem() {
 
 	ms.get_root_menu().add_menu(&muProgram);
 	muProgram.add_item(&miPrgName);
-	muProgram.add_item(&miPrgNumber);
+	muProgram.add_item(&miPrgPCNumber);
 	muProgram.add_item(&miPrgInternalMidi);
 	muProgram.add_item(&miPrgExternalMidi);
 
@@ -351,7 +351,7 @@ void initMenuSystem() {
 
 void showMenu() {
 	endMenu = false;
-	miPrgNumber.set_value((float) storage.getPCNumber());
+	miPrgPCNumber.set_value((float) storage.getPCNumber());
 	miPrgInternalMidi.set_value((float) storage.getInternalMidiChannel());
 	miPrgExternalMidi.set_value((float) storage.getExternalMidiChannel());
 	resetPrgNameBuffer();
@@ -426,8 +426,8 @@ void on_prgName_selected(MenuComponent* p_menu_component) {
 	setSettingsDirty();
 }
 
-void on_prgNumber_selected(MenuComponent* p_menu_component) {
-	byte value = miPrgNumber.get_value();
+void on_prgPCNumber_selected(MenuComponent* p_menu_component) {
+	byte value = miPrgPCNumber.get_value();
 	storage.setPCNumber(value);
 	setSettingsDirty();
 }
@@ -445,18 +445,20 @@ void on_prgExtMidi_selected(MenuComponent* p_menu_component) {
 }
 
 void setButtonSettings() {
-	//TODO Hier müssen noch die anderen Menüpunkte mit den Werten des 1. Buttons gefüllt werden
-	// set name to text menu
-	byte switchTypes = storage.getSwitchSettings();
-	switchTypes = switchTypes & (1 << buttonActive - 1);
+	resetBtnNameBuffer();
+	byte storageBtnNumber = buttonActive - 1;
+	storage.getButtonName(storageBtnNumber, btnNameBuffer);
+	miBtnName.set_value(btnNameBuffer);
+	miBtnType.set_value((float) storage.getButtonType(storageBtnNumber));
+	byte value = storage.getButtonColor(storageBtnNumber) & 0x3f;
+	miBtnColor.set_value((float) value);
+	value = (storage.getButtonColor(storageBtnNumber) & 0xC0) >> 6;
+	miBtnBright.set_value((float) value);
 }
 
 void on_prgBtn_selected(MenuComponent* p_menu_component) {
 	miBtnNumber.set_value(1);
 	buttonActive = 1;
-	resetBtnNameBuffer();
-	storage.getButtonName(buttonActive - 1, btnNameBuffer);
-	miBtnName.set_value(btnNameBuffer);
 	setButtonSettings();
 	buttonDirty = false;
 }
@@ -471,10 +473,8 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 			// alten Button speichern.
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten des neuen Buttons gefüllt werden
-		resetBtnNameBuffer();
-		storage.getButtonName(value - 1, btnNameBuffer);
-		miBtnType.set_value((float) storage.getButtonType(value - 1));
 		buttonActive = value;
+		setButtonSettings();
 	}
 	buttonActive = value;
 	buttonDirty = false;
@@ -493,17 +493,17 @@ void on_prgBtnType_selected(MenuComponent* p_menu_component) {
 }
 
 void on_prgBtnColor_selected(MenuComponent* p_menu_component) {
-	lcd.setCursor(0, 1);
-	lcd.print(F("Todo prgBtnColor"));
-	delay(1000);
+	byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
+	buttonColor += (byte) miBtnColor.get_value();
+	storage.setButtonColor(buttonColor);
 	buttonDirty = true;
 	setSettingsDirty();
 }
 
 void on_prgBtnBright_selected(MenuComponent* p_menu_component) {
-	lcd.setCursor(0, 1);
-	lcd.print(F("Todo prgBtnBright"));
-	delay(1000);
+	byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
+	buttonColor += (byte) miBtnColor.get_value();
+	storage.setButtonColor(buttonColor);
 	buttonDirty = true;
 	setSettingsDirty();
 }

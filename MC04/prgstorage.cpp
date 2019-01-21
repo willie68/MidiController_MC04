@@ -198,6 +198,11 @@ byte PrgStorage::getButtonColor(byte button) {
 }
 
 // getting the defined buttons
+void PrgStorage::setButtonColor(byte button) {
+	*(prgMemory + 1 + 14 + (button * 9) + 8) = button;
+}
+
+// getting the defined buttons
 byte PrgStorage::getButtonUsage(byte button) {
 	switch (prgNumber) {
 	case 0:

@@ -65,6 +65,7 @@ public:
 
 	// getting color of button <number>
 	byte getButtonColor(byte number);
+	void setButtonColor(byte button);
 
 	// getting the defined buttons
 	byte getButtonUsage(byte button);
