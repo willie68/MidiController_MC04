@@ -71,10 +71,15 @@ void on_serialPrg_selected(MenuComponent* p_menu_component);
 void on_prgSequenz_selected(MenuComponent* p_menu_component);
 void on_prgMid_selected(MenuComponent* p_menu_component);
 
-char nameBuffer[13] = "            ";
+char prgNameBuffer[13] = "            ";
+char btnNameBuffer[5] = "    ";
 
-void resetNameBuffer() {
-	strcpy(nameBuffer, "            ");
+void resetPrgNameBuffer() {
+	strcpy(prgNameBuffer, "            ");
+}
+
+void resetBtnNameBuffer() {
+	strcpy(btnNameBuffer, "    ");
 }
 
 Menu muGlobal("Global Settings", &on_global_selected);
@@ -82,7 +87,7 @@ NumericMenuItem miGloBtnMode("Buttons", &on_gloBtnMode_selected, 0, 0, 1, 1.0);
 NumericMenuItem miGloExpression("Pedals", &on_gloExp_selected, 0, 0, 2, 1.0);
 
 Menu muProgram("Program Settings");
-TextEditMenuItem miPrgName("Name", &on_prgName_selected, nameBuffer, 12);
+TextEditMenuItem miPrgName("Name", &on_prgName_selected, prgNameBuffer, 12);
 
 NumericMenuItem miPrgNumber("Number", &on_prgNumber_selected, 0, 0, 127, 1.0);
 NumericMenuItem miPrgInternalMidi("int. Midi", &on_prgIntMidi_selected, 0, 0, 127, 1.0);
@@ -90,7 +95,7 @@ NumericMenuItem miPrgExternalMidi("ext. Midi", &on_prgExtMidi_selected, 0, 0, 12
 
 Menu muButtons("Buttons", &on_prgBtn_selected);
 NumericMenuItem miBtnNumber("Number", &on_prgBtnNumber_selected, 1, 1, 6, 1.0);
-TextEditMenuItem miBtnName("Name", &on_prgBtnName_selected, nameBuffer, 12);
+TextEditMenuItem miBtnName("Name", &on_prgBtnName_selected, btnNameBuffer, 12);
 NumericMenuItem miBtnType("Type", &on_prgBtnType_selected, 0, 0, 1, 1.0);
 NumericMenuItem miBtnColor("Color", &on_prgBtnColor_selected, 0, 0, 63, 1.0);
 NumericMenuItem miBtnBright("Bright", &on_prgBtnBright_selected, 0, 0, 3, 1.0);
@@ -349,11 +354,12 @@ void showMenu() {
 	miPrgNumber.set_value((float) storage.getPCNumber());
 	miPrgInternalMidi.set_value((float) storage.getInternalMidiChannel());
 	miPrgExternalMidi.set_value((float) storage.getExternalMidiChannel());
-	resetNameBuffer();
-	storage.getName(nameBuffer);
+	resetPrgNameBuffer();
+	resetBtnNameBuffer();
+	storage.getName(prgNameBuffer);
 	Serial.print("name: ");
-	Serial.println(nameBuffer);
-	miPrgName.set_value(nameBuffer);
+	Serial.println(prgNameBuffer);
+	miPrgName.set_value(prgNameBuffer);
 	miPrgName.set_size(12);
 	ms.reset();
 	ms.display();
@@ -415,8 +421,8 @@ void on_back_selected(MenuComponent* p_menu_component) {
 
 void on_prgName_selected(MenuComponent* p_menu_component) {
 	Serial.print("Name: ");
-	Serial.println(nameBuffer);
-	storage.setName(nameBuffer);
+	Serial.println(prgNameBuffer);
+	storage.setName(prgNameBuffer);
 	setSettingsDirty();
 }
 
@@ -448,9 +454,9 @@ void setButtonSettings() {
 void on_prgBtn_selected(MenuComponent* p_menu_component) {
 	miBtnNumber.set_value(1);
 	buttonActive = 1;
-	resetNameBuffer();
-	storage.getButtonName(buttonActive - 1, nameBuffer);
-	miBtnName.set_value(nameBuffer);
+	resetBtnNameBuffer();
+	storage.getButtonName(buttonActive - 1, btnNameBuffer);
+	miBtnName.set_value(btnNameBuffer);
 	setButtonSettings();
 	buttonDirty = false;
 }
@@ -465,8 +471,8 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 			// alten Button speichern.
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten des neuen Buttons gefüllt werden
-		resetNameBuffer();
-		storage.getButtonName(value - 1, nameBuffer);
+		resetBtnNameBuffer();
+		storage.getButtonName(value - 1, btnNameBuffer);
 		miBtnType.set_value((float) storage.getButtonType(value - 1));
 		buttonActive = value;
 	}
@@ -475,7 +481,7 @@ void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
 }
 
 void on_prgBtnName_selected(MenuComponent* p_menu_component) {
-	storage.setButtonName(buttonActive - 1, nameBuffer);
+	storage.setButtonName(buttonActive - 1, btnNameBuffer);
 	buttonDirty = true;
 	setSettingsDirty();
 }
