@@ -62,16 +62,16 @@ void on_prgBtnName_selected(MenuComponent* p_menu_component);
 void on_prgBtnType_selected(MenuComponent* p_menu_component);
 void on_prgBtnColor_selected(MenuComponent* p_menu_component);
 void on_prgBtnBright_selected(MenuComponent* p_menu_component);
-void on_prgMidNumber_selected(MenuComponent* p_menu_component);
-void on_prgMidTrigger_selected(MenuComponent* p_menu_component);
-void on_prgMidEvent_selected(MenuComponent* p_menu_component);
-void on_prgMidCmdNumber_selected(MenuComponent* p_menu_component);
-void on_prgMidCmdType_selected(MenuComponent* p_menu_component);
-void on_prgMidCmdData1_selected(MenuComponent* p_menu_component);
-void on_prgMidCmdData2_selected(MenuComponent* p_menu_component);
+void on_prgSeqNumber_selected(MenuComponent* p_menu_component);
+void on_prgSeqTrigger_selected(MenuComponent* p_menu_component);
+void on_prgSeqEvent_selected(MenuComponent* p_menu_component);
+void on_prgSeqMidCmdNumber_selected(MenuComponent* p_menu_component);
+void on_prgSeqMidCmdType_selected(MenuComponent* p_menu_component);
+void on_prgSeqMidCmdData1_selected(MenuComponent* p_menu_component);
+void on_prgSeqMidCmdData2_selected(MenuComponent* p_menu_component);
 void on_serialPrg_selected(MenuComponent* p_menu_component);
 void on_prgSequenz_selected(MenuComponent* p_menu_component);
-void on_prgMid_selected(MenuComponent* p_menu_component);
+void on_prgSeqMid_selected(MenuComponent* p_menu_component);
 
 char prgNameBuffer[13] = "            ";
 char btnNameBuffer[5] = "    ";
@@ -103,15 +103,15 @@ NumericMenuItem miBtnColor("Color", &on_prgBtnColor_selected, 0, 0, 63, 1.0);
 NumericMenuItem miBtnBright("Bright", &on_prgBtnBright_selected, 0, 0, 3, 1.0);
 
 Menu muMidiSequences("Sequences", &on_prgSequenz_selected);
-NumericMenuItem miMidNumber("Number", &on_prgMidNumber_selected, 1, 1, 16, 1.0);
-NumericMenuItem miMidTrigger("Trig.", &on_prgMidTrigger_selected, 0, 0, 9, 1.0);
-NumericMenuItem miMidEvent("Event", &on_prgMidEvent_selected, 0, 0, 8, 1.0);
+NumericMenuItem miSeqNumber("Number", &on_prgSeqNumber_selected, 1, 1, 16, 1.0);
+NumericMenuItem miSeqTrigger("Trig.", &on_prgSeqTrigger_selected, 0, 0, 9, 1.0);
+NumericMenuItem miSeqEvent("Event", &on_prgSeqEvent_selected, 0, 0, 8, 1.0);
 
-Menu muMidCommands("Commands", &on_prgMid_selected);
-NumericMenuItem miMidCmdNumber("Number", &on_prgMidCmdNumber_selected, 1, 1, 16, 1.0);
-NumericMenuItem miMidCmdType("Type", &on_prgMidCmdType_selected, 0, 0, 3, 1.0);
-NumericMenuItem miMidCmdData1("Data1", &on_prgMidCmdData1_selected, 0, 0, 127, 1.0);
-NumericMenuItem miMidCmdData2("Data2", &on_prgMidCmdData2_selected, 0, 0, 127, 1.0);
+Menu muSeqMidCommands("Commands", &on_prgSeqMid_selected);
+NumericMenuItem miSeqMidCmdNumber("Number", &on_prgSeqMidCmdNumber_selected, 1, 1, 16, 1.0);
+NumericMenuItem miSeqMidCmdType("Type", &on_prgSeqMidCmdType_selected, 0, 0, 3, 1.0);
+NumericMenuItem miSeqMidCmdData1("Data1", &on_prgSeqMidCmdData1_selected, 0, 0, 127, 1.0);
+NumericMenuItem miSeqMidCmdData2("Data2", &on_prgSeqMidCmdData2_selected, 0, 0, 127, 1.0);
 
 Menu muSerialProgram("Serial Program");
 MenuItem miSerStart("Start", &on_serialPrg_selected);
@@ -170,7 +170,7 @@ public:
 			} else {
 				lcd.print(F("Momentary"));
 			}
-		} else if (&menu_item == &miMidTrigger) {
+		} else if (&menu_item == &miSeqTrigger) {
 			switch (value) {
 			case 0:
 				lcd.print(F("internal"));
@@ -203,7 +203,7 @@ public:
 				lcd.print(F("nn"));
 				break;
 			}
-		} else if (&menu_item == &miMidEvent) {
+		} else if (&menu_item == &miSeqEvent) {
 			switch (value) {
 			case 0:
 				lcd.print(F("Start"));
@@ -233,7 +233,7 @@ public:
 				lcd.print(F("CC"));
 				break;
 			}
-		} else if (&menu_item == &miMidCmdType) {
+		} else if (&menu_item == &miSeqMidCmdType) {
 			switch (value) {
 			case 0:
 				lcd.print(F("CC"));
@@ -341,16 +341,16 @@ void initMenuSystem() {
 	muButtons.add_item(&miBack);
 
 	muProgram.add_menu(&muMidiSequences);
-	muMidiSequences.add_item(&miMidNumber);
-	muMidiSequences.add_item(&miMidTrigger);
-	muMidiSequences.add_item(&miMidEvent);
-	muMidiSequences.add_menu(&muMidCommands);
+	muMidiSequences.add_item(&miSeqNumber);
+	muMidiSequences.add_item(&miSeqTrigger);
+	muMidiSequences.add_item(&miSeqEvent);
+	muMidiSequences.add_menu(&muSeqMidCommands);
 
-	muMidCommands.add_item(&miMidCmdNumber);
-	muMidCommands.add_item(&miMidCmdType);
-	muMidCommands.add_item(&miMidCmdData1);
-	muMidCommands.add_item(&miMidCmdData2);
-	muMidCommands.add_item(&miBack);
+	muSeqMidCommands.add_item(&miSeqMidCmdNumber);
+	muSeqMidCommands.add_item(&miSeqMidCmdType);
+	muSeqMidCommands.add_item(&miSeqMidCmdData1);
+	muSeqMidCommands.add_item(&miSeqMidCmdData2);
+	muSeqMidCommands.add_item(&miBack);
 
 	muMidiSequences.add_item(&miBack);
 
@@ -528,37 +528,38 @@ void on_prgSequenz_selected(MenuComponent* p_menu_component) {
 	seqActive = 0;
 }
 
-void on_prgMidNumber_selected(MenuComponent* p_menu_component) {
+void on_prgSeqNumber_selected(MenuComponent* p_menu_component) {
 	lcd.setCursor(0, 1);
 	lcd.print(F("Todo prgMidNumber"));
 	delay(1000);
-	byte value = (byte) miMidNumber.get_value();
+	byte value = (byte) miSeqNumber.get_value();
 	if (value != seqActive) {
 		if (seqDirty) {
 			// alte Midisequenz speichern.
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten der neuen Midisequenz gefüllt werden
+
 	}
 	seqActive = value;
 	seqDirty = false;
 }
 
-void on_prgMidTrigger_selected(MenuComponent* p_menu_component) {
+void on_prgSeqTrigger_selected(MenuComponent* p_menu_component) {
 
 	setSettingsDirty();
 }
 
-void on_prgMidEvent_selected(MenuComponent* p_menu_component) {
+void on_prgSeqEvent_selected(MenuComponent* p_menu_component) {
 
 	setSettingsDirty();
 }
 
-void on_prgMid_selected(MenuComponent* p_menu_component) {
+void on_prgSeqMid_selected(MenuComponent* p_menu_component) {
 	cmdActive = 0;
 }
 
-void on_prgMidCmdNumber_selected(MenuComponent* p_menu_component) {
-	byte value = (byte) miMidCmdNumber.get_value();
+void on_prgSeqMidCmdNumber_selected(MenuComponent* p_menu_component) {
+	byte value = (byte) miSeqMidCmdNumber.get_value();
 	if (value != cmdActive) {
 		if (cmdDirty) {
 			// alte Midisequenz speichern.
@@ -569,15 +570,15 @@ void on_prgMidCmdNumber_selected(MenuComponent* p_menu_component) {
 	cmdDirty = false;
 }
 
-void on_prgMidCmdType_selected(MenuComponent* p_menu_component) {
+void on_prgSeqMidCmdType_selected(MenuComponent* p_menu_component) {
 	setSettingsDirty();
 }
 
-void on_prgMidCmdData1_selected(MenuComponent* p_menu_component) {
+void on_prgSeqMidCmdData1_selected(MenuComponent* p_menu_component) {
 	setSettingsDirty();
 }
 
-void on_prgMidCmdData2_selected(MenuComponent* p_menu_component) {
+void on_prgSeqMidCmdData2_selected(MenuComponent* p_menu_component) {
 	setSettingsDirty();
 }
 
