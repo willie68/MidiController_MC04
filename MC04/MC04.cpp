@@ -71,15 +71,12 @@ void timerIsr() {
 void setup() {
 	initDebug()
 	;
-	dbgOutLn(F("setup"));
-
 	initNeoPixel();
 
 	Timer1.initialize(1000);
 	Timer1.attachInterrupt(timerIsr);
 	checkEncoder();
 
-	dbgOutLn(F("init MIDI"));
 	midi.initMidi();
 	initLCD();
 
@@ -94,17 +91,10 @@ void setup() {
 }
 
 void initStorage() {
-	dbgOut(F("init storage, "));
 	storage.init();
-	dbgOut(F("v: "));
-	dbgOut2(storage.getDataVersion(), DEC);
-	dbgOut(F(","));
-	dbgOut2(storage.getNumberOfPrograms(), DEC);
-	dbgOutLn(F(" programs found."));
 }
 
 void initLCD() {
-	dbgOutLn(F("init LCD"));
 	lcd.begin(LCD_WIDTH, LCD_HEIGHT);
 	lcd.clear();
 	lcd.setBacklight(HIGH);
@@ -114,9 +104,6 @@ void initLCD() {
 	lcd.print(F("MC 04 "));
 	lcd.print(VERSION);
 	delay(1000);
-#ifndef debug
-	delay(2000);
-#endif
 }
 
 // ----- main loop -----
@@ -383,7 +370,6 @@ void checkEncoder() {
 		prgToSet = value;
 		setDirty(true);
 		showDirty();
-		dbgOutLn(F("enc"));
 	}
 }
 
@@ -407,7 +393,7 @@ void printActualPrgName() {
 	byte value = storage.getNumber();
 	char row[17];
 	lcd.setCursor(0, 0);
-	lcd.print("                ");
+	lcd.print(F("                "));
 	itoa(value, row, 10);
 	if (value < 10) {
 		row[1] = ' ';
@@ -585,11 +571,9 @@ void changeProgram(uint8_t prg) {
 	processEvent(event, 0);
 
 	for (byte x = 0; x < BUTTON_COUNT; x++) {
-		lcd.setCursor((x * MAX_BUTTON_WIDTH)+1, 1);
+		lcd.setCursor((x * MAX_BUTTON_WIDTH), 1);
 		storage.getButtonName(x, line);
 		lcd.print(line);
-		dbgOut(line);
-		dbgOut(F("  "));
 //		lcd.setCursor(6, 1);
 //		storage.getButtonName(1, line);
 //		lcd.print(line);
@@ -601,18 +585,9 @@ void changeProgram(uint8_t prg) {
 //		lcd.print(line);
 //		dbgOutLn(line);
 	}
-
-	dbgOut(F("color: "));
 	for (byte i = 0; i < 3; i++) {
 		buttonColor[i] = storage.getButtonColor(i);
-#ifdef debug
-		if (i > 0) {
-			dbgOut(",");
-		}
-		dbgOut2(buttonColor[i], HEX);
-#endif
 	}
-	dbgOutLn();
 
 	for (byte i = 0; i < 6; i++) {
 		byte action = storage.getButtonUsage(i);
