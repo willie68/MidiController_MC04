@@ -9,6 +9,7 @@ ClickEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B, PIN_ENCODER_SW, ENCODER_STP_N
 Midi midi;
 PrgStorage storage;
 LiquidCrystal_I2C lcd(0x27, 2, 1, 0, 4, 5, 6, 7, 3, POSITIVE);
+WS2812 LED(LED_COUNT);
 
 byte prg = 0;
 uint16_t value;

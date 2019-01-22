@@ -3,7 +3,8 @@
 #include "constants.h"
 #include "globals.h"
 #include "prgstorage.h"
-
+#include <WS2812.h>
+#include "led.ino"
 
 /**
  menu struktur
@@ -259,6 +260,20 @@ public:
 				lcd.print(value);
 				break;
 			}
+		} else if ((&menu_item == &miBtnColor) || (&menu_item == &miBtnBright)) {
+			lcd.print(value);
+			if (menu_item.has_focus()) {
+				byte lenght = strlen(menu_item.get_name()) + 2;
+				lcd.setCursor(lenght, 1);
+				lcd.cursor();
+			} else {
+				lcd.noCursor();
+			}
+			byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
+			buttonColor += (byte) miBtnColor.get_value();
+			cRGB color = getColorValue(buttonColor);
+			setColorLEDs(color);
+			LED.sync();
 		} else {
 			lcd.print(value);
 			if (menu_item.has_focus()) {
@@ -451,7 +466,10 @@ void setButtonSettings() {
 	storage.getButtonName(storageBtnNumber, btnNameBuffer);
 	miBtnName.set_value(btnNameBuffer);
 	miBtnType.set_value((float) storage.getButtonType(storageBtnNumber));
-	byte value = storage.getButtonColor(storageBtnNumber) & 0x3f;
+	byte value = storage.getButtonColor(storageBtnNumber);
+	Serial.print("btnColor before:");
+	value = value & 0x3f;
+	Serial.println(value);
 	miBtnColor.set_value((float) value);
 	value = (storage.getButtonColor(storageBtnNumber) & 0xC0) >> 6;
 	miBtnBright.set_value((float) value);
@@ -496,7 +514,9 @@ void on_prgBtnType_selected(MenuComponent* p_menu_component) {
 void on_prgBtnColor_selected(MenuComponent* p_menu_component) {
 	byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
 	buttonColor += (byte) miBtnColor.get_value();
-	storage.setButtonColor(buttonColor);
+	Serial.print("btnColor:");
+	Serial.println(buttonColor);
+	storage.setButtonColor(buttonActive - 1, buttonColor);
 	buttonDirty = true;
 	setSettingsDirty();
 }
@@ -504,7 +524,9 @@ void on_prgBtnColor_selected(MenuComponent* p_menu_component) {
 void on_prgBtnBright_selected(MenuComponent* p_menu_component) {
 	byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
 	buttonColor += (byte) miBtnColor.get_value();
-	storage.setButtonColor(buttonColor);
+	Serial.print("btnColor:");
+	Serial.println(buttonColor);
+	storage.setButtonColor(buttonActive - 1, buttonColor);
 	buttonDirty = true;
 	setSettingsDirty();
 }

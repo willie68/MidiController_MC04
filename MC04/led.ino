@@ -1,4 +1,11 @@
-WS2812 LED(LED_COUNT);
+#ifndef _LED_INO
+#define _LED_INO
+
+void setColorLEDs(cRGB color) {
+	for (byte i = 0; i < LED_COUNT; i++) {
+		LED.set_crgb_at(i, color);
+	}
+}
 
 void clearLEDs() {
 	for (byte i = 0; i < LED_COUNT; i++) {
@@ -34,3 +41,15 @@ void showRGBLed() {
 	}
 	LED.sync();
 }
+
+cRGB getColorValue(byte buttonColor) {
+	byte intensity = 0;
+	cRGB value;
+	intensity = ((buttonColor & 0xC0) >> 6); // + 2;
+	value.r = ((buttonColor & 0x03) << 4) * intensity;
+	value.g = ((buttonColor & 0x0C) << 2) * intensity;
+	value.b = (buttonColor & 0x30) * intensity;
+	return value;
+}
+
+#endif
