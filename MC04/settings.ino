@@ -531,33 +531,42 @@ void on_prgBtnBright_selected(MenuComponent* p_menu_component) {
 }
 
 byte eventnumber;
-void on_prgSequenz_selected(MenuComponent* p_menu_component) {
-	seqActive = 0;
-	eventnumber = storage.getEventByNumber(seqActive, menuMidiData);
+void initEventData () {
+	eventnumber = storage.getEventByNumber(seqActive - 1, menuMidiData);
 	miSeqTrigger.set_value((float) (eventnumber &0x0F));
 	miSeqEvent.set_value((float) (eventnumber >> 4));
+	Serial.print("event:");
+	Serial.print(eventnumber, HEX);
+	Serial.print(", mid:");
+	for (byte i = 0; i < sizeof(menuMidiData); i++) {
+		if (i != 0) {
+			Serial.print(",");
+		}
+		Serial.print(menuMidiData[i], HEX);
+	}
+	Serial.println();
+}
+
+void on_prgSequenz_selected(MenuComponent* p_menu_component) {
+	seqActive = 1;
+	initEventData();
 }
 
 void on_prgSeqNumber_selected(MenuComponent* p_menu_component) {
-	lcd.setCursor(0, 1);
-	lcd.print(F("Todo prgMidNumber"));
-	delay(1000);
 	byte value = (byte) miSeqNumber.get_value();
 	if (value != seqActive) {
 		if (seqDirty) {
 			// alte Midisequenz speichern.
 			eventnumber = ((byte) miSeqEvent.get_value()) << 4;
 			eventnumber += ((byte) miSeqTrigger.get_value());
-			storage.setEventByNumber(seqActive, eventnumber, menuMidiData);
+			storage.setEventByNumber(seqActive - 1, eventnumber, menuMidiData);
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten der neuen Midisequenz gefüllt werden
 
 	}
 	seqActive = value;
 	seqDirty = false;
-	eventnumber = storage.getEventByNumber(seqActive, menuMidiData);
-	miSeqTrigger.set_value((float) (eventnumber &0x0F));
-	miSeqEvent.set_value((float) (eventnumber >> 4));
+	initEventData();
 }
 
 void on_prgSeqTrigger_selected(MenuComponent* p_menu_component) {
