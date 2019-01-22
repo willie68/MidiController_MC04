@@ -620,6 +620,8 @@ void changeProgram(uint8_t prg) {
 		dbgOut(F(":"));
 		dbgOutLn2(action, HEX);
 	}
+
+	showRGBLed();
 	setDirty(false);
 	showDirty();
 }

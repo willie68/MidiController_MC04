@@ -1,10 +1,9 @@
 #ifndef _LED_INO
 #define _LED_INO
 
-void setColorLEDs(cRGB color) {
-	for (byte i = 0; i < LED_COUNT; i++) {
-		LED.set_crgb_at(i, color);
-	}
+void setColorStatusLEDs(cRGB color) {
+	LED.set_crgb_at(LED_STATUS, color);
+	LED.sync();
 }
 
 void clearLEDs() {

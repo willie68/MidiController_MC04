@@ -104,7 +104,7 @@ NumericMenuItem miBtnBright("Bright", &on_prgBtnBright_selected, 0, 0, 3, 1.0);
 
 Menu muMidiSequences("Sequences", &on_prgSequenz_selected);
 NumericMenuItem miMidNumber("Number", &on_prgMidNumber_selected, 1, 1, 16, 1.0);
-NumericMenuItem miMidTrigger("Trigger", &on_prgMidTrigger_selected, 0, 0, 8, 1.0);
+NumericMenuItem miMidTrigger("Trig.", &on_prgMidTrigger_selected, 0, 0, 9, 1.0);
 NumericMenuItem miMidEvent("Event", &on_prgMidEvent_selected, 0, 0, 8, 1.0);
 
 Menu muMidCommands("Commands", &on_prgMid_selected);
@@ -199,6 +199,9 @@ public:
 			case 8:
 				lcd.print(F("Pedal 2"));
 				break;
+			case 9:
+				lcd.print(F("nn"));
+				break;
 			}
 		} else if (&menu_item == &miMidEvent) {
 			switch (value) {
@@ -272,8 +275,7 @@ public:
 			byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
 			buttonColor += (byte) miBtnColor.get_value();
 			cRGB color = getColorValue(buttonColor);
-			setColorLEDs(color);
-			LED.sync();
+			setColorStatusLEDs(color);
 		} else {
 			lcd.print(value);
 			if (menu_item.has_focus()) {
@@ -425,7 +427,7 @@ void on_nothing_selected(MenuComponent* p_menu_component) {
 void on_version_selected(MenuComponent* p_menu_component) {
 	lcd.setCursor(0, 0);
 	lcd.clear();
-	lcd.print(F("WK Music MC 04"));
+	lcd.print(F(" WK Music MC 04"));
 	lcd.setCursor(0, 1);
 	lcd.print(VERSION);
 	delay(3000);
@@ -467,9 +469,7 @@ void setButtonSettings() {
 	miBtnName.set_value(btnNameBuffer);
 	miBtnType.set_value((float) storage.getButtonType(storageBtnNumber));
 	byte value = storage.getButtonColor(storageBtnNumber);
-	Serial.print("btnColor before:");
 	value = value & 0x3f;
-	Serial.println(value);
 	miBtnColor.set_value((float) value);
 	value = (storage.getButtonColor(storageBtnNumber) & 0xC0) >> 6;
 	miBtnBright.set_value((float) value);
@@ -483,9 +483,6 @@ void on_prgBtn_selected(MenuComponent* p_menu_component) {
 }
 
 void on_prgBtnNumber_selected(MenuComponent* p_menu_component) {
-	lcd.setCursor(0, 1);
-	lcd.print(F("Todo prgBtnNumber"));
-	delay(1000);
 	byte value = (byte) miBtnNumber.get_value();
 	if (value != buttonActive) {
 		if (buttonDirty) {
@@ -514,8 +511,6 @@ void on_prgBtnType_selected(MenuComponent* p_menu_component) {
 void on_prgBtnColor_selected(MenuComponent* p_menu_component) {
 	byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
 	buttonColor += (byte) miBtnColor.get_value();
-	Serial.print("btnColor:");
-	Serial.println(buttonColor);
 	storage.setButtonColor(buttonActive - 1, buttonColor);
 	buttonDirty = true;
 	setSettingsDirty();
@@ -524,11 +519,13 @@ void on_prgBtnColor_selected(MenuComponent* p_menu_component) {
 void on_prgBtnBright_selected(MenuComponent* p_menu_component) {
 	byte buttonColor = ((byte) miBtnBright.get_value()) << 6;
 	buttonColor += (byte) miBtnColor.get_value();
-	Serial.print("btnColor:");
-	Serial.println(buttonColor);
 	storage.setButtonColor(buttonActive - 1, buttonColor);
 	buttonDirty = true;
 	setSettingsDirty();
+}
+
+void on_prgSequenz_selected(MenuComponent* p_menu_component) {
+	seqActive = 0;
 }
 
 void on_prgMidNumber_selected(MenuComponent* p_menu_component) {
@@ -544,10 +541,6 @@ void on_prgMidNumber_selected(MenuComponent* p_menu_component) {
 	}
 	seqActive = value;
 	seqDirty = false;
-}
-
-void on_prgSequenz_selected(MenuComponent* p_menu_component) {
-	seqActive = 0;
 }
 
 void on_prgMidTrigger_selected(MenuComponent* p_menu_component) {

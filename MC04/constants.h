@@ -31,8 +31,9 @@ const byte PIN_ENCODER_SW = 4;
 const byte ENCODER_STP_NOTCH = 4;
 
 const byte LED_COUNT = 8;
-const byte LED_PER_SWITCH = 2;
+const byte LED_PER_SWITCH = 1;
 const byte LED_USED = 4;
+const byte LED_STATUS = (LED_USED * LED_PER_SWITCH) - 1 + 1;
 
 const cRGB cBlack = { 0, 0, 0 };
 
