@@ -105,7 +105,7 @@ void initStorage() {
 
 void initLCD() {
 	dbgOutLn(F("init LCD"));
-	lcd.begin(16, 2);
+	lcd.begin(LCD_WIDTH, LCD_HEIGHT);
 	lcd.clear();
 	lcd.setBacklight(HIGH);
 	lcd.setCursor(4, 0);
@@ -127,6 +127,8 @@ unsigned long resetTime = 0;
 unsigned long sec = 0;
 bool updateLED;
 bool settingsActive = false;
+byte midiData[48];
+
 void loop() {
 	updateLED = false;
 	pollSwitches();
@@ -218,8 +220,7 @@ void processMidiIn() {
 }
 
 void checkExpression() {
-	if ((globalExpresionMode == GLOBAL_MODE_1_EXPRESSION)
-			|| (globalExpresionMode == GLOBAL_MODE_2_EXPRESSION)) {
+	if ((globalExpresionMode == GLOBAL_MODE_1_EXPRESSION) || (globalExpresionMode == GLOBAL_MODE_2_EXPRESSION)) {
 		int value = analogRead(PIN_EXPRESSION_1);
 		byte bValue = map(value, 0, 1023, 0, 127);
 		if (!between(bValue, expression_1 - 1, expression_1 + 1)) {
@@ -259,7 +260,6 @@ void checkSwitches() {
 	}
 }
 
-byte midiData[48];
 bool processButton(Switch mySwitch, byte number, byte mask) {
 	byte event = 0;
 	bool isEvent = false;
@@ -584,22 +584,23 @@ void changeProgram(uint8_t prg) {
 	event = EVENT_INTERNAL + EVENT_START;
 	processEvent(event, 0);
 
-	lcd.setCursor(0, 1);
-	storage.getButtonName(0, line);
-	lcd.print(line);
-	dbgOut(line);
-	dbgOut(F("  "));
-
-	lcd.setCursor(6, 1);
-	storage.getButtonName(1, line);
-	lcd.print(line);
-	dbgOut(line);
-	dbgOut(F("  "));
-
-	lcd.setCursor(12, 1);
-	storage.getButtonName(2, line);
-	lcd.print(line);
-	dbgOutLn(line);
+	for (byte x = 0; x < BUTTON_COUNT; x++) {
+		lcd.setCursor((x * MAX_BUTTON_WIDTH)+1, 1);
+		storage.getButtonName(x, line);
+		lcd.print(line);
+		dbgOut(line);
+		dbgOut(F("  "));
+//		lcd.setCursor(6, 1);
+//		storage.getButtonName(1, line);
+//		lcd.print(line);
+//		dbgOut(line);
+//		dbgOut(F("  "));
+//
+//		lcd.setCursor(12, 1);
+//		storage.getButtonName(2, line);
+//		lcd.print(line);
+//		dbgOutLn(line);
+	}
 
 	dbgOut(F("color: "));
 	for (byte i = 0; i < 3; i++) {

@@ -259,15 +259,37 @@ bool PrgStorage::getEvent(byte eventnumber, byte eventData[]) {
 		byte event = *p;
 		if (event == eventnumber) {
 			p++;
-			for (byte x = 0; x < 48; x++) {
+			for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
 				eventData[x] = *p++;
 			}
 			return true;
 		}
 		i++;
-		p = p + 49;
+		p = p + EVENT_SIZE;
 	} while (i < 16);
 	return false;
+}
+
+byte PrgStorage::getEventByNumber(byte number, byte eventData[]) {
+	byte* p = prgMemory + 70;
+	p = p + (EVENT_SIZE * number);
+	byte i = 0;
+	byte eventnumber = *p++;
+	for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
+		eventData[x] = *p++;
+	}
+	return eventnumber;
+}
+
+void PrgStorage::setEventByNumber(byte number, byte eventnumber, byte eventData[]) {
+	byte* p = prgMemory + 70;
+	p = p + (EVENT_SIZE * number);
+	byte i = 0;
+	*p++ = eventnumber;
+	for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
+		*p++ == eventData[x];
+	}
+	return;
 }
 
 void PrgStorage::copyPrg2RAM() {

@@ -30,12 +30,19 @@ const byte PIN_ENCODER_SW = 4;
 
 const byte ENCODER_STP_NOTCH = 4;
 
+const byte BUTTON_COUNT = 3;
+
 const byte LED_COUNT = 8;
 const byte LED_PER_SWITCH = 1;
 const byte LED_USED = 4;
 const byte LED_STATUS = (LED_USED * LED_PER_SWITCH) - 1 + 1;
 
 const cRGB cBlack = { 0, 0, 0 };
+
+const byte LCD_WIDTH = 16;
+const byte LCD_HEIGHT = 2;
+const byte MAX_BUTTON_WIDTH = LCD_WIDTH / BUTTON_COUNT;
+
 
 // some widly used constants
 const byte GLOBAL_MODE_4_BUTTON = 0;
@@ -104,5 +111,6 @@ const byte CC_FS_PUSH = 0x7F;
 #define BUTTON_NAME_SIZE 8
 #define SEQUENZES 16
 #define MIDI_COMMANDS 16
+#define EVENT_SIZE 49
 
 #endif

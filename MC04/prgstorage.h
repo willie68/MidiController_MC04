@@ -91,6 +91,9 @@ public:
 	void saveRAM2Prg();
 
 	bool getEvent(byte eventnumber, byte eventData[]);
+
+	byte getEventByNumber(byte number, byte eventData[])
+	void setEventByNumber(byte number, byte eventnumber, byte eventData[]);
 protected:
 	byte prgNumber;
 	byte* prgMemory;

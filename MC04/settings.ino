@@ -75,6 +75,7 @@ void on_prgSeqMid_selected(MenuComponent* p_menu_component);
 
 char prgNameBuffer[13] = "            ";
 char btnNameBuffer[5] = "    ";
+byte menuMidiData[48];
 
 void resetPrgNameBuffer() {
 	strcpy(prgNameBuffer, "            ");
@@ -135,11 +136,16 @@ void setSettingsDirty() {
 
 class MyRenderer: public MenuComponentRenderer {
 public:
+
 	void render(Menu const& menu) const {
 		lcd.clear();
 		lcd.noCursor();
 		lcd.setCursor(0, 0);
-		lcd.print(menu.get_name());
+		if (menu.get_name() == "")  {
+			lcd.print("Menu");
+		} else {
+			lcd.print(menu.get_name());
+		}
 		if (&menu == &muProgram) {
 			lcd.setCursor(11, 0);
 			lcd.print(".  ");
@@ -524,8 +530,12 @@ void on_prgBtnBright_selected(MenuComponent* p_menu_component) {
 	setSettingsDirty();
 }
 
+byte eventnumber;
 void on_prgSequenz_selected(MenuComponent* p_menu_component) {
 	seqActive = 0;
+	eventnumber = storage.getEventByNumber(seqActive, menuMidiData);
+	miSeqTrigger.set_value((float) (eventnumber &0x0F));
+	miSeqEvent.set_value((float) (eventnumber >> 4));
 }
 
 void on_prgSeqNumber_selected(MenuComponent* p_menu_component) {
@@ -536,21 +546,25 @@ void on_prgSeqNumber_selected(MenuComponent* p_menu_component) {
 	if (value != seqActive) {
 		if (seqDirty) {
 			// alte Midisequenz speichern.
+			eventnumber = ((byte) miSeqEvent.get_value()) << 4;
+			eventnumber += ((byte) miSeqTrigger.get_value());
+			storage.setEventByNumber(seqActive, eventnumber, menuMidiData);
 		}
 		//TODO Hier müssen noch die anderen Menüpunkte mit den Werten der neuen Midisequenz gefüllt werden
 
 	}
 	seqActive = value;
 	seqDirty = false;
+	eventnumber = storage.getEventByNumber(seqActive, menuMidiData);
+	miSeqTrigger.set_value((float) (eventnumber &0x0F));
+	miSeqEvent.set_value((float) (eventnumber >> 4));
 }
 
 void on_prgSeqTrigger_selected(MenuComponent* p_menu_component) {
-
 	setSettingsDirty();
 }
 
 void on_prgSeqEvent_selected(MenuComponent* p_menu_component) {
-
 	setSettingsDirty();
 }
 
