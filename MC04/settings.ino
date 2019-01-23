@@ -110,9 +110,9 @@ NumericMenuItem miSeqNumber("Number", &on_prgSeqNumber_selected, 1, 1, 16, 1.0);
 NumericMenuItem miSeqTrigger("Trig.", &on_prgSeqTrigger_selected, 0, 0, 9, 1.0);
 NumericMenuItem miSeqEvent("Event", &on_prgSeqEvent_selected, 0, 0, 8, 1.0);
 
-Menu muSeqMidCommands("Commands", &on_prgSeqMid_selected);
+Menu muSeqMidCommands("Midi Commands", &on_prgSeqMid_selected);
 NumericMenuItem miSeqMidCmdNumber("Number", &on_prgSeqMidCmdNumber_selected, 1, 1, 16, 1.0);
-NumericMenuItem miSeqMidCmdType("Type", &on_prgSeqMidCmdType_selected, 0, 0, 3, 1.0);
+NumericMenuItem miSeqMidCmdType("Type", &on_prgSeqMidCmdType_selected, 0, 0, 4, 1.0);
 NumericMenuItem miSeqMidCmdChannel("Channel", &on_prgSeqMidCmdChannel_selected, 1, 16, 3, 1.0);
 NumericMenuItem miSeqMidCmdData1("Data1", &on_prgSeqMidCmdData1_selected, 0, 0, 127, 1.0);
 NumericMenuItem miSeqMidCmdData2("Data2", &on_prgSeqMidCmdData2_selected, 0, 0, 127, 1.0);
@@ -256,6 +256,9 @@ public:
 			case 3:
 				lcd.print(F("Note Off"));
 				break;
+			case 4:
+				lcd.print(F("nn"));
+				break;
 			}
 		} else if (&menu_item == &miGloBtnMode) {
 			if (value == 0) {
@@ -358,6 +361,7 @@ void initMenuSystem() {
 
 	muSeqMidCommands.add_item(&miSeqMidCmdNumber);
 	muSeqMidCommands.add_item(&miSeqMidCmdType);
+	muSeqMidCommands.add_item(&miSeqMidCmdChannel);
 	muSeqMidCommands.add_item(&miSeqMidCmdData1);
 	muSeqMidCommands.add_item(&miSeqMidCmdData2);
 	muSeqMidCommands.add_item(&miMidBack);
@@ -581,15 +585,48 @@ void on_prgSeqEvent_selected(MenuComponent* p_menu_component) {
 	setSettingsDirty();
 }
 
+byte type;
+byte channel;
+
+void readSeqMid() {
+	byte position = (cmdActive - 1) * 3;
+	type = menuMidiData[position] & 0xF0;
+	channel = menuMidiData[position++] & 0x0F;
+	switch (type) {
+	case 0xb0:
+		// Control Change
+		type = 0;
+		break;
+	case 0xc0:
+		// Program change
+		type = 1;
+		break;
+	case 0x90:
+		// note on
+		type = 2;
+		break;
+	case 0x80:
+		// note off
+		type = 3;
+		break;
+	default:
+		type = 4;
+		break;
+	}
+	miSeqMidCmdType.set_value((float) type);
+	miSeqMidCmdChannel.set_value((float) channel + 1);
+	miSeqMidCmdData1.set_value((float) menuMidiData[position++]);
+	miSeqMidCmdData2.set_value((float) menuMidiData[position++]);
+}
+
 void on_prgSeqMid_selected(MenuComponent* p_menu_component) {
-	cmdActive = 0;
+	cmdActive = 1;
+	readSeqMid();
 	cmdDirty = false;
 }
 
-byte type;
-byte channel;
 void setType() {
-	byte value = (byte) miSeqMidCmdNumber.get_value();
+	byte value = (byte) miSeqMidCmdNumber.get_value() - 1;
 	byte position = value * 3;
 	type = (byte) miSeqMidCmdType.get_value();
 	switch (type) {
@@ -618,34 +655,8 @@ void setType() {
 
 void on_prgSeqMidCmdNumber_selected(MenuComponent* p_menu_component) {
 	byte value = (byte) miSeqMidCmdNumber.get_value();
-	byte position = value * 3;
-	type = menuMidiData[position] & 0xF0;
-	channel = menuMidiData[position++] & 0x0F;
-	switch (type) {
-	case 0xb0:
-		// Control Change
-		type = 0;
-		break;
-	case 0xc0:
-		// Program change
-		type = 1;
-		break;
-	case 0x90:
-		// note on
-		type = 2;
-		break;
-	case 0x80:
-		// note off
-		type = 3;
-		break;
-	default:
-		break;
-	}
-	miSeqMidCmdType.set_value((float) type);
-	miSeqMidCmdChannel.set_value((float) channel + 1);
-	miSeqMidCmdData1.set_value((float) menuMidiData[position++]);
-	miSeqMidCmdData2.set_value((float) menuMidiData[position++]);
 	cmdActive = value;
+	readSeqMid();
 }
 
 void on_prgSeqMidCmdType_selected(MenuComponent* p_menu_component) {
@@ -661,7 +672,7 @@ void on_prgSeqMidCmdChannel_selected(MenuComponent* p_menu_component) {
 }
 
 void on_prgSeqMidCmdData1_selected(MenuComponent* p_menu_component) {
-	byte value = (byte) miSeqMidCmdNumber.get_value();
+	byte value = (byte) miSeqMidCmdNumber.get_value() - 1;
 	byte position = (value * 3) + 1;
 	menuMidiData[position] = (byte) miSeqMidCmdData1.get_value();
 	setSettingsDirty();
@@ -669,7 +680,7 @@ void on_prgSeqMidCmdData1_selected(MenuComponent* p_menu_component) {
 }
 
 void on_prgSeqMidCmdData2_selected(MenuComponent* p_menu_component) {
-	byte value = (byte) miSeqMidCmdNumber.get_value();
+	byte value = (byte) miSeqMidCmdNumber.get_value() - 1;
 	byte position = (value * 3) + 2;
 	menuMidiData[position] = (byte) miSeqMidCmdData2.get_value();
 	setSettingsDirty();
