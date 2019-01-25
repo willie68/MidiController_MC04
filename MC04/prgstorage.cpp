@@ -281,10 +281,41 @@ byte PrgStorage::getEventByNumber(byte number, byte eventData[]) {
 	return eventnumber;
 }
 
+void PrgStorage::compressEventData(byte* eventData, byte size) {
+	byte i = 0;
+	byte value = 0;
+	byte subPosition = 0;
+	while (i < size) {
+		value = eventData[i];
+		if (value == 0) {
+			subPosition = i + 3;
+			while (subPosition < size) {
+				if (subPosition < size) {
+					byte newValue = eventData[subPosition];
+					if (!(newValue == 0)) {
+						eventData[i] = eventData[subPosition];
+						eventData[i + 1] = eventData[subPosition + 1];
+						eventData[i + 2] = eventData[subPosition + 2];
+						eventData[subPosition] = 0;
+						eventData[subPosition + 1] = 0;
+						eventData[subPosition + 2] = 0;
+						subPosition = size;
+					}
+				} else {
+					i = size;
+				}
+				subPosition = subPosition + 3;
+			}
+		}
+		i = i + 3;
+	};
+}
+
 void PrgStorage::setEventByNumber(byte number, byte eventnumber, byte eventData[]) {
 	byte* p = prgMemory + 70;
 	p = p + (EVENT_SIZE * number);
 	byte i = 0;
+	compressEventData(eventData, (byte) sizeof(eventData));
 	*p++ = eventnumber;
 	for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
 		*p++ == eventData[x];

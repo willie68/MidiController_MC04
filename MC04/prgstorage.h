@@ -104,6 +104,8 @@ protected:
 
 	// copy the actual program to RAM
 	void copyPrg2RAM();
+
+	void compressEventData(byte* eventData, byte size);
 };
 
 #endif
