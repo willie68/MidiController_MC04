@@ -22,8 +22,8 @@
   http://www.arduino.cc/en/Tutorial/Blink
 */
 #include <Arduino.h>
-#include "rgb_lcd.h"
-rgb_lcd lcd;
+#include "LCD_I2C_AIP31068L.h"
+LCD_I2C_AIP31068L lcd(0x7C);
 
 // the setup function runs once when you press reset or power the board
 void setup() {
