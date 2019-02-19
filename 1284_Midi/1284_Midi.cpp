@@ -25,6 +25,7 @@
 #include "LCD_I2C_AIP31068L.h"
 #include <ClickEncoder.h>
 #include <TimerOne.h>
+#include<SPIMemory.h>
 
 const byte PIN_ENCODER_A = 4;
 const byte PIN_ENCODER_B = 5;
@@ -34,6 +35,7 @@ const byte ENCODER_STP_NOTCH = 4;
 
 LCD_I2C_AIP31068L lcd(0x3E);
 ClickEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B, PIN_ENCODER_SW, ENCODER_STP_NOTCH);
+SPIFlash flash;
 
 void checkEncoder();
 
@@ -55,18 +57,22 @@ void setup() {
 	Timer1.initialize(1000);
 	Timer1.attachInterrupt(timerIsr);
 
+	flash.begin();
 }
 
 // the loop function runs over and over again forever
-int i = 0;
 int16_t value = 0;
+int wrtCount = 0;
 void loop() {
-	i++;
 	checkEncoder();
 	Serial.print("counter: ");
-	Serial.print(i);
 	Serial.print(value);
+	Serial.print(", fls ");
+	Serial.print(flash.readByte(0x0005));
+	Serial.print(", wrt: ");
+	Serial.print(wrtCount);
 	Serial.println();
+
 	if (((millis() / 500) % 2) == 0) {
 		digitalWrite(LED_BUILTIN, HIGH);
 	} else {
@@ -74,14 +80,22 @@ void loop() {
 	}
 
 	lcd.setCursor(0, 1);
-	lcd.print("counter ");
+	lcd.print("cnt: ");
 	lcd.print(value);
+	lcd.print(" ");
+	lcd.print(flash.readByte(0x00005));
 	ClickEncoder::Button b = encoder.getButton();
 	if (b != ClickEncoder::Open) {
 		if (b == ClickEncoder::Clicked) {
+			wrtCount++;
+			flash.eraseSector(0x00005);
+			if (!flash.writeByte(0x00005, value)){
+				Serial.println("fail");
+			}
 			value = 0;
 		}
 	}
+	delay(250);
 }
 
 int16_t last = -1;
