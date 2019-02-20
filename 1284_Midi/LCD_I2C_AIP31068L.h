@@ -1,55 +1,35 @@
 /* ===================================== LCD_I2C_AIP31068L.h ========================================== */
 
 /*
-  LCD_I2C_AIP31068L.h
-  2013 Copyright (c) Seeed Technology Inc.  All right reserved.
-  Author:Loovee
-  2013-9-18
-  add rgb backlight fucnction @ 2013-10-15
-  
-  This library is free software; you can redistribute it and/or
-  modify it under the terms of the GNU Lesser General Public
-  License as published by the Free Software Foundation; either
-  version 2.1 of the License, or (at your option) any later version.
-  This library is distributed in the hope that it will be useful,
-  but WITHOUT ANY WARRANTY; without even the implied warranty of
-  MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
-  Lesser General Public License for more details.
-  You should have received a copy of the GNU Lesser General Public
-  License along with this library; if not, write to the Free Software
-  Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ LCD_I2C_AIP31068L.h
+ 2013 Copyright (c) Seeed Technology Inc.  All right reserved.
+ Author:Loovee
+ 2013-9-18
+ add rgb backlight fucnction @ 2013-10-15
 
-  @Author: w.klaas@gmx.de
-  18.02.2019
-  - remove the background RGB functionality for the cheaper displays without rgb backlight
-  - adding new functionality of the actual LCD libraries
-*/
+ This library is free software; you can redistribute it and/or
+ modify it under the terms of the GNU Lesser General Public
+ License as published by the Free Software Foundation; either
+ version 2.1 of the License, or (at your option) any later version.
+ This library is distributed in the hope that it will be useful,
+ but WITHOUT ANY WARRANTY; without even the implied warranty of
+ MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the GNU
+ Lesser General Public License for more details.
+ You should have received a copy of the GNU Lesser General Public
+ License along with this library; if not, write to the Free Software
+ Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
 
+ @Author: w.klaas@gmx.de
+ 18.02.2019
+ - remove the background RGB functionality for the cheaper displays without rgb backlight
+ - adding new functionality of the actual LCD libraries
+ */
 
 #ifndef __LCD_I2C_AIP31068L_H__
 #define __LCD_I2C_AIP31068L_H__
 
 #include <inttypes.h>
 #include "Print.h"
-
-// Device I2C Arress
-//#define LCD_ADDRESS     (0x7c>>1)
-//#define RGB_ADDRESS     (0xc4>>1)
-
-
-// color define 
-#define WHITE           0
-#define RED             1
-#define GREEN           2
-#define BLUE            3
-
-#define REG_RED         0x04        // pwm2
-#define REG_GREEN       0x03        // pwm1
-#define REG_BLUE        0x02        // pwm0
-
-#define REG_MODE1       0x00
-#define REG_MODE2       0x01
-#define REG_OUTPUT      0x08
 
 // commands
 #define LCD_CLEARDISPLAY 0x01
@@ -89,49 +69,81 @@
 #define LCD_5x10DOTS 0x04
 #define LCD_5x8DOTS 0x00
 
-class LCD_I2C_AIP31068L : public Print
-{
+class LCD_I2C_AIP31068L: public Print {
 
 public:
 	LCD_I2C_AIP31068L(uint8_t lcd_Addr);
 
-  void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
+	void begin(uint8_t cols, uint8_t rows, uint8_t charsize = LCD_5x8DOTS);
 
-  void clear();
-  void home();
+	void clear();
+	void home();
 
-  void noDisplay();
-  void display();
-  void noBlink();
-  void blink();
-  void noCursor();
-  void cursor();
-  void scrollDisplayLeft();
-  void scrollDisplayRight();
-  void leftToRight();
-  void rightToLeft();
-  void autoscroll();
-  void noAutoscroll();
+	void noDisplay();
+	void display();
+	void noBlink();
+	void blink();
+	void noCursor();
+	void cursor();
+	void scrollDisplayLeft();
+	void scrollDisplayRight();
+	void printLeft();
+	void printRight();
+	void leftToRight();
+	void rightToLeft();
+	void shiftIncrement();
+	void shiftDecrement();
+	void noBacklight();
+	void backlight();
+	void autoscroll();
+	void noAutoscroll();
+	void createChar(uint8_t, uint8_t[]);
+	void createChar(uint8_t location, const char *charmap);
+	// Example: 	const char bell[8] PROGMEM = {B00100,B01110,B01110,B01110,B11111,B00000,B00100,B00000};
 
-  void createChar(uint8_t, uint8_t[]);
-  void setCursor(uint8_t, uint8_t); 
-  
-  virtual size_t write(uint8_t);
-  void command(uint8_t);
-  
-  using Print::write;
-  
+	void setCursor(uint8_t, uint8_t);
+#if defined(ARDUINO) && ARDUINO >= 100
+	virtual size_t write(uint8_t);
+#else
+	virtual void write(uint8_t);
+#endif
+	void command(uint8_t);
+	void init();
+	void oled_init();
+
+////compatibility API function aliases
+	void blink_on();						// alias for blink()
+	void blink_off();       					// alias for noBlink()
+	void cursor_on();      	 					// alias for cursor()
+	void cursor_off();      					// alias for noCursor()
+	void setBacklight(uint8_t new_val);	// alias for backlight() and nobacklight()
+	void load_custom_character(uint8_t char_num, uint8_t *rows);// alias for createChar()
+	void printstr(const char[]);
+
+////Unsupported API functions (not implemented in this library)
+	uint8_t status();
+	void setContrast(uint8_t new_val);
+	uint8_t keypad();
+	void setDelay(int, int);
+	void on();
+	void off();
+	uint8_t init_bargraph(uint8_t graphtype);
+	void draw_horizontal_graph(uint8_t row, uint8_t column, uint8_t len,
+			uint8_t pixel_col_end);
+	void draw_vertical_graph(uint8_t row, uint8_t column, uint8_t len,
+			uint8_t pixel_col_end);
+
 private:
-  void send(uint8_t, uint8_t);
-  void setReg(unsigned char addr, unsigned char dta);
+	void send(uint8_t, uint8_t);
+	void setReg(unsigned char addr, unsigned char dta);
 
-  uint8_t _Addr;
-  uint8_t _displayfunction;
-  uint8_t _displaycontrol;
-  uint8_t _displaymode;
+	uint8_t _Addr;
+	uint8_t _displayfunction;
+	uint8_t _displaycontrol;
+	uint8_t _displaymode;
 
-  uint8_t _initialized;
+	uint8_t _initialized;
 
-  uint8_t _numlines,_currline;
+	uint8_t _numlines, _currline;
 };
 #endif

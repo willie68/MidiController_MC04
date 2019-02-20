@@ -1,5 +1,5 @@
 #include <MenuSystem.h>
-#include <LiquidCrystal_I2C.h>
+#include "LCD_I2C_AIP31068L.h"
 #include "constants.h"
 #include "globals.h"
 #include "prgstorage.h"

@@ -12,13 +12,13 @@
 #include <avdweb_Switch.h>
 #include "midi.h"
 #include "constants.h"
-#include "prgstorage.h"
 #include <Wire.h>
-#include <LCD.h>
-#include <LiquidCrystal_I2C.h>
+#include "LCD_I2C_AIP31068L.h"
 #include <ClickEncoder.h>
 #include <TimerOne.h>
 #include <WS2812.h>
+#include <SPIMemory.h>
+#include "prgstorage.h"
 #include "globals.h"
 
 /**

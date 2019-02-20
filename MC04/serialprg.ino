@@ -182,15 +182,15 @@ void serialPrg() {
 			// look for the next valid integer in the incoming serial stream:
 			char myChar = Serial.read();
 			if (myChar == 'w') {
-				// hexfile is comming to programm
+				// hex file is coming to program
 				inputEEpromData();
 			}
 			if (myChar == 'r') {
-				// write eeprom as hexfile to receiver
+				// write eeprom as hex file to receiver
 				outputEEpromData();
 			}
 			if (myChar == 'e') {
-				// end of programm
+				// end of program
 				endOfPrg = true;
 			}
 		}

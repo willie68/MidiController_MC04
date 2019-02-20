@@ -11,18 +11,25 @@ const byte PIN_SWITCH_2 = 6;
 const byte PIN_SWITCH_3 = 7;
 const byte PIN_SWITCH_4 = 8;
 const byte PIN_SWITCH_5 = 9;
-const byte PIN_SWITCH_6 = 10;
+const byte PIN_SWITCH_6 = 16; //(A 2)
+
+// Hardware pins for LCD (Just for documentation purpose
+const byte PIN_CLK = 13;
+const byte PIN_MISO = 12;
+const byte PIN_MOSI = 11;
+const byte PIN_SS = 10;
+
 
 #ifdef __AVR_ATmega2560__
 const byte PIN_RGB_LED = 56;
 #endif
 
 #ifdef __AVR_ATmega328P__
-const byte PIN_RGB_LED = 6;
+const byte PIN_RGB_LED = 17; // (A 3)
 #endif
 
-const byte PIN_EXPRESSION_1 = 0;
-const byte PIN_EXPRESSION_2 = 1;
+const byte PIN_EXPRESSION_1 = 0; // (D 14)
+const byte PIN_EXPRESSION_2 = 1; // (D 15)
 
 const byte PIN_ENCODER_A = 2;
 const byte PIN_ENCODER_B = 3;
@@ -44,7 +51,7 @@ const byte LCD_HEIGHT = 2;
 const byte MAX_BUTTON_WIDTH = LCD_WIDTH / BUTTON_COUNT;
 
 
-// some widly used constants
+// some widely used constants
 const byte GLOBAL_MODE_4_BUTTON = 0;
 const byte GLOBAL_MODE_6_BUTTON = 1;
 const byte GLOBAL_MODE_0_EXPRESSION = 2;
@@ -107,6 +114,7 @@ const byte CC_FS_LONG_CLICK = 0x60;
 const byte CC_FS_PUSH = 0x7F;
 
 #define PRG_SIZE 806
+#define PAGE_SIZE 4096
 #define NAME_SIZE 12
 #define BUTTON_NAME_SIZE 8
 #define SEQUENZES 16

@@ -3,6 +3,7 @@
 #include <inttypes.h>
 #include "prgstorage.h"
 #include "constants.h"
+#include <SPIMemory.h>
 #include <EEPROM.h>
 #include <avr/eeprom.h>
 //#include "tools.h"
@@ -15,6 +16,9 @@ const byte PC_1 = 0xff;
 
 const uint16_t ADDRESS_GLOBAL_BUTTON_MODE = E2END;
 const uint16_t ADDRESS_GLOBAL_EXPRESSION_MODE = E2END - 1;
+
+SPIFlash flash;
+
 /**
  storage class, first using eeprom for store and retrieve program settings
  */
@@ -61,13 +65,13 @@ void PrgStorage::setGlobalExpressionMode(byte mode) {
 void PrgStorage::scanPrograms() {
 	numberOfPrograms = 0;
 	char name[16];
-	for (int addr = 0; addr <= 4; addr++) {
-		byte value = EEPROM.read((addr * PRG_SIZE) + 1);
+	for (int addr = 0; addr <= 128; addr++) {
+		byte value = flash.readByte((addr * PAGE_SIZE));
 		if ((value > 0) && (value < 0xff)) {
 			numberOfPrograms++;
 			byte i = 0;
 			do {
-				value = EEPROM.read((addr * PRG_SIZE) + i + 1);
+				value = flash.readByte((addr * PAGE_SIZE) + i);
 				name[i] = value;
 				i++;
 			} while ((i < 16) && value > 0);
@@ -87,11 +91,11 @@ void PrgStorage::setFirstProgram() {
 
 char* PrgStorage::getNameOfPrg(byte number, char* buf) {
 	char* p = buf;
-	int myPrg = ((number % numberOfPrograms) * PRG_SIZE) + 1;
+	int myPrg = ((number % numberOfPrograms) * PAGE_SIZE);
 	byte i = 0;
 	char value;
 	do {
-		value = EEPROM.read(myPrg++);
+		value = flash.readByte(myPrg++);
 		*p++ = value;
 		i++;
 	} while ((i < NAME_SIZE) && value > 0);
@@ -327,16 +331,19 @@ void PrgStorage::copyPrg2RAM() {
 	Serial.println(F("reading program from eeprom"));
 	byte* p = prgMemory;
 	unsigned int i;
-	unsigned int address = (prgNumber * PRG_SIZE) + 1;
-	for (i = 0; i < PRG_SIZE; i++)
-		*p++ = EEPROM.read(address++);
+	unsigned int address = (prgNumber * PAGE_SIZE);
+	flash.readByteArray(address, p, PRG_SIZE, true);
+//	for (i = 0; i < PRG_SIZE; i++)
+//		*p++ = flash.readByte(address++);
 }
 
 void PrgStorage::saveRAM2Prg() {
 	Serial.println(F("saving program to eeprom"));
 	byte* p = prgMemory;
 	unsigned int i;
-	unsigned int address = (prgNumber * PRG_SIZE) + 1;
-	for (i = 0; i < PRG_SIZE; i++)
-		EEPROM.write(address++, *p++);
+	unsigned int address = (prgNumber * PAGE_SIZE);
+	flash.eraseSector(address);
+	flash.writeByteArray(address, p, PRG_SIZE, true);
+//	for (i = 0; i < PRG_SIZE; i++)
+//		EEPROM.write(address++, *p++);
 }

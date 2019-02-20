@@ -36,7 +36,7 @@ void i2c_send_byte(uint8_t addr, unsigned char dta)
     Wire.endTransmission();                     // stop transmitting
 }
 
-void i2c_send_byteS(uint8_t addr, unsigned char *dta, unsigned char len)
+void i2c_send_bytes(uint8_t addr, unsigned char *dta, unsigned char len)
 {
     Wire.beginTransmission(addr);        // transmit to device #4
     for(int i=0; i<len; i++)
@@ -123,7 +123,7 @@ void LCD_I2C_AIP31068L::setCursor(uint8_t col, uint8_t row)
     col = (row == 0 ? col|0x80 : col|0xc0);
     unsigned char dta[2] = {0x80, col};
 
-    i2c_send_byteS(_Addr, dta, 2);
+    i2c_send_bytes(_Addr, dta, 2);
 
 }
 
@@ -216,7 +216,11 @@ void LCD_I2C_AIP31068L::createChar(uint8_t location, uint8_t charmap[])
     {
         dta[i+1] = charmap[i];
     }
-    i2c_send_byteS(_Addr, dta, 9);
+    i2c_send_bytes(_Addr, dta, 9);
+}
+
+void LCD_I2C_AIP31068L::setBacklight(uint8_t new_val) {
+	//DONE: do nnothing here, because this display doesn't support backlight
 }
 
 /*********** mid level commands, for sending data/cmds */
@@ -225,7 +229,7 @@ void LCD_I2C_AIP31068L::createChar(uint8_t location, uint8_t charmap[])
 inline void LCD_I2C_AIP31068L::command(uint8_t value)
 {
     unsigned char dta[2] = {0x80, value};
-    i2c_send_byteS(_Addr, dta, 2);
+    i2c_send_bytes(_Addr, dta, 2);
 }
 
 // send data
@@ -233,6 +237,7 @@ inline size_t LCD_I2C_AIP31068L::write(uint8_t value)
 {
 
     unsigned char dta[2] = {0x40, value};
-    i2c_send_byteS(_Addr, dta, 2);
+    i2c_send_bytes(_Addr, dta, 2);
     return 1; // assume sucess
 }
+
