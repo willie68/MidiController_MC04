@@ -130,7 +130,7 @@ void loop() {
 			if (settingsDirty) {
 				storage.saveRAM2Prg();
 			}
-			changeProgram(prg);
+			changeProgram(actualProgram);
 		}
 	} else {
 		if (checkMidiIn()) {
@@ -140,8 +140,8 @@ void loop() {
 		checkSwitches();
 		checkEncoder();
 
-		if (prg != lastPrg) {
-			lastPrg = prg;
+		if (actualProgram != lastPrg) {
+			lastPrg = actualProgram;
 			updateLED = true;
 		}
 		if (updateLED) {
@@ -153,17 +153,17 @@ void loop() {
 		if (resetTime > 0) {
 			if (b != ClickEncoder::Open) {
 				if (b == ClickEncoder::Clicked) {
-					if (prg != prgToSet) {
-						prg = prgToSet;
-						changeProgram(prg);
+					if (actualProgram != prgToSet) {
+						actualProgram = prgToSet;
+						changeProgram(actualProgram);
 						resetTime = 0;
 					}
 				}
 			}
 			if (time > resetTime) {
-				if (prgToSet != prg) {
-					changeProgram(prg);
-					prgToSet = prg;
+				if (prgToSet != actualProgram) {
+					changeProgram(actualProgram);
+					prgToSet = actualProgram;
 				}
 				resetTime = 0;
 			}
@@ -237,13 +237,21 @@ void checkSwitches() {
 	bool isEvent = false;
 	byte event = 0;
 
-	processButton(switch_1, 0, EVENT_BUTTON_0);
-	processButton(switch_2, 1, EVENT_BUTTON_1);
-	processButton(switch_3, 2, EVENT_BUTTON_2);
-	processButton(switch_4, 3, EVENT_BUTTON_3);
-	if (globalButtonMode == GLOBAL_MODE_6_BUTTON) {
-		processButton(switch_5, 4, EVENT_BUTTON_4);
-		processButton(switch_6, 5, EVENT_BUTTON_5);
+	if (switch_1.singleClick() && switch_2.singleClick()) {
+		actualProgram++;
+		changeProgram(actualProgram);
+	} else if (switch_2.singleClick() && switch_3.singleClick()) {
+		actualProgram--;
+		changeProgram(actualProgram);
+	} else {
+		processButton(switch_1, 0, EVENT_BUTTON_0);
+		processButton(switch_2, 1, EVENT_BUTTON_1);
+		processButton(switch_3, 2, EVENT_BUTTON_2);
+		processButton(switch_4, 3, EVENT_BUTTON_3);
+		if (globalButtonMode == GLOBAL_MODE_6_BUTTON) {
+			processButton(switch_5, 4, EVENT_BUTTON_4);
+			processButton(switch_6, 5, EVENT_BUTTON_5);
+		}
 	}
 }
 
@@ -438,12 +446,12 @@ void changeController(byte controller, byte data) {
 		case CC_EVENT_EXECUTE:
 			break;
 		case CC_PROGRAMM_UP:
-			prg++;
-			changeProgram(prg);
+			actualProgram++;
+			changeProgram(actualProgram);
 			break;
 		case CC_PROGRAM_DOWN:
-			prg--;
-			changeProgram(prg);
+			actualProgram--;
+			changeProgram(actualProgram);
 			break;
 		case CC_EXPRESSION_1:
 			expression_1 = data;

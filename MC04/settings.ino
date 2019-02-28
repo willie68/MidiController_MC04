@@ -152,10 +152,10 @@ public:
 		if (&menu == &muProgram) {
 			lcd.setCursor(11, 0);
 			lcd.print(".  ");
-			if (prg < 10) {
+			if (actualProgram < 10) {
 				lcd.print('0');
 			}
-			lcd.print(prg);
+			lcd.print(actualProgram);
 		}
 		lcd.setCursor(0, 1);
 		menu.get_current_component()->render(*this);

@@ -9,6 +9,8 @@ class PrgStorage {
 public:
 	PrgStorage();
 
+	byte* prgMemory;
+
 	void init();
 
 	//----- global settings functions -----
@@ -96,7 +98,6 @@ public:
 	void setEventByNumber(byte number, byte eventnumber, byte eventData[]);
 protected:
 	byte prgNumber;
-	byte* prgMemory;
 	byte numberOfPrograms;
 
 	// copy the actual program to RAM

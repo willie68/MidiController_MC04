@@ -11,7 +11,7 @@ PrgStorage storage;
 LCD_I2C_AIP31068L lcd(0x3E);
 WS2812 LED(LED_COUNT);
 
-byte prg = 0;
+byte actualProgram = 0;
 uint16_t value;
 bool settingsDirty = false;
 
