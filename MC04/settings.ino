@@ -262,9 +262,9 @@ public:
 			}
 		} else if (&menu_item == &miGloBtnMode) {
 			if (value == 0) {
-				lcd.print(F("4"));
+				lcd.print(F("3"));
 			} else {
-				lcd.print(F("6"));
+				lcd.print(F("5 (6)"));
 			}
 		} else if (&menu_item == &miGloBtnMode) {
 			switch (value) {

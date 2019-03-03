@@ -25,7 +25,7 @@
 #include "LCD_I2C_AIP31068L.h"
 #include <ClickEncoder.h>
 #include <TimerOne.h>
-#include<SPIMemory.h>
+#include <SPIMemory.h>
 
 const byte PIN_ENCODER_A = 4;
 const byte PIN_ENCODER_B = 5;

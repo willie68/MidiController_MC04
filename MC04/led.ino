@@ -2,19 +2,19 @@
 #define _LED_INO
 
 void setColorStatusLEDs(cRGB color) {
-	LED.set_crgb_at(LED_STATUS, color);
-	LED.sync();
+	SWITCH_LED.set_crgb_at(LED_STATUS, color);
+	SWITCH_LED.sync();
 }
 
 void clearLEDs() {
 	for (byte i = 0; i < LED_COUNT; i++) {
-		LED.set_crgb_at(i, cBlack);
+		SWITCH_LED.set_crgb_at(i, cBlack);
 	}
 }
 
 void initNeoPixel() {
-	LED.setOutput(PIN_RGB_LED);
-	LED.setColorOrderRGB();
+	SWITCH_LED.setOutput(PIN_RGB_LED);
+	SWITCH_LED.setColorOrderRGB();
 	clearLEDs();
 }
 
@@ -35,10 +35,10 @@ void showRGBLed() {
 		value.g = ((buttonColor[i] & 0x0C) << 2) * intensity;
 		value.b = (buttonColor[i] & 0x30) * intensity;
 		for (byte x = 0; x < LED_PER_SWITCH; x++) {
-			LED.set_crgb_at((i * LED_PER_SWITCH) + x, value);
+			SWITCH_LED.set_crgb_at((i * LED_PER_SWITCH) + x, value);
 		}
 	}
-	LED.sync();
+	SWITCH_LED.sync();
 }
 
 cRGB getColorValue(byte buttonColor) {

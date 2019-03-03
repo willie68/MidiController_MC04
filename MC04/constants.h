@@ -6,18 +6,18 @@
 #define VERSION F("V0.1.2")
 
 // Hardware mappings
-const byte PIN_SWITCH_1 = 5;
-const byte PIN_SWITCH_2 = 6;
-const byte PIN_SWITCH_3 = 7;
-const byte PIN_SWITCH_4 = 8;
-const byte PIN_SWITCH_5 = 9;
-const byte PIN_SWITCH_6 = 16; //(A 2)
+const byte PIN_SWITCH_1 = 7;
+const byte PIN_SWITCH_2 = 8;
+const byte PIN_SWITCH_3 = 9;
+const byte PIN_SWITCH_4 = 22;
+const byte PIN_SWITCH_5 = 23;
+const byte PIN_SWITCH_6 = 24; //(A 2)
 
 // Hardware pins for LCD (Just for documentation purpose
-const byte PIN_CLK = 13;
-const byte PIN_MISO = 12;
-const byte PIN_MOSI = 11;
-const byte PIN_SS = 10;
+//const byte PIN_CLK = 13;
+//const byte PIN_MISO = 12;
+//const byte PIN_MOSI = 11;
+//const byte PIN_SS = 10;
 
 
 #ifdef __AVR_ATmega2560__
@@ -28,12 +28,20 @@ const byte PIN_RGB_LED = 56;
 const byte PIN_RGB_LED = 17; // (A 3)
 #endif
 
+#ifdef __AVR_ATmega1284P__
+const byte PIN_RGB_LED = 17; // (A 3)
+#endif
+
 const byte PIN_EXPRESSION_1 = 0; // (D 14)
 const byte PIN_EXPRESSION_2 = 1; // (D 15)
 
-const byte PIN_ENCODER_A = 2;
-const byte PIN_ENCODER_B = 3;
-const byte PIN_ENCODER_SW = 4;
+//const byte PIN_ENCODER_A = 2;
+//const byte PIN_ENCODER_B = 3;
+//const byte PIN_ENCODER_SW = 4;
+
+const byte PIN_ENCODER_A = 4;
+const byte PIN_ENCODER_B = 5;
+const byte PIN_ENCODER_SW = 6;
 
 const byte ENCODER_STP_NOTCH = 4;
 

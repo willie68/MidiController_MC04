@@ -9,7 +9,7 @@ ClickEncoder encoder(PIN_ENCODER_A, PIN_ENCODER_B, PIN_ENCODER_SW, ENCODER_STP_N
 Midi midi;
 PrgStorage storage;
 LCD_I2C_AIP31068L lcd(0x3E);
-WS2812 LED(LED_COUNT);
+WS2812 SWITCH_LED(LED_COUNT);
 
 byte actualProgram = 0;
 uint16_t value;

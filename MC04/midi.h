@@ -4,11 +4,7 @@
 #include <Arduino.h>
 #include <inttypes.h>
 
-#ifdef debug
-#define BAUDRATE 57600
-#else
 #define BAUDRATE 31250
-#endif
 const byte MIDI_PROGRAM_CHANGE = 0xC0;
 const byte MIDI_CONTROLLER_CHANGE = 0xB0;
 
@@ -58,10 +54,10 @@ public:
 	}
 
 	bool poll() {
-		while (Serial.available() > 0) {
-			midiData[writePos++] = Serial.read();
+		while (Serial1.available() > 0) {
+			midiData[writePos++] = Serial1.read();
 			if (midiThru) {
-				Serial.write(midiData[writePos - 1]);
+				Serial1.write(midiData[writePos - 1]);
 			}
 			if (writePos == 3) {
 				writePos = 0;
@@ -89,17 +85,17 @@ public:
 	}
 
 	void setMidiBaudrate() {
-		Serial.begin(BAUDRATE);
+		Serial1.begin(BAUDRATE);
 	}
 
 	/*
 	 send a single midi command
 	 */
 	void sendMidiCommand(MidiCommand* command) {
-		Serial.write(command->command);
-		Serial.write(command->data1);
+		Serial1.write(command->command);
+		Serial1.write(command->data1);
 		if ((command->command & 0xF0) != MIDI_PROGRAM_CHANGE) {
-			Serial.write(command->data2);
+			Serial1.write(command->data2);
 		}
 	}
 

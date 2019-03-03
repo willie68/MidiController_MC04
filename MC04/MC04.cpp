@@ -24,12 +24,12 @@
 /**
  Midi Controller MC04, a simple programmable midi controller with 4 switches (plus 2 external).
  */
-Switch switch_1 = Switch(PIN_SWITCH_1, INPUT, HIGH);
-Switch switch_2 = Switch(PIN_SWITCH_2, INPUT, HIGH);
-Switch switch_3 = Switch(PIN_SWITCH_3, INPUT, HIGH);
+Switch switch_1 = Switch(PIN_SWITCH_1, INPUT_PULLUP, LOW, 50, 500, 400, 10);
+Switch switch_2 = Switch(PIN_SWITCH_2, INPUT_PULLUP, LOW, 50, 500, 400, 10);
+Switch switch_3 = Switch(PIN_SWITCH_3, INPUT_PULLUP, LOW, 50, 500, 400, 10);
 Switch switch_4 = Switch(PIN_SWITCH_4, INPUT, HIGH);
-Switch switch_5 = Switch(PIN_SWITCH_5, INPUT_PULLUP, LOW);
-Switch switch_6 = Switch(PIN_SWITCH_6, INPUT_PULLUP, LOW);
+Switch switch_5 = Switch(PIN_SWITCH_5, INPUT, HIGH);
+Switch switch_6 = Switch(PIN_SWITCH_6, INPUT, HIGH);
 
 void doSerialProgram();
 
@@ -71,23 +71,36 @@ void timerIsr() {
 void setup() {
 	initDebug()
 	;
-	initNeoPixel();
+	dbgOutLn(F("starting up"));
+//	dbgOutLn(F("init NEO Pixels"));
+	//initNeoPixel();
 
+	dbgOutLn(F("init timer 1"));
 	Timer1.initialize(1000);
 	Timer1.attachInterrupt(timerIsr);
-	checkEncoder();
 
+	dbgOutLn(F("init midi"));
 	midi.initMidi();
+
+	dbgOutLn(F("init lcd"));
 	initLCD();
 
+	dbgOutLn(F("init encoder"));
+	checkEncoder();
+
+	dbgOutLn(F("init menu system"));
 	initMenuSystem();
 
+	dbgOutLn(F("init storage"));
 	initStorage();
 
 	globalButtonMode = storage.getGlobalButtonMode();
 	globalExpresionMode = storage.getGlobalExpressionMode();
 
+	dbgOutLn(F("change program to 0"));
 	changeProgram(0);
+
+	dbgOutLn(F("startup ok."));
 }
 
 void initStorage() {
