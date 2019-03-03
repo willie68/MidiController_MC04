@@ -24,6 +24,7 @@ void inputEEpromData() {
 	uint16_t readAddress;
 	uint16_t readcrc;
 	byte type;
+	bool noError = true;
 
 	endOfFile = false;
 
@@ -97,19 +98,26 @@ void inputEEpromData() {
 		} else {
 			Serial.println(F(", CRC Error"));
 			endOfFile = true;
+			noError = false;
 		}
 
 		Serial.println();
 	} while (!(endOfFile));
+	if (noError) {
+		storage.saveRAM2Prg();
+	} else {
+		// there was an error in comunication, reset to old values
+		storage.setProgram(storage.getNumber());
+	}
 	Serial.println(F("endOfFile"));
 
 }
 
 void outputEEpromData() {
-	Serial.println(F("EEPROM data:"));
+	Serial.println(F("flash data:"));
 	int checksum = 0;
-	for (int addr = 0; addr <= E2END; addr++) {
-		value = EEPROM.read(addr);
+	for (int addr = 0; addr <= PAGE_SIZE; addr++) {
+		value = storage.prgMemory[addr];
 		if ((addr % 8) == 0) {
 			printCheckSum(checksum);
 			checksum = 0;
@@ -130,7 +138,8 @@ void outputEEpromData() {
 
 void programEEprom(uint16_t readAddress, byte data[], byte count) {
 	for (byte x = 0; x < count; x++) {
-		EEPROM.write(readAddress + x, data[x]);
+		storage.prgMemory[readAddress + x] = data[x];
+		//EEPROM.write(readAddress + x, data[x]);
 	}
 }
 
@@ -176,7 +185,9 @@ void serialPrg() {
 	Serial.begin(SERIAL_BAUDRATE);
 	Serial.println();
 	Serial.println(F("waiting for command:"));
-	Serial.println(F("w: write HEX file, r: read EPPROM, e: end"));
+	Serial.println(F("u<prg>: use prg w: write HEX file, r: read EPPROM, e: end"));
+	Serial.print(F("actual program :"));
+	Serial.println(actualProgram);
 	while (!endOfPrg) {
 		while (Serial.available() > 0) {
 			// look for the next valid integer in the incoming serial stream:
@@ -193,6 +204,10 @@ void serialPrg() {
 				// end of program
 				endOfPrg = true;
 			}
+			if (myChar == 'u') {
+				byte myProgram = Serial.parseInt();
+				storage.setProgram(myProgram);
+			}
 		}
 		if (b != ClickEncoder::Open) {
 			if (b == ClickEncoder::Clicked) {
@@ -203,4 +218,5 @@ void serialPrg() {
 	}
 	Serial.println(F("end"));
 	Serial.end();
+	storage.setProgram(actualProgram);
 }
