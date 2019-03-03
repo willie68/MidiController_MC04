@@ -195,8 +195,8 @@ void pollSwitches() {
 	switch_1.poll();
 	switch_2.poll();
 	switch_3.poll();
-	switch_4.poll();
 	if (globalButtonMode == GLOBAL_MODE_6_BUTTON) {
+		switch_4.poll();
 		switch_5.poll();
 		switch_6.poll();
 	}
@@ -260,8 +260,8 @@ void checkSwitches() {
 		processButton(switch_1, 0, EVENT_BUTTON_0);
 		processButton(switch_2, 1, EVENT_BUTTON_1);
 		processButton(switch_3, 2, EVENT_BUTTON_2);
-		processButton(switch_4, 3, EVENT_BUTTON_3);
 		if (globalButtonMode == GLOBAL_MODE_6_BUTTON) {
+			processButton(switch_4, 3, EVENT_BUTTON_3);
 			processButton(switch_5, 4, EVENT_BUTTON_4);
 			processButton(switch_6, 5, EVENT_BUTTON_5);
 		}
