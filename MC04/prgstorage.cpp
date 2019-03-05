@@ -64,7 +64,7 @@ void PrgStorage::setGlobalExpressionMode(byte mode) {
 
 void PrgStorage::scanPrograms() {
 	numberOfPrograms = 0;
-	char name[16];
+	char name[17];
 	for (int addr = 0; addr <= 128; addr++) {
 		byte value = flash.readByte((addr * PAGE_SIZE));
 		if ((value > 0) && (value < 0xff)) {
@@ -75,6 +75,11 @@ void PrgStorage::scanPrograms() {
 				name[i] = value;
 				i++;
 			} while ((i < 16) && value > 0);
+			name[16] = 0x00;
+			Serial.print(F("prg "));
+			Serial.print(addr, DEC);
+			Serial.print(F(" :"));
+			Serial.println(name);
 		}
 	}
 }
@@ -328,7 +333,10 @@ void PrgStorage::setEventByNumber(byte number, byte eventnumber, byte eventData[
 }
 
 void PrgStorage::copyPrg2RAM() {
-	Serial.println(F("reading program from eeprom"));
+	Serial.print(F("reading program "));
+	Serial.print((int) prgNumber);
+	Serial.println(F(" from flash"));
+
 	byte* p = prgMemory;
 	unsigned int i;
 	unsigned int address = (prgNumber * PAGE_SIZE);

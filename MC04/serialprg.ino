@@ -5,7 +5,7 @@
 #include "globals.h"
 
 //#define serial_debug
-#define SERIAL_BAUDRATE 9600
+#define SERIAL_BAUDRATE 57600
 
 bool endOfFile = false;
 
@@ -103,6 +103,7 @@ void inputEEpromData() {
 
 		Serial.println();
 	} while (!(endOfFile));
+
 	if (noError) {
 		storage.saveRAM2Prg();
 	} else {

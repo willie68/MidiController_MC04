@@ -643,7 +643,7 @@ void doSerialProgram() {
 	lcd.setCursor(0, 0);
 	lcd.print(F("serial program"));
 	lcd.setCursor(0, 1);
-	lcd.print(F("(r)d (w)t (e)d"));
+	lcd.print(F("(u)e (r)d (w)t (e)d"));
 	serialPrg();
 
 	midi.initMidi();
