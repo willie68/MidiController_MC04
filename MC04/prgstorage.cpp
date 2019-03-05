@@ -19,6 +19,7 @@ const uint16_t ADDRESS_GLOBAL_EXPRESSION_MODE = E2END - 1;
 
 SPIFlash flash;
 
+
 /**
  storage class, first using eeprom for store and retrieve program settings
  */
@@ -346,4 +347,8 @@ void PrgStorage::saveRAM2Prg() {
 	flash.writeByteArray(address, p, PRG_SIZE, true);
 //	for (i = 0; i < PRG_SIZE; i++)
 //		EEPROM.write(address++, *p++);
+}
+
+byte PrgStorage::readByte(uint32_t _addr) {
+	return flash.readByte(_addr);
 }
