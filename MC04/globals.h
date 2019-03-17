@@ -19,6 +19,6 @@ bool buttonSettings[] = { false, false, false, false, false, false };
 byte buttonColor[] = { 0xC3, 0xCC, 0xF0, 0xFF, 0x00, 0x00 };
 bool buttonState[] = { false, false, false, false, false, false };
 byte globalButtonMode = GLOBAL_MODE_4_BUTTON;
-byte globalExpresionMode = GLOBAL_MODE_0_EXPRESSION;
+byte globalExpressionMode = GLOBAL_MODE_0_EXPRESSION;
 
 #endif

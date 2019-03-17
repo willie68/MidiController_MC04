@@ -3,9 +3,10 @@
 #include <avr/eeprom.h>
 #include "tools.h"
 #include "globals.h"
+#include "prgstorage.h"
 
 //#define serial_debug
-#define SERIAL_BAUDRATE 57600
+#define SERIAL_BAUDRATE 115200
 
 bool endOfFile = false;
 
@@ -28,7 +29,7 @@ void inputEEpromData() {
 
 	endOfFile = false;
 
-	Serial.println(F("ready"));
+	Serial.println(F("ready for transfer"));
 	uint16_t addr = 0;
 	do {
 		for (byte i = 0; i < sizeof(data); i++) {

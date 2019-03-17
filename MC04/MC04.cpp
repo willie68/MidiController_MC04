@@ -24,12 +24,6 @@
 /**
  Midi Controller MC04, a simple programmable midi controller with 4 switches (plus 2 external).
  */
-Switch switch_1 = Switch(PIN_SWITCH_1, INPUT_PULLUP, LOW, 50, 500, 400, 10);
-Switch switch_2 = Switch(PIN_SWITCH_2, INPUT_PULLUP, LOW, 50, 500, 400, 10);
-Switch switch_3 = Switch(PIN_SWITCH_3, INPUT_PULLUP, LOW, 50, 500, 400, 10);
-Switch switch_4 = Switch(PIN_SWITCH_4, INPUT, HIGH);
-Switch switch_5 = Switch(PIN_SWITCH_5, INPUT, HIGH);
-Switch switch_6 = Switch(PIN_SWITCH_6, INPUT, HIGH);
 
 void doSerialProgram();
 
@@ -42,6 +36,7 @@ int expression_1 = 0;
 int expression_2 = 0;
 
 // forward declarations of functions
+void initButtons();
 void initStorage();
 void initLCD();
 void initNeoPixel();
@@ -54,13 +49,20 @@ void printPrgName(byte value);
 void changeController(byte controller, byte data);
 void sendMidi(byte midiData[], byte count);
 bool processEvent(byte event, byte expValue);
-bool processButton(Switch mySwitch, byte number, byte mask);
+bool processButton(Switch* mySwitch, byte number, byte mask);
 void pollSwitches();
 void checkSwitches();
 void checkExpression();
 void processMidiIn();
 bool checkMidiIn();
 void printActualPrgName();
+
+Switch* switch_1;
+Switch* switch_2;
+Switch* switch_3;
+Switch* switch_4;
+Switch* switch_5;
+Switch* switch_6;
 
 // timer interrupt routines
 void timerIsr() {
@@ -95,12 +97,25 @@ void setup() {
 	initStorage();
 
 	globalButtonMode = storage.getGlobalButtonMode();
-	globalExpresionMode = storage.getGlobalExpressionMode();
+	globalExpressionMode = storage.getGlobalExpressionMode();
+
+	initButtons();
 
 	dbgOutLn(F("change program to 0"));
 	changeProgram(0);
 
 	dbgOutLn(F("startup ok."));
+}
+
+void initButtons() {
+	switch_1 = new Switch(PIN_SWITCH_1, INPUT_PULLUP, LOW, 50, 500, 400, 10);
+	switch_2 = new Switch(PIN_SWITCH_2, INPUT_PULLUP, LOW, 50, 500, 400, 10);
+	switch_3 = new Switch(PIN_SWITCH_3, INPUT_PULLUP, LOW, 50, 500, 400, 10);
+	if (globalButtonMode == GLOBAL_MODE_6_BUTTON) {
+		switch_4 = new Switch(PIN_SWITCH_4, INPUT, HIGH);
+		switch_5 = new Switch(PIN_SWITCH_5, INPUT, HIGH);
+		switch_6 = new Switch(PIN_SWITCH_6, INPUT, HIGH);
+	}
 }
 
 void initStorage() {
@@ -192,13 +207,13 @@ void loop() {
 }
 
 void pollSwitches() {
-	switch_1.poll();
-	switch_2.poll();
-	switch_3.poll();
+	switch_1->poll();
+	switch_2->poll();
+	switch_3->poll();
 	if (globalButtonMode == GLOBAL_MODE_6_BUTTON) {
-		switch_4.poll();
-		switch_5.poll();
-		switch_6.poll();
+		switch_4->poll();
+		switch_5->poll();
+		switch_6->poll();
 	}
 }
 
@@ -220,7 +235,7 @@ void processMidiIn() {
 }
 
 void checkExpression() {
-	if ((globalExpresionMode == GLOBAL_MODE_1_EXPRESSION) || (globalExpresionMode == GLOBAL_MODE_2_EXPRESSION)) {
+	if ((globalExpressionMode == GLOBAL_MODE_1_EXPRESSION) || (globalExpressionMode == GLOBAL_MODE_2_EXPRESSION)) {
 		int value = analogRead(PIN_EXPRESSION_1);
 		byte bValue = map(value, 0, 1023, 0, 127);
 		if (!between(bValue, expression_1 - 1, expression_1 + 1)) {
@@ -231,7 +246,7 @@ void checkExpression() {
 			dbgOut2(expression_1, HEX);
 			dbgOutLn();
 		}
-		if (globalExpresionMode == GLOBAL_MODE_2_EXPRESSION) {
+		if (globalExpressionMode == GLOBAL_MODE_2_EXPRESSION) {
 			value = analogRead(PIN_EXPRESSION_2);
 			bValue = map(value, 0, 1023, 0, 127);
 			if (!between(bValue, expression_2 - 1, expression_2 + 1)) {
@@ -250,10 +265,10 @@ void checkSwitches() {
 	bool isEvent = false;
 	byte event = 0;
 
-	if (switch_1.singleClick() && switch_2.singleClick()) {
+	if (switch_1->singleClick() && switch_2->singleClick()) {
 		actualProgram++;
 		changeProgram(actualProgram);
-	} else if (switch_2.singleClick() && switch_3.singleClick()) {
+	} else if (switch_2->singleClick() && switch_3->singleClick()) {
 		actualProgram--;
 		changeProgram(actualProgram);
 	} else {
@@ -268,10 +283,10 @@ void checkSwitches() {
 	}
 }
 
-bool processButton(Switch mySwitch, byte number, byte mask) {
+bool processButton(Switch* mySwitch, byte number, byte mask) {
 	byte event = 0;
 	bool isEvent = false;
-	if (mySwitch.singleClick()) {
+	if (mySwitch->singleClick()) {
 		dbgOut(F("b"));
 		dbgOut2(number, DEC);
 		dbgOut(F(": sc"));
@@ -292,14 +307,14 @@ bool processButton(Switch mySwitch, byte number, byte mask) {
 		dbgOutLn();
 		updateLED = true;
 	}
-	if (mySwitch.doubleClick()) {
+	if (mySwitch->doubleClick()) {
 		event = mask + EVENT_DOUBLECLICK;
 		isEvent = true;
 		dbgOut(F("b"));
 		dbgOut2(number, DEC);
 		dbgOutLn(F(": dc"));
 	}
-	if (mySwitch.longPress()) {
+	if (mySwitch->longPress()) {
 		event = mask + EVENT_LONGCLICK;
 		isEvent = true;
 		dbgOut(F("b"));

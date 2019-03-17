@@ -96,6 +96,8 @@ public:
 
 	byte getEventByNumber(byte number, byte eventData[]);
 	void setEventByNumber(byte number, byte eventnumber, byte eventData[]);
+
+	byte  readByte(uint32_t _addr);
 protected:
 	byte prgNumber;
 	byte numberOfPrograms;
