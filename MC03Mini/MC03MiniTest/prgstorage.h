@@ -1,0 +1,112 @@
+/** 
+ storage class, first using eeprom for store and retrieve program settings 
+ */ 
+ 
+#ifndef PRGSTORAGE_H 
+#define PRGSTORAGE_H 
+ 
+class PrgStorage { 
+public: 
+  PrgStorage(); 
+
+  byte* prgMemory;
+
+  void init(); 
+ 
+  //----- global settings functions ----- 
+  // getting the button mode for this 
+  byte getGlobalButtonMode(); 
+ 
+  // setting a new Button mode 
+  void setGlobalButtonMode(byte mode); 
+ 
+  // getting the expression pedal mode for this 
+  byte getGlobalExpressionMode(); 
+ 
+  // setting the expression pedal mode for this 
+  void setGlobalExpressionMode(byte mode); 
+ 
+  //----- program memory functions ----- 
+  // this will return the program change number 
+  byte getDataVersion(); 
+ 
+  // this will return the program change number 
+  byte getNumberOfPrograms(); 
+ 
+  // getting name of program prg 
+  char* getNameOfPrg(byte number, char* buf); 
+ 
+  // setting storage to first program 
+  void setFirstProgram(); 
+ 
+  // setting storage to program 
+  void setProgram(byte number); 
+ 
+  // getting the number of the actual program 
+  byte getNumber(); 
+ 
+  // getting name of actual program 
+  char* getName(char* buf); 
+ 
+  void setName(char* buf); 
+ 
+  // this is the midi channel this unit will respond to. 
+  byte getInternalMidiChannel(); 
+ 
+  // this is the midi channel which this unit will send to 
+  byte getExternalMidiChannel(); 
+ 
+  // getting name of button <number> 
+  char* getButtonName(byte number, char* buf); 
+ 
+  void setButtonName(byte number, char* buf); 
+ 
+  byte getButtonType(byte number); 
+ 
+  void setButtonType(byte number, byte value); 
+ 
+  // getting color of button <number> 
+  byte getButtonColor(byte button); 
+  void setButtonColor(byte button, byte color); 
+ 
+  // getting the defined buttons 
+  byte getButtonUsage(byte button); 
+ 
+  // this will return the settings (momentary or switch) of each switch 
+  byte getSwitchSettings(); 
+ 
+  void setSwitchSettings(byte value); 
+ 
+  // this will return the program change number 
+  byte getPCNumber(); 
+ 
+  // storage interface for writing program data 
+  void setPCNumber(byte pcNumber); 
+ 
+  // this is the midi channel this unit will respond to. 
+  void setInternalMidiChannel(byte intMidi); 
+ 
+  // this is the midi channel which this unit will send to 
+  void setExternalMidiChannel(byte extMidi); 
+ 
+  // saving cached program to EEPROM 
+  void saveRAM2Prg(); 
+ 
+  bool getEvent(byte eventnumber, byte eventData[]); 
+ 
+  byte getEventByNumber(byte number, byte eventData[]); 
+  void setEventByNumber(byte number, byte eventnumber, byte eventData[]); 
+protected: 
+  byte prgNumber; 
+  byte numberOfPrograms; 
+ 
+  // copy the actual program to RAM 
+  void scanPrograms(); 
+ 
+  // copy the actual program to RAM 
+  void copyPrg2RAM(); 
+ 
+  void compressEventData(byte* eventData, byte size); 
+}; 
+ 
+#endif 
