@@ -58,4 +58,8 @@ class Presets {
         EEPROM.get(pos, presetData);
       }
     }
+<<<<<<< Updated upstream
 };
+=======
+};
+>>>>>>> Stashed changes

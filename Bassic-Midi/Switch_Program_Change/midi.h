@@ -36,4 +36,8 @@ class Midi {
         Serial.write(commands[i]);
       }
     }
+<<<<<<< Updated upstream
 };
+=======
+};
+>>>>>>> Stashed changes

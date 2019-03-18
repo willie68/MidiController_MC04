@@ -126,4 +126,8 @@ void sendPreset() {
   Serial.write("\r\n");
   display.showNumberDec(actualPreset, false, 4, 0);
 }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes

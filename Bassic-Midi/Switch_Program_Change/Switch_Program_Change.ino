@@ -79,4 +79,8 @@ void allLEDsOff() {
   digitalWrite(LED_3, 0);
   digitalWrite(LED_4, 0);
 }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes

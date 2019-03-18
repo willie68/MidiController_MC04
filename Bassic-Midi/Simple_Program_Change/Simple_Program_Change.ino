@@ -16,4 +16,8 @@ void changeProgram(byte channel, byte program) {
 void setMidiBaudrate() {
     Serial.begin(31250);
 }
+<<<<<<< Updated upstream
 
+=======
+
+>>>>>>> Stashed changes
