@@ -13,10 +13,26 @@ void clearLEDs() {
 }
 
 void initNeoPixel() {
-  dbgOutLn(F("Init neo pixel"));
   SWITCH_LED.setOutput(PIN_RGB_LED);
   SWITCH_LED.setColorOrderRGB();
+  cRGB value;
+  value.r = 0xFF;
+  value.g = 0;
+  value.b = 0;
+  SWITCH_LED.set_crgb_at(0, value);
+  value.r = 0;
+  value.g = 0xFF;
+  value.b = 0;
+  SWITCH_LED.set_crgb_at(1, value);
+  value.r = 0;
+  value.g = 0;
+  value.b = 0xFF;
+  SWITCH_LED.set_crgb_at(2, value);
+
+  SWITCH_LED.sync();
+  delay(500);
   clearLEDs();
+  SWITCH_LED.sync();
 }
 
 // ----- RGB LEDs -----
@@ -49,7 +65,7 @@ void showRGBLed() {
       dbgOut(F("B:"));
       dbgOut2(value.b, DEC);
       SWITCH_LED.set_crgb_at(pos, value);
-      dbgOutLn();      
+      dbgOutLn();
     }
   }
   SWITCH_LED.sync();

@@ -23,9 +23,9 @@ const byte PIN_EXPRESSION_2 = 1; // (D 15)
 //const byte PIN_ENCODER_B = 3;
 //const byte PIN_ENCODER_SW = 4;
 
-const byte PIN_ENCODER_A = 4;
-const byte PIN_ENCODER_B = 5;
-const byte PIN_ENCODER_SW = 6;
+const byte PIN_ENCODER_A = 9;
+const byte PIN_ENCODER_B = 8;
+const byte PIN_ENCODER_SW = 21;
 
 const byte ENCODER_STP_NOTCH = 4;
 

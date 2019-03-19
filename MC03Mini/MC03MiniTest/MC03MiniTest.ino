@@ -24,6 +24,10 @@ void timerIsr() {
 void setup() {
   // put your setup code here, to run once:
   initDebug();
+
+  dbgOutLn(F("init timer"));
+  initTimer();
+  
   dbgOutLn(F("init lcd"));
   initLCD();
 
@@ -32,6 +36,14 @@ void setup() {
 
   dbgOutLn(F("init switches"));
   initSwitches();
+
+  dbgOutLn(F("start mc3"));
+  initProgram();
+}
+
+void initTimer() {
+  Timer1.initialize(1000);
+  Timer1.attachInterrupt(timerIsr);
 }
 
 void initLED() {
@@ -69,6 +81,7 @@ void loop() {
   pollSwitches();
 
   checkSwitches();
+
   checkEncoder();
   if (updateLED) {
     showRGBLed();
@@ -76,9 +89,12 @@ void loop() {
 
   ClickEncoder::Button b = encoder.getButton();
   if (b != ClickEncoder::Open) {
+    dbgOut(F(", btn open "));
     if (b == ClickEncoder::Clicked) {
+      dbgOut(F(", btn clicked "));
       doSerialProgram();
     }
+    dbgOutLn();
   }
 }
 
@@ -95,12 +111,12 @@ void checkEncoder() {
   if (value != last) {
     last = value;
 
-//    printPrgName(value);
+    //    printPrgName(value);
 
-//    resetTime = millis() + 3000;
-//    prgToSet = value;
-//    setDirty(true);
-//    showDirty();
+    //    resetTime = millis() + 3000;
+    //    prgToSet = value;
+    //    setDirty(true);
+    //    showDirty();
   }
 }
 
@@ -438,7 +454,7 @@ void doSerialProgram() {
   lcd.setCursor(0, 0);
   lcd.print(F("serial program"));
   lcd.setCursor(0, 1);
-  lcd.print(F("(u)e (r)d (w)t (e)d"));
+  lcd.print(F("(r)d (w)t (e)d"));
   serialPrg();
 
   midi.initMidi();
