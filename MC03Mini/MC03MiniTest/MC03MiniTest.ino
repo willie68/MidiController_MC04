@@ -207,7 +207,8 @@ void sendMidi(byte midiData[], byte count) {
     channel = cmd & 0x0F;
     if ((cmd & MIDI_PROGRAM_CHANGE) == MIDI_PROGRAM_CHANGE) {
       if (channel == storage.getInternalMidiChannel()) {
-        changeProgram(data1);
+        actualProgram = data1;
+        initProgram();
       } else {
         midi.changeProgram(channel, data1);
       }
@@ -237,11 +238,11 @@ void changeController(byte controller, byte data) {
         break;
       case CC_PROGRAMM_UP:
         actualProgram++;
-        changeProgram(actualProgram);
+        initProgram();
         break;
       case CC_PROGRAM_DOWN:
         actualProgram--;
-        changeProgram(actualProgram);
+        initProgram();
         break;
       case CC_EXPRESSION_1:
         //        expression_1 = data;
@@ -305,16 +306,15 @@ void changeController(byte controller, byte data) {
   }
 }
 
-void changeProgram(uint8_t prg) {
+void initProgram() {
   byte event = EVENT_INTERNAL + EVENT_STOP;
   processEvent(event, 0);
 
   char row[17];
   byte pos = 1;
-  storage.setProgram(prg);
 
-  itoa(prg, row, 10);
-  if (prg < 10) {
+  itoa(actualProgram, row, 10);
+  if (actualProgram < 10) {
     row[1] = ' ';
   }
   row[2] = ':';
@@ -444,5 +444,5 @@ void doSerialProgram() {
   midi.initMidi();
   initLCD();
 
-  changeProgram(0);
+  initProgram();
 }

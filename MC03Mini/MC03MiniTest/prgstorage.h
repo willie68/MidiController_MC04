@@ -9,8 +9,6 @@ class PrgStorage {
 public: 
   PrgStorage(); 
 
-  byte* prgMemory;
-
   void init(); 
  
   //----- global settings functions ----- 
@@ -96,10 +94,13 @@ public:
  
   byte getEventByNumber(byte number, byte eventData[]); 
   void setEventByNumber(byte number, byte eventnumber, byte eventData[]); 
-protected: 
-  byte prgNumber; 
-  byte numberOfPrograms; 
- 
+
+  int getProgramSize();
+
+  byte readByte(int addr);
+  void writeByte(int addr, byte value);
+
+protected:  
   // copy the actual program to RAM 
   void scanPrograms(); 
  
