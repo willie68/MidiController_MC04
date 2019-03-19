@@ -10,9 +10,6 @@
 const byte btn_use_0[6] = { SINGLE_CLICK, DOUBLE_CLICK, LONG_CLICK, PUSHED, RELEASED, 0x00 };
 const byte btn_use_1[6] = { SINGLE_CLICK | DOUBLE_CLICK, DOUBLE_CLICK | LONG_CLICK | RELEASED, 0x00, 0x00, 0x00, 0x00 };
 
-const byte PC_0 = 0x13;
-const byte PC_1 = 0xff;
-
 const uint16_t ADDRESS_GLOBAL_BUTTON_MODE = E2END;
 const uint16_t ADDRESS_GLOBAL_EXPRESSION_MODE = E2END - 1;
 const uint16_t DATA_VERSION = E2END - 2;
@@ -81,6 +78,61 @@ void PrgStorage::setName(char* buf) {
     writeByte(m++, value);
     i++;
   } while ((i < NAME_SIZE) && value > 0);
+}
+
+byte PrgStorage::getInternalMidiChannel() {
+  return readByte(13);
+}
+
+// this is the midi channel this unit will respond to.
+void PrgStorage::setInternalMidiChannel(byte intMidi) {
+  writeByte(13, intMidi);
+}
+
+byte PrgStorage::getExternalMidiChannel() {
+  return readByte(14);
+}
+
+// this is the midi channel which this unit will send to
+void PrgStorage::setExternalMidiChannel(byte extMidi) {
+  writeByte(14, extMidi);
+}
+
+byte PrgStorage::getSwitchSettings() {
+  return readByte(69);
+}
+
+void PrgStorage::setSwitchSettings(byte value) {
+  writeByte(69, value);
+}
+
+bool PrgStorage::getEvent(byte eventnumber, byte eventData[]) {
+  int p = 70;
+  byte i = 0;
+  do {
+    byte event = readByte(p);
+    if (event == eventnumber) {
+      p++;
+      for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
+        eventData[x] = readByte(p++);
+      }
+      return true;
+    }
+    i++;
+    p = p + EVENT_SIZE;
+  } while (i < 16);
+  return false;
+}
+
+byte PrgStorage::getEventByNumber(byte number, byte eventData[]) {
+  int p = 70;
+  p = p + (EVENT_SIZE * number);
+  byte i = 0;
+  byte eventnumber = readByte(p++);
+  for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
+    eventData[x] = readByte(p++);
+  }
+  return eventnumber;
 }
 
 // getting name of button <number>
@@ -173,61 +225,6 @@ byte PrgStorage::getPCNumber() {
 
 void PrgStorage::setPCNumber(byte pcNumber) {
   writeByte(12, pcNumber);
-}
-
-byte PrgStorage::getInternalMidiChannel() {
-  return readByte(13);
-}
-
-// this is the midi channel this unit will respond to.
-void PrgStorage::setInternalMidiChannel(byte intMidi) {
-  writeByte(13, intMidi);
-}
-
-byte PrgStorage::getExternalMidiChannel() {
-  return readByte(14);
-}
-
-// this is the midi channel which this unit will send to
-void PrgStorage::setExternalMidiChannel(byte extMidi) {
-  writeByte(14, extMidi);
-}
-
-byte PrgStorage::getSwitchSettings() {
-  return readByte(69);
-}
-
-void PrgStorage::setSwitchSettings(byte value) {
-  writeByte(69, value);
-}
-
-bool PrgStorage::getEvent(byte eventnumber, byte eventData[]) {
-  int p = 70;
-  byte i = 0;
-  do {
-    byte event = readByte(p);
-    if (event == eventnumber) {
-      p++;
-      for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
-        eventData[x] = readByte(p++);
-      }
-      return true;
-    }
-    i++;
-    p = p + EVENT_SIZE;
-  } while (i < 16);
-  return false;
-}
-
-byte PrgStorage::getEventByNumber(byte number, byte eventData[]) {
-  int p = 70;
-  p = p + (EVENT_SIZE * number);
-  byte i = 0;
-  byte eventnumber = readByte(p++);
-  for (byte x = 0; x < (EVENT_SIZE - 1); x++) {
-    eventData[x] = readByte(p++);
-  }
-  return eventnumber;
 }
 
 int PrgStorage::getProgramSize() {

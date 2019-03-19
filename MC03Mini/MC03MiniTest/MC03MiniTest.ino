@@ -426,7 +426,7 @@ void printPrgName(byte value) {
   }
   row[2] = ':';
   row[3] = 0;
-  storage.getNameOfPrg(value, line);
+  storage.getName(line);
   strncat(row, line, 12);
   lcd.setCursor(0, 0);
   lcd.print(row);

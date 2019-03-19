@@ -9,6 +9,9 @@ class PrgStorage {
 public: 
   PrgStorage(); 
 
+  // this will return the data version number 
+  byte getDataVersion(); 
+
   void init(); 
  
   //----- global settings functions ----- 
@@ -23,26 +26,7 @@ public:
  
   // setting the expression pedal mode for this 
   void setGlobalExpressionMode(byte mode); 
- 
-  //----- program memory functions ----- 
-  // this will return the program change number 
-  byte getDataVersion(); 
- 
-  // this will return the program change number 
-  byte getNumberOfPrograms(); 
- 
-  // getting name of program prg 
-  char* getNameOfPrg(byte number, char* buf); 
- 
-  // setting storage to first program 
-  void setFirstProgram(); 
- 
-  // setting storage to program 
-  void setProgram(byte number); 
- 
-  // getting the number of the actual program 
-  byte getNumber(); 
- 
+
   // getting name of actual program 
   char* getName(char* buf); 
  
@@ -51,8 +35,23 @@ public:
   // this is the midi channel this unit will respond to. 
   byte getInternalMidiChannel(); 
  
+  // this is the midi channel this unit will respond to. 
+  void setInternalMidiChannel(byte intMidi); 
+ 
   // this is the midi channel which this unit will send to 
   byte getExternalMidiChannel(); 
+ 
+  // this is the midi channel which this unit will send to 
+  void setExternalMidiChannel(byte extMidi); 
+ 
+  // this will return the settings (momentary or switch) of each switch 
+  byte getSwitchSettings(); 
+ 
+  void setSwitchSettings(byte value); 
+
+  bool getEvent(byte eventnumber, byte eventData[]); 
+ 
+  byte getEventByNumber(byte number, byte eventData[]); 
  
   // getting name of button <number> 
   char* getButtonName(byte number, char* buf); 
@@ -70,44 +69,16 @@ public:
   // getting the defined buttons 
   byte getButtonUsage(byte button); 
  
-  // this will return the settings (momentary or switch) of each switch 
-  byte getSwitchSettings(); 
- 
-  void setSwitchSettings(byte value); 
- 
   // this will return the program change number 
   byte getPCNumber(); 
  
   // storage interface for writing program data 
   void setPCNumber(byte pcNumber); 
  
-  // this is the midi channel this unit will respond to. 
-  void setInternalMidiChannel(byte intMidi); 
- 
-  // this is the midi channel which this unit will send to 
-  void setExternalMidiChannel(byte extMidi); 
- 
-  // saving cached program to EEPROM 
-  void saveRAM2Prg(); 
- 
-  bool getEvent(byte eventnumber, byte eventData[]); 
- 
-  byte getEventByNumber(byte number, byte eventData[]); 
-  void setEventByNumber(byte number, byte eventnumber, byte eventData[]); 
-
   int getProgramSize();
 
   byte readByte(int addr);
   void writeByte(int addr, byte value);
-
-protected:  
-  // copy the actual program to RAM 
-  void scanPrograms(); 
- 
-  // copy the actual program to RAM 
-  void copyPrg2RAM(); 
- 
-  void compressEventData(byte* eventData, byte size); 
 }; 
  
 #endif 
