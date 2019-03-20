@@ -20,6 +20,7 @@ void timerIsr() {
 void setup() {
   // put your setup code here, to run once:
   initDebug();
+  while (!Serial);
   dbgOutLn("init debug");
   Timer1.initialize(1000);
   Timer1.attachInterrupt(timerIsr);

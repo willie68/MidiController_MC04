@@ -86,6 +86,7 @@ public:
 
   void setMidiBaudrate() {
     Serial1.begin(BAUDRATE);
+    while(!Serial1) {};
   }
 
   /*
@@ -104,7 +105,7 @@ public:
    */
   void sendMidiCommands(byte commands[], byte lengthOfCommands) {
     for (byte i = 0; i < lengthOfCommands; i++) {
-      Serial.write(commands[i]);
+      Serial1.write(commands[i]);
     }
   }
 
@@ -114,7 +115,7 @@ public:
   void sendMidiCommands(byte commands[]) {
     byte lengthOfCommands = commands[0];
     for (byte i = 0; i < lengthOfCommands; i++) {
-      Serial.write(commands[i + 1]);
+      Serial1.write(commands[i + 1]);
     }
   }
 };

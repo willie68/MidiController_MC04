@@ -37,8 +37,12 @@ void setup() {
   dbgOutLn(F("init switches"));
   initSwitches();
 
+  dbgOutLn(F("init switches"));
+  midi.initMidi();
+
   dbgOutLn(F("start mc3"));
   initProgram();
+
 }
 
 void initTimer() {
