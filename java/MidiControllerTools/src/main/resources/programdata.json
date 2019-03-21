@@ -1,0 +1,225 @@
+{
+	"version": 1,
+	"programs": 
+	[
+		{
+			"name": "Rock",
+			"prgNumber": 100,
+			"internalMidi": 0,
+			"externalMidi": 1,
+			"buttons": 
+			[
+				{
+					"name": "EQ0",
+					"type": "MOMENTARY",
+					"color": 195
+				},
+
+				{
+					"name": "Drv0",
+					"type": "SWITCH",
+					"color": 204
+				},
+
+				{
+					"name": "Chr0",
+					"type": "MOMENTARY",
+					"color": 240
+				},
+
+				{
+					"name": "Chr1",
+					"type": "MOMENTARY",
+					"color": 240
+				},
+
+				{
+					"name": "Chr2",
+					"type": "SWITCH",
+					"color": 240
+				},
+
+				{
+					"name": "Chr3",
+					"type": "MOMENTARY",
+					"color": 240
+				}
+			],
+
+			"sequences": 
+			[
+				{
+					"type": "INTERNAL",
+					"event": "START",
+					"datas": 
+					[
+						{
+							"channel": "INTERNAL",
+							"type": "CC",
+							"data1": 8,
+							"data2": 1
+						},
+
+						{
+							"channel": "INTERNAL",
+							"type": "CC",
+							"data1": 9,
+							"data2": 2
+						},
+
+						{
+							"channel": "INTERNAL",
+							"type": "CC",
+							"data1": 11,
+							"data2": 3
+						}
+					]
+				},
+
+				{
+					"type": "BUTTON",
+					"value": 1,
+					"event": "CLICK",
+					"datas": 
+					[
+						{
+							"channel": "EXTERNAL",
+							"type": "CC",
+							"data1": 9,
+							"data2": 127
+						},
+
+						{
+							"channel": "EXTERNAL",
+							"type": "CC",
+							"data1": 11,
+							"data2": 0
+						}
+					]
+				},
+
+				{
+					"type": "BUTTON",
+					"value": 2,
+					"event": "PUSH",
+					"datas": 
+					[
+						{
+							"channel": "EXTERNAL",
+							"type": "CC",
+							"data1": 9,
+							"data2": 127
+						},
+
+						{
+							"channel": "EXTERNAL",
+							"type": "CC",
+							"data1": 11,
+							"data2": 0
+						}
+					]
+				},
+
+				{
+					"type": "BUTTON",
+					"value": 4,
+					"event": "CLICK",
+					"datas": 
+					[
+						{
+							"channel": "INTERNAL",
+							"type": "PC_PREV"
+						}
+					]
+				},
+
+				{
+					"type": "BUTTON",
+					"value": 5,
+					"event": "CLICK",
+					"datas": 
+					[
+						{
+							"channel": "INTERNAL",
+							"type": "PC_NEXT"
+						}
+					]
+				},
+
+				{
+					"type": "EXPRESSION",
+					"event": "VALUECHANGE",
+					"datas": 
+					[
+						{
+							"channel": "EXTERNAL",
+							"type": "CC",
+							"data1": 30,
+							"data2": 127
+						},
+						{
+							"channel": "EXTERNAL",
+							"type": "CC",
+							"data1": 31,
+							"data2": 128
+						}
+					]
+				}
+			]
+		},
+
+		{
+			"name": "Pop",
+			"prgNumber": 0,
+			"internalMidi": 0,
+			"externalMidi": 1,
+			"buttons": 
+			[
+				{
+					"name": "EQ1",
+					"type": "SWITCH",
+					"color": 240
+				},
+
+				{
+					"name": "Drv1",
+					"type": "MOMENTARY",
+					"color": 195
+				},
+
+				{
+					"name": "Chr1",
+					"type": "SWITCH",
+					"color": 204
+				}
+			]
+		},
+
+		{
+			"name": "Soul",
+			"prgNumber": -1,
+			"internalMidi": 0,
+			"externalMidi": 1,
+			"buttons": 
+			[
+				{
+					"name": "EQ2",
+					"type": "MOMENTARY",
+					"color": 204
+				},
+
+				{
+					"name": "Drv2",
+					"type": "SWITCH",
+					"color": 240
+				},
+
+				{
+					"name": "Chr2",
+					"type": "SWITCH",
+					"color": 195
+				}
+			]
+		}
+	]
+}

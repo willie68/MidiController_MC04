@@ -36,3 +36,6 @@ BackupFiles/
 build/
 .settings
 
+**/target
+/dependency-reduced-pom.xml
+**/bin

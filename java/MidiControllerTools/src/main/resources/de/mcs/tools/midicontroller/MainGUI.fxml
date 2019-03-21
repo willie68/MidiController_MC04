@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.ComboBox?>
+<?import javafx.scene.control.ContextMenu?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.ListView?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.ProgressBar?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TableColumn?>
+<?import javafx.scene.control.TableView?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToolBar?>
+<?import javafx.scene.control.Tooltip?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?scenebuilder-preview-i18n-resource MainGUI.properties?>
+<?scenebuilder-stylesheet application.css?>
+
+<BorderPane minHeight="500.0" minWidth="-Infinity" prefHeight="538.0" prefWidth="971.0" styleClass="root" stylesheets="@application.css" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="de.mcs.schematics.uploadclient.MainController">
+  <top>
+    <ToolBar prefHeight="44.0" prefWidth="811.0">
+      <Button fx:id="btnBackup" mnemonicParsing="false" onAction="#doBackup" styleClass="backupButton">
+        <tooltip>
+          <Tooltip text="%toolbar.backupDatabase" />
+        </tooltip>
+        
+      </Button>
+      <Button fx:id="btnRefresh" mnemonicParsing="false" onAction="#doRefresh" styleClass="refreshButton">
+        <tooltip>
+          <Tooltip text="%toolbar.refreshList" />
+        </tooltip>
+      </Button>
+      <Button fx:id="clear" mnemonicParsing="false" onAction="#btnClear" styleClass="clearButton">
+        <tooltip>
+          <Tooltip text="%toolbar.clearform" />
+        </tooltip>
+      </Button>
+      <Button fx:id="exit" onAction="#btnExit" styleClass="exitButton">
+        <tooltip>
+          <Tooltip text="%toolbar.exit" />
+        </tooltip>
+      </Button>
+    </ToolBar>
+  </top>
+  <bottom>
+  </bottom>
+  <center>
+    <TabPane fx:id="tabPane" prefHeight="200.0" prefWidth="200.0" stylesheets="@application.css" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="CENTER">
+      <tabs>
+        <Tab fx:id="searchTab" text="%search.tab.title">
+          <content>
+            <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+              <columnConstraints>
+                <ColumnConstraints hgrow="NEVER" maxWidth="60.0" minWidth="60.0" prefWidth="60.0" />
+                <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+              </columnConstraints>
+              <rowConstraints>
+                <RowConstraints maxHeight="24.0" minHeight="24.0" prefHeight="24.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="24.0" minHeight="24.0" prefHeight="24.0" vgrow="NEVER" />
+                <RowConstraints maxHeight="436.0" minHeight="10.0" prefHeight="414.0" vgrow="SOMETIMES" />
+              </rowConstraints>
+              <children>
+                <TextField fx:id="searchField" onAction="#doSearch" promptText="%search.form.field.fulltext" GridPane.columnIndex="1" GridPane.valignment="TOP" />
+                <TableView fx:id="hitgrid" minHeight="100.0" minWidth="100.0" onMouseClicked="#hitgridClicked" prefHeight="100.0" prefWidth="100.0" GridPane.columnIndex="1" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS">
+                  <columns>
+                    <TableColumn fx:id="manufacturerColumn" prefWidth="150.0" text="%search.hitlist.column.manufacturer" />
+                    <TableColumn fx:id="modelColumn" prefWidth="150.0" text="%search.hitlist.column.model" />
+                    <TableColumn fx:id="subtitleColumn" prefWidth="150.0" text="%search.hitlist.column.subtitle" />
+                    <TableColumn fx:id="tagsColumn" prefWidth="250.0" text="%search.hitlist.column.tags" />
+                  </columns>
+                  <columnResizePolicy>
+                    <TableView fx:constant="CONSTRAINED_RESIZE_POLICY" />
+                  </columnResizePolicy>
+                </TableView>
+              </children>
+              <padding>
+                <Insets top="8.0" />
+              </padding>
+            </GridPane>
+          </content>
+        </Tab>
+        <Tab fx:id="uploadTab" text="%upload.tab.title">
+          <content>
+            <BorderPane>
+              <center>
+                <GridPane maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+                  <Label text="%upload.form.manufactuer" GridPane.valignment="CENTER" />
+                  <ComboBox fx:id="cbManufacturer" editable="true" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity" promptText="%upload.form.field.manufacturer" GridPane.columnIndex="1">
+                    <tooltip>
+                      <Tooltip text="%upload.form.field.manufacturer.tooltip" />
+                    </tooltip>
+                  </ComboBox>
+                  <Label text="%upload.form.model" GridPane.halignment="LEFT" GridPane.rowIndex="1" GridPane.valignment="CENTER" />
+                  <TextField fx:id="modelField" onAction="#doQuery" promptText="%upload.form.field.model" GridPane.columnIndex="1" GridPane.rowIndex="1">
+                  </TextField>
+                  <Label text="%upload.form.subtitle" GridPane.halignment="LEFT" GridPane.rowIndex="2" GridPane.valignment="CENTER" />
+                  <TextField fx:id="subtitleField" promptText="%upload.form.field.subtitle" GridPane.columnIndex="1" GridPane.rowIndex="2">
+                  </TextField>
+                  <Label text="%upload.form.description" GridPane.halignment="LEFT" GridPane.rowIndex="4" GridPane.valignment="BASELINE">
+                    <GridPane.margin>
+                      <Insets top="4.0" />
+                    </GridPane.margin>
+                  </Label>
+                  <TextArea fx:id="descriptionField" prefHeight="160.0" prefWidth="200.0" promptText="%upload.form.field.description" GridPane.columnIndex="1" GridPane.rowIndex="4" />
+                  <Label text="%upload.form.tags" GridPane.halignment="LEFT" GridPane.rowIndex="5" GridPane.valignment="BASELINE">
+                    <GridPane.margin>
+                      <Insets top="4.0" />
+                    </GridPane.margin>
+                  </Label>
+                  <FlowPane fx:id="tagbar" prefHeight="64.0" prefWidth="693.0" GridPane.columnIndex="1" GridPane.rowIndex="5">
+                    <children>
+                      <TextField fx:id="tagsField" onAction="#addTag" promptText="%upload.form.field.tag">
+                      </TextField>
+                    </children>
+                  </FlowPane>
+                  <Label text="%upload.form.files" GridPane.halignment="LEFT" GridPane.rowIndex="6" GridPane.valignment="BASELINE">
+                    <GridPane.margin>
+                      <Insets top="4.0" />
+                    </GridPane.margin>
+                  </Label>
+                  <ListView fx:id="schematicFiles" onDragDetected="#dragFileDetected" onDragDropped="#dragFileDropped" onDragOver="#dragFileOver" onMouseClicked="#fileClick" prefHeight="86.0" prefWidth="420.0" GridPane.columnIndex="1" GridPane.rowIndex="6" GridPane.vgrow="ALWAYS">
+                    <tooltip>
+                      <Tooltip text="%upload.form.field.schematicfiles.tooltip" />
+                    </tooltip>
+                              <contextMenu>
+                                 <ContextMenu>
+                                   <items>
+                                     <MenuItem fx:id="ctxFileItemDelete" mnemonicParsing="false" onAction="#doCtxFileItemDelete" text="%upload.form.field.schematicfiles.ctxFileItemDelete" />
+                                   </items>
+                                 </ContextMenu>
+                              </contextMenu>
+                  </ListView>
+                  <ToolBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="7">
+                    <items>
+                      <CheckBox fx:id="privateFile" text="%upload.form.privateFile" />
+                      <CheckBox fx:id="deleteFile" layoutX="95.0" layoutY="7.0" onAction="#onDeleteFile" text="%upload.form.deleteFile" />
+                      <Pane HBox.hgrow="ALWAYS" />
+                      <Button fx:id="btnUpload" mnemonicParsing="false" onAction="#doUpload" text="%upload.form.btnUpload" GridPane.columnIndex="1" GridPane.rowIndex="5" />
+                    </items>
+                  </ToolBar>
+                  <columnConstraints>
+                    <ColumnConstraints hgrow="NEVER" maxWidth="150.0" minWidth="100.0" prefWidth="100.0" />
+                    <ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" />
+                  </columnConstraints>
+                  <rowConstraints>
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                    <RowConstraints />
+                  </rowConstraints>
+                  <padding>
+                    <Insets top="8.0" />
+                  </padding>
+                </GridPane>
+              </center>
+              <right>
+                <ListView fx:id="lvQuickSearch" prefHeight="433.0" prefWidth="200.0" BorderPane.alignment="CENTER">
+                  <BorderPane.margin>
+                    <Insets left="8.0" top="8.0" />
+                  </BorderPane.margin>
+                </ListView>
+              </right>
+            </BorderPane>
+          </content>
+        </Tab>
+      </tabs>
+      <BorderPane.margin>
+        <Insets bottom="8.0" left="8.0" right="8.0" />
+      </BorderPane.margin>
+    </TabPane>
+  </center>
+  <bottom>
+    <ToolBar prefHeight="0.0" prefWidth="789.0" BorderPane.alignment="CENTER">
+      <items>
+        <Label fx:id="statustext" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" text="Label" />
+        <Pane HBox.hgrow="ALWAYS" />
+        <ProgressBar fx:id="progressBar" prefWidth="200.0" progress="0.0" />
+      </items>
+    </ToolBar>
+  </bottom>
+</BorderPane>
