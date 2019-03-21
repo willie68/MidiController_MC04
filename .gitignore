@@ -39,3 +39,4 @@ build/
 **/target
 /dependency-reduced-pom.xml
 **/bin
+**/log

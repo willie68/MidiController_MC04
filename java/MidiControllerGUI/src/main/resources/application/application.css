@@ -1,0 +1,109 @@
+root { 
+    display: block;
+}
+
+.root {
+     -fx-background-image: url("background.jpg");
+}  
+   
+.text-field,.text-area {
+    -fx-prompt-text-fill:white;
+  }
+
+.center {
+     -fx-border-width: 1.0px;
+     -fx-border-color: black ;
+     -fx-border-radius: 10.0px;
+     -fx-padding: 8.0px;
+}
+
+.label {
+    -fx-font-size: 14.0px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #333333;
+    -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );
+}
+
+#welcometext {
+   -fx-font-size: 32.0px;
+   -fx-font-family: "Arial Black";
+   -fx-fill: #818181;
+   -fx-effect: innershadow( three-pass-box , rgba(0.0,0.0,0.0,0.7) , 6.0, 0.0 , 0.0 , 2.0 );
+}
+
+#actiontarget {
+  -fx-fill: FIREBRICK;
+  -fx-font-weight: bold;
+  -fx-effect: dropshadow( gaussian , rgba(255.0,255.0,255.0,0.5) , 0.0,0.0,0.0,1.0 );  
+}
+
+.button {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
+    -fx-background-color: transparent, transparent, transparent, transparent;
+}
+
+.button:hover {
+    -fx-background-color: transparent, rgba(0.0,0.0,0.0,0.1), rgba(0.0,0.0,0.0,0.1), transparent;
+}
+
+.button:armed {
+    -fx-background-color: transparent, rgba(0.0,0.0,0.0,0.1), rgba(0.0,0.0,0.0,0.1), rgba(0.0,0.0,0.0,0.2);
+}
+
+.exitButton {
+	-fx-graphic: url("ico/power5.png") ;
+}
+
+.clearButton {
+	-fx-graphic: url("ico/bin3.png") ;	
+}
+
+.refreshButton {
+	-fx-graphic: url("ico/refresh1.png") ;			
+}
+
+.backupButton {
+	-fx-graphic: url("ico/stiffy.png") ;		
+}
+
+.check-box {
+    -fx-text-fill: white;
+    -fx-font-family: "Arial Narrow";
+    -fx-font-weight: bold;
+    -fx-effect: dropshadow( three-pass-box , rgba(0.0,0.0,0.0,0.6) , 5.0, 0.0 , 0.0 , 1.0 );
+}
+
+.tool-bar {
+	-fx-background-color: transparent;
+}
+
+.tab-header-background {
+    -fx-background-color: transparent;
+}
+
+.tag-button {
+	-fx-graphic: url("ico/delete30.png") ;
+	-fx-content-display: right ;
+}
+
+.text-field {
+    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%); 
+}
+
+.text-area {
+    -fx-prompt-text-fill: derive(-fx-control-inner-background,-30%); 
+}
+
+.tooltip {
+    -fx-background: rgba(30,30,30);
+    -fx-text-fill: white;
+    -fx-background-color: rgba(128,128,128,0.8);
+    -fx-background-radius: 6px;
+    -fx-background-insets: 0;
+    -fx-padding: 0.667em 0.75em 0.667em 0.75em; /* 10px */
+    -fx-effect: dropshadow( three-pass-box , rgba(0,0,0,0.5) , 10, 0.0 , 0 , 3 );
+    -fx-font-size: 0.85em;
+}
