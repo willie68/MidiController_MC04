@@ -13,8 +13,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.controlsfx.control.textfield.AutoCompletionBinding;
 import org.controlsfx.control.textfield.TextFields;
 
-import com.sun.xml.internal.ws.api.message.Attachment;
-
 import de.mcs.utils.Files;
 import de.mcs.utils.Logger;
 import javafx.collections.ObservableList;
@@ -500,28 +498,28 @@ public class MainController {
     // }
   }
 
-  private File extractAttachmentToTempdir(Attachment attachment) {
-    // String fileURL = attachment.getFileURL();
-    //
-    // try {
-    // ResourceInfo resourceInfo = Datastore.getInstance().loadResourceInfo(fileURL);
-    //
-    // byte[] resultObject = attachment.loadFile();
-    //
-    // File file = new File(Files.getTempPath(), String.format("%s", resourceInfo.getName()));
-    // try {
-    // OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
-    // out.write(resultObject);
-    // out.close();
-    // } catch (IOException e) {
-    // log.error(e, "error exporting file %s", resourceInfo.getName());
-    // }
-    // return file;
-    // } catch (ApiomatRequestException e1) {
-    // log.error(e1, "error exporting file");
-    // }
-    return null;
-  }
+  // private File extractAttachmentToTempdir(Attachment attachment) {
+  // String fileURL = attachment.getFileURL();
+  //
+  // try {
+  // ResourceInfo resourceInfo = Datastore.getInstance().loadResourceInfo(fileURL);
+  //
+  // byte[] resultObject = attachment.loadFile();
+  //
+  // File file = new File(Files.getTempPath(), String.format("%s", resourceInfo.getName()));
+  // try {
+  // OutputStream out = new BufferedOutputStream(new FileOutputStream(file));
+  // out.write(resultObject);
+  // out.close();
+  // } catch (IOException e) {
+  // log.error(e, "error exporting file %s", resourceInfo.getName());
+  // }
+  // return file;
+  // } catch (ApiomatRequestException e1) {
+  // log.error(e1, "error exporting file");
+  // }
+  // return null;
+  // }
 
   @FXML
   public void fileClick(MouseEvent event) {

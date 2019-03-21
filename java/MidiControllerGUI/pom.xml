@@ -33,14 +33,6 @@
 	<build>
 		<plugins>
 			<plugin>
-				<artifactId>maven-compiler-plugin</artifactId>
-				<version>3.3</version>
-				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
-				</configuration>
-			</plugin>
-			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-surefire-plugin</artifactId>
 				<version>2.19.1</version>
@@ -60,42 +52,42 @@
 					<skipTests>true</skipTests>
 				</configuration>
 			</plugin>
+			<!-- <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-jar-plugin</artifactId> <version>2.6</version> 
+				<configuration> <archive> <manifest> <mainClass>de.mcs.tools.sps.SPSAssembler</mainClass> <addDefaultImplementationEntries>true</addDefaultImplementationEntries> 
+				<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries> </manifest> <manifestEntries> <Build-Time>${maven.build.timestamp}</Build-Time> 
+				<Application-Name>MidiControllerTools</Application-Name> <Application-Update-Id>0</Application-Update-Id> <Application-Update-Url>http\://wkla.no-ip.biz/downloader/version.php?ID\=0</Application-Update-Url> 
+				<Application-Url>http\://wkla.no-ip.biz/</Application-Url> <Implementation-Vendor>MCS, Media Computer Software</Implementation-Vendor> 
+				</manifestEntries> </archive> </configuration> </plugin> <plugin> <groupId>org.apache.maven.plugins</groupId> <artifactId>maven-shade-plugin</artifactId> 
+				<version>2.4.1</version> <executions> <execution> <phase>package</phase> <goals> <goal>shade</goal> </goals> <configuration> 
+				<transformers> <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> <mainClass></mainClass> 
+				</transformer> </transformers> </configuration> </execution> </executions> </plugin> <plugin> <groupId>com.zenjava</groupId> 
+				<artifactId>javafx-maven-plugin</artifactId> <version>8.8.3</version> <configuration> <mainClass>your.main.class.which.extends.javafx.Application</mainClass> 
+				</configuration> </plugin> -->
+
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-jar-plugin</artifactId>
-				<version>2.6</version>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.8.0</version>
 				<configuration>
-					<archive>
-						<manifest>
-							<mainClass>de.mcs.tools.sps.SPSAssembler</mainClass>
-							<addDefaultImplementationEntries>true</addDefaultImplementationEntries>
-							<addDefaultSpecificationEntries>true</addDefaultSpecificationEntries>
-						</manifest>
-						<manifestEntries>
-							<Build-Time>${maven.build.timestamp}</Build-Time>
-							<Application-Name>MidiControllerTools</Application-Name>
-							<Application-Update-Id>0</Application-Update-Id>
-							<Application-Update-Url>http\://wkla.no-ip.biz/downloader/version.php?ID\=0</Application-Update-Url>
-							<Application-Url>http\://wkla.no-ip.biz/</Application-Url>
-							<Implementation-Vendor>MCS, Media Computer Software</Implementation-Vendor>
-						</manifestEntries>
-					</archive>
+					<release>11</release>
+					<source>1.11</source>
+					<target>1.11</target>
 				</configuration>
 			</plugin>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-shade-plugin</artifactId>
-				<version>2.4.1</version>
+				<groupId>org.codehaus.mojo</groupId>
+				<artifactId>exec-maven-plugin</artifactId>
+				<version>1.6.0</version>
 				<executions>
 					<execution>
-						<phase>package</phase>
 						<goals>
-							<goal>shade</goal>
+							<goal>java</goal>
 						</goals>
-						<!-- <configuration> <transformers> <transformer implementation="org.apache.maven.plugins.shade.resource.ManifestResourceTransformer"> 
-							<mainClass></mainClass> </transformer> </transformers> </configuration> -->
 					</execution>
 				</executions>
+				<configuration>
+					<mainClass>application.Main</mainClass>
+				</configuration>
 			</plugin>
 			<!-- <plugin> <groupId>com.akathist.maven.plugins.launch4j</groupId> <artifactId>launch4j-maven-plugin</artifactId> <version>1.7.24</version> 
 				<executions> <execution> <id>l4j-clui</id> <phase>package</phase> <goals> <goal>launch4j</goal> </goals> <configuration> 
@@ -201,10 +193,21 @@
 			<artifactId>guava</artifactId>
 			<version>27.0.1-jre</version>
 		</dependency>
+
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-controls</artifactId>
+			<version>11.0.2</version>
+		</dependency>
+		<dependency>
+			<groupId>org.openjfx</groupId>
+			<artifactId>javafx-fxml</artifactId>
+			<version>11.0.2</version>
+		</dependency>
 		<dependency>
 			<groupId>org.controlsfx</groupId>
 			<artifactId>controlsfx</artifactId>
-			<version>8.40.12</version>
+			<version>9.0.0</version>
 		</dependency>
 	</dependencies>
 </project>
