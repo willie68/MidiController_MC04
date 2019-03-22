@@ -74,6 +74,9 @@ public class Main extends Application {
     MainController controller = fxmlLoader.getController();
     controller.setSession(session);
     controller.init();
+    MainGUI mainGUI = new MainGUI().setController(controller).setResourceBundle(bundle);
+    mainGUI.updateGui(fxmlLoader);
+
     Scene myScene = new Scene(mainPane);
     controller.setScene(myScene);
     return myScene;

@@ -65,7 +65,7 @@ root {
 	-fx-graphic: url("ico/refresh1.png") ;			
 }
 
-.backupButton {
+.saveButton {
 	-fx-graphic: url("ico/stiffy.png") ;		
 }
 
