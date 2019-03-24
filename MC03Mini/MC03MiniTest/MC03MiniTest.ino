@@ -27,7 +27,7 @@ void setup() {
 
   dbgOutLn(F("init timer"));
   initTimer();
-  
+
   dbgOutLn(F("init lcd"));
   initLCD();
 
@@ -87,6 +87,7 @@ void loop() {
   checkSwitches();
 
   checkEncoder();
+  
   if (updateLED) {
     showRGBLed();
   }
@@ -103,6 +104,7 @@ void loop() {
 }
 
 void pollSwitches() {
+  //dbgOutLn(F("poll switches"));
   switch_1->poll();
   switch_2->poll();
   switch_3->poll();
@@ -110,6 +112,7 @@ void pollSwitches() {
 
 int16_t last = -1;
 void checkEncoder() {
+  //  dbgOutLn(F("check encoder"));
   value += encoder.getValue();
   value = constrain(value, 0, 127);
   if (value != last) {
@@ -125,6 +128,8 @@ void checkEncoder() {
 }
 
 void checkSwitches() {
+  // dbgOutLn(F("check switches"));
+
   bool isEvent = false;
   byte event = 0;
 
@@ -134,6 +139,8 @@ void checkSwitches() {
 }
 
 bool processButton(Switch* mySwitch, byte number, byte mask) {
+  //  dbgOut(F("prc button "));
+  //  dbgOutLn(number);
   byte event = 0;
   bool isEvent = false;
   if (mySwitch->singleClick()) {
@@ -193,6 +200,7 @@ bool processButton(Switch* mySwitch, byte number, byte mask) {
 }
 
 bool processEvent(byte event, byte expValue) {
+  dbgOutLn(F("prc event"));
   bool isEvent = storage.getEvent(event, midiData);
   if (isEvent) {
     for (byte i = 0; i < 48; i = i + 3) {
@@ -218,14 +226,21 @@ bool processEvent(byte event, byte expValue) {
 }
 
 void sendMidi(byte midiData[], byte count) {
+  dbgOutLn(F("send midi"));
   byte i = 0;
   byte cmd, data1, data2, channel;
   do {
     cmd = midiData[i++];
     data1 = midiData[i++];
     data2 = midiData[i++];
+    dbgOut(F("cmd: "));
+    dbgOut2(cmd, HEX);
+    dbgOut(F(", d1: "));
+    dbgOut2(data1, HEX);
+    dbgOut(F(", d2: "));
+    dbgOutLn2(data2, HEX);
     channel = cmd & 0x0F;
-    if ((cmd & MIDI_PROGRAM_CHANGE) == MIDI_PROGRAM_CHANGE) {
+    if ((cmd & 0xF0) == MIDI_PROGRAM_CHANGE) {
       if (channel == storage.getInternalMidiChannel()) {
         actualProgram = data1;
         initProgram();
@@ -233,18 +248,18 @@ void sendMidi(byte midiData[], byte count) {
         midi.changeProgram(channel, data1);
       }
     }
-    if ((cmd & MIDI_CONTROLLER_CHANGE) == MIDI_CONTROLLER_CHANGE) {
+    if ((cmd & 0xF0) == MIDI_CONTROLLER_CHANGE) {
       if (channel == storage.getInternalMidiChannel()) {
         changeController(data1, data2);
       } else {
         midi.changeController(channel, data1, data2);
       }
     }
-    if ((cmd & MIDI_PAUSE) == MIDI_PAUSE) {
-      if (channel == storage.getInternalMidiChannel()) {
-        int pauseTime = (data1 << 8) + data2;
-        delay(pauseTime);
-      }
+    if (cmd == MIDI_PAUSE) {
+      int pauseTime = (data1 << 8) + data2;
+      dbgOut(F("delay "));
+      dbgOutLn(pauseTime);
+      delay(pauseTime);
     }
   } while ((i < count) && (cmd != 0));
 }
@@ -333,6 +348,7 @@ void changeController(byte controller, byte data) {
 }
 
 void initProgram() {
+  dbgOutLn(F("init program"));
   byte event = EVENT_INTERNAL + EVENT_STOP;
   processEvent(event, 0);
 

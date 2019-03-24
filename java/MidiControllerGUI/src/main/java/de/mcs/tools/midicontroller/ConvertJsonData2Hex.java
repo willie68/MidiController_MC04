@@ -62,7 +62,7 @@ public class ConvertJsonData2Hex {
 			try (ByteArrayOutputStream out = new ByteArrayOutputStream()) {
 				// out.write((byte) programs.getVersion());
 				saveSize = out.size();
-				System.out.println(programData.toString());
+				System.out.println(JacksonUtils.getJsonMapper().writeValueAsString(programData));
 				byte[] name = copyInto(getEmptyByteArray(12), getStringAsByte(programData.getName(), 12));
 
 				out.write(name);

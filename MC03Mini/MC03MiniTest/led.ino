@@ -40,7 +40,7 @@ void showRGBLed() {
   clearLEDs();
   dbgOutLn(F("show pixel"));
   for (byte i = 0; i < LED_USED; i++) {
-    byte intensity = 0;
+    byte intensity = 3;
     cRGB value;
     if (buttonSettings[i]) {
       if (buttonState[i]) {

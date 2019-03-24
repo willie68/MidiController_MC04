@@ -53,7 +53,7 @@ public class ButtonData {
 
 	@Override
 	public String toString() {
-		return String.format("Button[name: %s, type: %s]", name, type.name());
+		return String.format("Button[name: %s, type: %s, color: %H]", name, type.name(), color);
 	}
 
 	public int getColor() {
