@@ -28,92 +28,96 @@ package de.mcs.tools.midicontroller.data;
  */
 public class DataData {
 
-  public enum CHANNEL {
-    INTERNAL, EXTERNAL
-  }
+	public enum CHANNEL {
+		INTERNAL, EXTERNAL
+	}
 
-  public enum TYPE {
-    CC {
-      public byte getByte() {
-        return (byte) 0xB0;
-      }
-    },
-    PC {
-      public byte getByte() {
-        return (byte) 0xC0;
-      }
-    },
-    PC_NEXT {
-      public byte getByte() {
-        return (byte) 0xD0;
-      }
-    },
-    PC_PREV {
-      public byte getByte() {
-        return (byte) 0xD1;
-      }
-    },
-    NOTE_ON {
-      public byte getByte() {
-        return (byte) 0x90;
-      }
-    },
-    NOTE_OFF {
-      public byte getByte() {
-        return (byte) 0x80;
-      }
-    },
-    ALL_NOTE_OFF {
-      public byte getByte() {
-        return (byte) 0xB0;
-      }
-    };
+	public enum TYPE {
+		PAUSE {
+			public byte getByte() {
+				return (byte) 0xF8;
+			}
+		},
+		CC {
+			public byte getByte() {
+				return (byte) 0xB0;
+			}
+		},
+		PC {
+			public byte getByte() {
+				return (byte) 0xC0;
+			}
+		},
+		PC_NEXT {
+			public byte getByte() {
+				return (byte) 0xD0;
+			}
+		},
+		PC_PREV {
+			public byte getByte() {
+				return (byte) 0xD1;
+			}
+		},
+		NOTE_ON {
+			public byte getByte() {
+				return (byte) 0x90;
+			}
+		},
+		NOTE_OFF {
+			public byte getByte() {
+				return (byte) 0x80;
+			}
+		},
+		ALL_NOTE_OFF {
+			public byte getByte() {
+				return (byte) 0xB0;
+			}
+		};
 
-    public byte getByte() {
-      return 0;
-    }
-  }
+		public byte getByte() {
+			return 0;
+		}
+	}
 
-  private CHANNEL channel;
-  private TYPE type;
-  private int data1;
-  private int data2;
+	private CHANNEL channel;
+	private TYPE type;
+	private int data1;
+	private int data2;
 
-  public CHANNEL getChannel() {
-    return channel;
-  }
+	public CHANNEL getChannel() {
+		return channel;
+	}
 
-  public void setChannel(CHANNEL channel) {
-    this.channel = channel;
-  }
+	public void setChannel(CHANNEL channel) {
+		this.channel = channel;
+	}
 
-  public TYPE getType() {
-    return type;
-  }
+	public TYPE getType() {
+		return type;
+	}
 
-  public void setType(TYPE type) {
-    this.type = type;
-  }
+	public void setType(TYPE type) {
+		this.type = type;
+	}
 
-  public int getData1() {
-    return data1;
-  }
+	public int getData1() {
+		return data1;
+	}
 
-  public void setData1(int data1) {
-    this.data1 = data1;
-  }
+	public void setData1(int data1) {
+		this.data1 = data1;
+	}
 
-  public int getData2() {
-    return data2;
-  }
+	public int getData2() {
+		return data2;
+	}
 
-  public void setData2(int data2) {
-    this.data2 = data2;
-  }
+	public void setData2(int data2) {
+		this.data2 = data2;
+	}
 
-  @Override
-  public String toString() {
-    return String.format("data[channel: %s, type: %s, data1: %d, data2: %d]", channel.name(), type.name(), data1,
-        data2);
-  }
+	@Override
+	public String toString() {
+		return String.format("data[channel: %s, type: %s, data1: %d, data2: %d]", channel.name(), type.name(), data1, data2);
+	}
 }

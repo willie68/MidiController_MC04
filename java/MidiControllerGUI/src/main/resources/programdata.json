@@ -84,6 +84,18 @@
 					[
 						{
 							"channel": "EXTERNAL",
+							"type": "PC",
+							"data1": 102,
+							"data2": 0
+						},
+						{
+							"channel": "EXTERNAL",
+							"type": "PAUSE",
+							"data1": 0,
+							"data2": 250
+						},
+						{
+							"channel": "EXTERNAL",
 							"type": "CC",
 							"data1": 9,
 							"data2": 127
