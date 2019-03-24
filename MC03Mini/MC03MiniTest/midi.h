@@ -7,6 +7,7 @@
 #define BAUDRATE 31250
 const byte MIDI_PROGRAM_CHANGE = 0xC0;
 const byte MIDI_CONTROLLER_CHANGE = 0xB0;
+const byte MIDI_PAUSE = 0xF8;
 
 struct MidiCommand {
   byte command;

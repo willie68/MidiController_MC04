@@ -240,6 +240,12 @@ void sendMidi(byte midiData[], byte count) {
         midi.changeController(channel, data1, data2);
       }
     }
+    if ((cmd & MIDI_PAUSE) == MIDI_PAUSE) {
+      if (channel == storage.getInternalMidiChannel()) {
+        int pauseTime = (data1 << 8) + data2;
+        delay(pauseTime);
+      }
+    }
   } while ((i < count) && (cmd != 0));
 }
 
