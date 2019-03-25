@@ -1,9 +1,13 @@
 package application;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import de.mcs.tools.midicontroller.data.ProgramData;
+import de.mcs.tools.midicontroller.data.Programs;
+import de.mcs.utils.JacksonUtils;
 import de.mcs.utils.Logger;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -20,6 +24,7 @@ public class Main extends Application {
   private ResourceBundle bundle;
   private Session session;
   private Stage stage;
+  private MainGUI mainGUI;
 
   @Override
   public void start(Stage primaryStage) {
@@ -54,6 +59,17 @@ public class Main extends Application {
     } catch (Exception e) {
       e.printStackTrace();
     }
+
+    try {
+      InputStream source = ClassLoader.getSystemResourceAsStream("programdata.json");
+      Programs programs = JacksonUtils.getJsonMapper().readValue(source, Programs.class);
+      ProgramData programData = programs.getPrograms()[0];
+      mainGUI.setProgramData(programData);
+    } catch (IOException e) {
+      // TODO Auto-generated catch block
+      e.printStackTrace();
+    }
+
   }
 
   public static void main(String[] args) {
@@ -74,7 +90,7 @@ public class Main extends Application {
     MainController controller = fxmlLoader.getController();
     controller.setSession(session);
     controller.init();
-    MainGUI mainGUI = new MainGUI().setController(controller).setResourceBundle(bundle);
+    mainGUI = new MainGUI().setController(controller).setResourceBundle(bundle);
     mainGUI.updateGui(fxmlLoader);
 
     Scene myScene = new Scene(mainPane);

@@ -7,6 +7,7 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+import de.mcs.tools.midicontroller.data.ButtonData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ColorPicker;
@@ -29,6 +30,8 @@ public class SwitchControl extends GridPane {
   @FXML
   ResourceBundle resources;
 
+  private ButtonData buttonData;
+
   /**
    * 
    */
@@ -49,5 +52,10 @@ public class SwitchControl extends GridPane {
   public void initialize() {
     System.out.println("initialise SwitchControl");
     switchColor.getStyleClass().add("button");
+  }
+
+  public void setButtonData(ButtonData data) {
+    this.buttonData = data;
+    nameField.setText(data.getName());
   }
 }

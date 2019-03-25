@@ -1,5 +1,6 @@
 package application;
 
+import de.mcs.tools.midicontroller.data.ButtonData;
 import de.mcs.utils.Logger;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -140,6 +141,12 @@ public class MainController {
     progressBar.progressProperty().unbind();
     progressBar.setProgress(0);
     statustext.textProperty().unbind();
+  }
+
+  public void setButtonData(ButtonData[] buttons) {
+    switch1.nameField.setText(buttons[0].getName());
+    switch2.nameField.setText(buttons[1].getName());
+    switch3.nameField.setText(buttons[2].getName());
   }
 
 }

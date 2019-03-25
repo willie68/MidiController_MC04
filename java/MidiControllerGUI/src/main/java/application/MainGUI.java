@@ -3,6 +3,8 @@ package application;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
+import de.mcs.tools.midicontroller.data.ButtonData;
+import de.mcs.tools.midicontroller.data.ProgramData;
 import javafx.fxml.FXMLLoader;
 
 public class MainGUI {
@@ -29,6 +31,11 @@ public class MainGUI {
     // innerLoader.setRoot(mainLoader.getNamespace().get("switchArea"));
     //
     // innerLoader.load();
+  }
+
+  public void setProgramData(ProgramData programData) {
+    ButtonData[] buttons = programData.getButtons();
+    controller.setButtonData(buttons);
   }
 
 }
