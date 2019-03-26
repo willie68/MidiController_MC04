@@ -19,6 +19,7 @@ public class MainGUI {
 
   public MainGUI setResourceBundle(ResourceBundle bundle) {
     this.bundle = bundle;
+    this.controller.setResourceBundle(bundle);
     return this;
   }
 

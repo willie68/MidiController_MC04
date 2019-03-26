@@ -1,5 +1,8 @@
 package application;
 
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
@@ -25,6 +28,7 @@ public class Main extends Application {
   private Session session;
   private Stage stage;
   private MainGUI mainGUI;
+  private static File programFile = null;
 
   @Override
   public void start(Stage primaryStage) {
@@ -59,20 +63,22 @@ public class Main extends Application {
     } catch (Exception e) {
       e.printStackTrace();
     }
-
-    try {
-      InputStream source = ClassLoader.getSystemResourceAsStream("programdata.json");
-      Programs programs = JacksonUtils.getJsonMapper().readValue(source, Programs.class);
-      ProgramData programData = programs.getPrograms()[0];
-      mainGUI.setProgramData(programData);
-    } catch (IOException e) {
-      // TODO Auto-generated catch block
-      e.printStackTrace();
+    if (programFile != null && programFile.exists()) {
+      try (InputStream source = new BufferedInputStream(new FileInputStream(programFile))) {
+        Programs programs = JacksonUtils.getJsonMapper().readValue(source, Programs.class);
+        ProgramData programData = programs.getPrograms()[0];
+        mainGUI.setProgramData(programData);
+      } catch (IOException e) {
+        // TODO Auto-generated catch block
+        e.printStackTrace();
+      }
     }
-
   }
 
   public static void main(String[] args) {
+    if (args.length > 0) {
+      programFile = new File(args[0]);
+    }
     launch(args);
   }
 

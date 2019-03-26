@@ -38,7 +38,7 @@
 		</ImageView>
 		<Label fx:id="lblLabel" alignment="BASELINE_CENTER" text="Switch" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
 		<Label fx:id="lblName" text="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-		<TextField fx:id="nameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="25.0" prefWidth="212.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
+		<TextField fx:id="nameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="133.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
 		<Label fx:id="lblType" text="type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
 		<Label fx:id="lblColor" text="color" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 		<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">

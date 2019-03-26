@@ -1,5 +1,7 @@
 package application;
 
+import java.util.ResourceBundle;
+
 import de.mcs.tools.midicontroller.data.ButtonData;
 import de.mcs.utils.Logger;
 import javafx.concurrent.Task;
@@ -74,6 +76,8 @@ public class MainController {
   @FXML
   private SwitchControl switch3;
 
+  private ResourceBundle resources;
+
   @FXML
   public void btnExit() {
     log.debug("button exit pressed.");
@@ -147,6 +151,13 @@ public class MainController {
     switch1.nameField.setText(buttons[0].getName());
     switch2.nameField.setText(buttons[1].getName());
     switch3.nameField.setText(buttons[2].getName());
+  }
+
+  public void setResourceBundle(ResourceBundle bundle) {
+    this.resources = bundle;
+    switch1.setResourceBundle(bundle);
+    switch2.setResourceBundle(bundle);
+    switch3.setResourceBundle(bundle);
   }
 
 }

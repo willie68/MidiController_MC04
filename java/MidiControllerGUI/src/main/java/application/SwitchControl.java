@@ -6,12 +6,15 @@ package application;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.function.UnaryOperator;
 
 import de.mcs.tools.midicontroller.data.ButtonData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.TextField;
+import javafx.scene.control.TextFormatter;
+import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.GridPane;
 
 /**
@@ -19,6 +22,8 @@ import javafx.scene.layout.GridPane;
  *
  */
 public class SwitchControl extends GridPane {
+
+  private static final int NAME_FIELD_LENGTH = 8;
 
   @FXML
   TextField nameField;
@@ -52,6 +57,28 @@ public class SwitchControl extends GridPane {
   public void initialize() {
     System.out.println("initialise SwitchControl");
     switchColor.getStyleClass().add("button");
+
+    UnaryOperator<Change> modifyChange = c -> {
+      if (c.isContentChange()) {
+        int newLength = c.getControlNewText().length();
+        if (newLength > NAME_FIELD_LENGTH) {
+          // replace the input text with the last len chars
+          String tail = c.getControlNewText().substring(0, NAME_FIELD_LENGTH);
+          c.setText(tail);
+        }
+      }
+      return c;
+    };
+    nameField.setTextFormatter(new TextFormatter(modifyChange));
+  }
+
+  public void setResourceBundle(ResourceBundle bundle) {
+    this.resources = bundle;
+    initComponent();
+  }
+
+  public void initComponent() {
+    nameField.setPromptText(resources.getString("switch.text.prompt.name"));
   }
 
   public void setButtonData(ButtonData data) {
