@@ -12,10 +12,12 @@ import de.mcs.tools.midicontroller.data.ButtonData;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.ColorPicker;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
 import javafx.scene.control.TextFormatter;
 import javafx.scene.control.TextFormatter.Change;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 
 /**
  * @author w.klaas
@@ -30,6 +32,13 @@ public class SwitchControl extends GridPane {
 
   @FXML
   ColorPicker switchColor;
+
+  @FXML
+  RadioButton typeMomentary;
+
+  @FXML
+  RadioButton typeToggle;
+
   @FXML
   URL location;
   @FXML
@@ -84,5 +93,18 @@ public class SwitchControl extends GridPane {
   public void setButtonData(ButtonData data) {
     this.buttonData = data;
     nameField.setText(data.getName());
+    if (buttonData.getType().equals(ButtonData.TYPE.MOMENTARY)) {
+      typeMomentary.setSelected(true);
+    } else {
+      typeToggle.setSelected(true);
+    }
+
+    int color = data.getColor();
+    int red = color & 0b00000011;
+    int green = color & 0b00001100;
+    int blue = color & 0b00110000;
+    // System.out.printf("color:%d, r: %d, g: %d, b:%d%n", color, red, green, blue);
+    Color value = new Color((double) (red / 3.0), (double) (green / 12.0), (double) (blue / 48.0), 1.0);
+    switchColor.setValue(value);
   }
 }

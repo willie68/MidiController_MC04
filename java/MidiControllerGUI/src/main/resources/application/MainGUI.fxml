@@ -58,14 +58,14 @@
 					<content>
 						<GridPane>
 							<columnConstraints>
-								<ColumnConstraints hgrow="NEVER" maxWidth="269.0" minWidth="25.0" prefWidth="30.0" />
-								<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="1.7976931348623157E308" minWidth="-Infinity" prefWidth="898.0" />
-								<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" maxWidth="25.0" minWidth="10.0" prefWidth="27.0" />
+								<ColumnConstraints hgrow="NEVER" maxWidth="25.0" minWidth="25.0" prefWidth="30.0" />
+								<ColumnConstraints halignment="LEFT" hgrow="ALWAYS" />
+								<ColumnConstraints halignment="LEFT" hgrow="NEVER" maxWidth="25.0" minWidth="10.0" prefWidth="27.0" />
 							</columnConstraints>
 							<rowConstraints>
 								<RowConstraints maxHeight="24.0" minHeight="24.0" prefHeight="24.0" vgrow="NEVER" />
-								<RowConstraints maxHeight="402.0" minHeight="24.0" prefHeight="395.0" vgrow="NEVER" />
-								<RowConstraints maxHeight="436.0" minHeight="10.0" prefHeight="43.0" vgrow="SOMETIMES" />
+								<RowConstraints vgrow="ALWAYS" />
+								<RowConstraints maxHeight="24.0" minHeight="24.0" prefHeight="43.0" vgrow="NEVER" />
 							</rowConstraints>
 							<padding>
 								<Insets top="8.0" />
@@ -73,7 +73,7 @@
 							<children>
 								<ScrollPane GridPane.columnIndex="1" GridPane.rowIndex="1">
 									<content>
-										<VBox fx:id="switchArea" maxHeight="1.7976931348623157E308" maxWidth="1.7976931348623157E308" minHeight="-Infinity" minWidth="-Infinity">
+										<VBox fx:id="switchArea">
 											<children>
 <!-- 
  -->

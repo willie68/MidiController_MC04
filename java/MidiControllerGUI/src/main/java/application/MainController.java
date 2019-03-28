@@ -148,9 +148,9 @@ public class MainController {
   }
 
   public void setButtonData(ButtonData[] buttons) {
-    switch1.nameField.setText(buttons[0].getName());
-    switch2.nameField.setText(buttons[1].getName());
-    switch3.nameField.setText(buttons[2].getName());
+    switch1.setButtonData(buttons[0]);
+    switch2.setButtonData(buttons[1]);
+    switch3.setButtonData(buttons[2]);
   }
 
   public void setResourceBundle(ResourceBundle bundle) {

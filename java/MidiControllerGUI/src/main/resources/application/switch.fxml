@@ -18,7 +18,7 @@
 		<ColumnConstraints hgrow="NEVER" maxWidth="811.0" minWidth="10.0" prefWidth="55.0" />
 		<ColumnConstraints hgrow="NEVER" maxWidth="811.0" minWidth="10.0" prefWidth="227.0" />
 		<ColumnConstraints hgrow="NEVER" maxWidth="195.0" minWidth="10.0" prefWidth="87.0" />
-		<ColumnConstraints hgrow="ALWAYS" maxWidth="169.0" minWidth="10.0" prefWidth="112.0" />
+		<ColumnConstraints percentWidth="20.0" />
 		<ColumnConstraints hgrow="NEVER" maxWidth="144.0" minWidth="10.0" prefWidth="21.0" />
 	</columnConstraints>
 	<rowConstraints>
@@ -43,8 +43,8 @@
 		<Label fx:id="lblColor" text="color" GridPane.columnIndex="1" GridPane.rowIndex="3" />
 		<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
 			<children>
-				<RadioButton mnemonicParsing="false" text="Toggle" />
-				<RadioButton mnemonicParsing="false" text="Momentary">
+				<RadioButton fx:id="typeToggle" mnemonicParsing="false" text="Toggle" />
+				<RadioButton fx:id="typeMomentary" mnemonicParsing="false" text="Momentary">
 					<padding>
 						<Insets left="10.0" />
 					</padding>
@@ -52,35 +52,35 @@
 			</children>
 		</HBox>
 		<ColorPicker fx:id="switchColor" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-		<Label fx:id="lblName1" text="click" GridPane.columnIndex="3" GridPane.rowIndex="1">
+		<Label fx:id="lblName1" text="click" GridPane.columnIndex="3" GridPane.rowIndex="3">
 			<padding>
 				<Insets left="8.0" />
 			</padding>
 		</Label>
-		<Label fx:id="lblName2" text="doubleclick" GridPane.columnIndex="3" GridPane.rowIndex="2">
+		<Label fx:id="lblName2" text="doubleclick" GridPane.columnIndex="3" GridPane.rowIndex="4">
 			<padding>
 				<Insets left="8.0" />
 			</padding>
 		</Label>
-		<Label fx:id="lblName3" text="long" GridPane.columnIndex="3" GridPane.rowIndex="3">
+		<Label fx:id="lblName3" text="long" GridPane.columnIndex="3" GridPane.rowIndex="5">
 			<padding>
 				<Insets left="8.0" />
 			</padding>
 		</Label>
-		<Label fx:id="lblName4" text="push" GridPane.columnIndex="3" GridPane.rowIndex="4">
+		<Label fx:id="lblName4" text="push" GridPane.columnIndex="3" GridPane.rowIndex="1">
 			<padding>
 				<Insets left="8.0" />
 			</padding>
 		</Label>
-		<Label fx:id="lblName5" text="release" GridPane.columnIndex="3" GridPane.rowIndex="5">
+		<Label fx:id="lblName5" text="release" GridPane.columnIndex="3" GridPane.rowIndex="2">
 			<padding>
 				<Insets left="8.0" />
 			</padding>
 		</Label>
-      <TextField GridPane.columnIndex="4" GridPane.rowIndex="1" />
-      <TextField GridPane.columnIndex="4" GridPane.rowIndex="2" />
-      <TextField GridPane.columnIndex="4" GridPane.rowIndex="3" />
-      <TextField GridPane.columnIndex="4" GridPane.rowIndex="4" />
-      <TextField GridPane.columnIndex="4" GridPane.rowIndex="5" />
+      <TextField fx:id="pushText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
+      <TextField fx:id="releaseText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
+      <TextField fx:id="clickText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
+      <TextField fx:id="dblclickText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
+      <TextField fx:id="longText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
 	</children>
 </fx:root>
