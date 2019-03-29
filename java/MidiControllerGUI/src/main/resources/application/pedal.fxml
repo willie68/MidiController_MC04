@@ -2,9 +2,7 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ColorPicker?>
 <?import javafx.scene.control.Label?>
-<?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
@@ -13,21 +11,18 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 
-<fx:root prefHeight="162.0" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/10.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<fx:root prefHeight="162.0" type="javafx.scene.layout.GridPane" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1">
 	<columnConstraints>
 		<ColumnConstraints hgrow="NEVER" maxWidth="444.0" minWidth="10.0" prefWidth="90.0" />
 		<ColumnConstraints hgrow="NEVER" maxWidth="811.0" minWidth="10.0" prefWidth="55.0" />
-		<ColumnConstraints hgrow="NEVER" maxWidth="811.0" minWidth="10.0" prefWidth="227.0" />
-		<ColumnConstraints hgrow="NEVER" maxWidth="195.0" minWidth="10.0" prefWidth="87.0" />
 		<ColumnConstraints percentWidth="40.0" />
-		<ColumnConstraints hgrow="NEVER" maxWidth="36.0" minWidth="36.0" prefWidth="36.0" />
+		<ColumnConstraints hgrow="NEVER" maxWidth="144.0" minWidth="10.0" prefWidth="21.0" />
 		<ColumnConstraints hgrow="NEVER" maxWidth="144.0" minWidth="10.0" prefWidth="21.0" />
 	</columnConstraints>
 	<rowConstraints>
 		<RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="12.0" vgrow="NEVER" />
 		<RowConstraints fillHeight="false" maxHeight="112.0" minHeight="30.0" prefHeight="50.0" vgrow="NEVER" />
 		<RowConstraints maxHeight="112.0" minHeight="30.0" prefHeight="50.0" vgrow="NEVER" />
-		<RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
 		<RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
 		<RowConstraints maxHeight="112.0" minHeight="10.0" prefHeight="50.0" vgrow="NEVER" />
 		<RowConstraints maxHeight="25.0" minHeight="10.0" prefHeight="12.0" vgrow="NEVER" />
@@ -38,56 +33,17 @@
 				<Image url="@ico/PedalExp_128x128.png" />
 			</image>
 		</ImageView>
-		<Label fx:id="lblLabel" alignment="BASELINE_CENTER" text="Pedal" GridPane.halignment="CENTER" GridPane.rowIndex="5" GridPane.valignment="CENTER" />
-		<Label fx:id="lblName" text="name" GridPane.columnIndex="1" GridPane.rowIndex="1" />
-		<TextField fx:id="nameField" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="26.0" prefWidth="133.0" GridPane.columnIndex="2" GridPane.rowIndex="1" />
-		<Label fx:id="lblType" text="type" GridPane.columnIndex="1" GridPane.rowIndex="2" />
-		<Label fx:id="lblColor" text="color" GridPane.columnIndex="1" GridPane.rowIndex="3" />
+		<Label fx:id="lblLabel" alignment="BASELINE_CENTER" text="Pedal" GridPane.halignment="CENTER" GridPane.rowIndex="4" GridPane.valignment="CENTER" />
 		<HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" GridPane.columnIndex="2" GridPane.rowIndex="2">
-			<children>
-				<RadioButton fx:id="typeToggle" mnemonicParsing="false" text="Toggle" />
-				<RadioButton fx:id="typeMomentary" mnemonicParsing="false" text="Momentary">
-					<padding>
-						<Insets left="10.0" />
-					</padding>
-				</RadioButton>
-			</children>
+         <children>
+            <TextField fx:id="changeText" prefHeight="25.0" prefWidth="209.0" HBox.hgrow="ALWAYS" />
+         </children>
 		</HBox>
-		<ColorPicker fx:id="switchColor" GridPane.columnIndex="2" GridPane.rowIndex="3" />
-		<Label fx:id="lblName1" text="click" GridPane.columnIndex="3" GridPane.rowIndex="3">
+		<Label fx:id="lblName4" text="change" GridPane.columnIndex="1" GridPane.rowIndex="2">
 			<padding>
 				<Insets left="8.0" />
 			</padding>
 		</Label>
-		<Label fx:id="lblName2" text="doubleclick" GridPane.columnIndex="3" GridPane.rowIndex="4">
-			<padding>
-				<Insets left="8.0" />
-			</padding>
-		</Label>
-		<Label fx:id="lblName3" text="long" GridPane.columnIndex="3" GridPane.rowIndex="5">
-			<padding>
-				<Insets left="8.0" />
-			</padding>
-		</Label>
-		<Label fx:id="lblName4" text="push" GridPane.columnIndex="3" GridPane.rowIndex="1">
-			<padding>
-				<Insets left="8.0" />
-			</padding>
-		</Label>
-		<Label fx:id="lblName5" text="release" GridPane.columnIndex="3" GridPane.rowIndex="2">
-			<padding>
-				<Insets left="8.0" />
-			</padding>
-		</Label>
-      <TextField fx:id="pushText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" />
-      <TextField fx:id="releaseText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" />
-      <TextField fx:id="clickText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="3" />
-      <TextField fx:id="dblclickText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="4" />
-      <TextField fx:id="longText" GridPane.columnIndex="4" GridPane.hgrow="ALWAYS" GridPane.rowIndex="5" />
-      <Button fx:id="btnPushSwitch" mnemonicParsing="false" onAction="#doBtnMidi" text="..." GridPane.columnIndex="5" GridPane.hgrow="ALWAYS" GridPane.rowIndex="1" GridPane.vgrow="ALWAYS" />
-      <Button fx:id="btnReleaseSwitch" mnemonicParsing="false" onAction="#doBtnMidi" text="..." GridPane.columnIndex="5" GridPane.rowIndex="2" />
-      <Button fx:id="btnClickSwitch" mnemonicParsing="false" onAction="#doBtnMidi" text="..." GridPane.columnIndex="5" GridPane.rowIndex="3" />
-      <Button fx:id="btnDblClickSwitch" mnemonicParsing="false" onAction="#doBtnMidi" text="..." GridPane.columnIndex="5" GridPane.rowIndex="4" />
-      <Button fx:id="btnLongSwitch" mnemonicParsing="false" onAction="#doBtnMidi" text="..." GridPane.columnIndex="5" GridPane.rowIndex="5" />
+      <Button fx:id="btnChangeSwitch" mnemonicParsing="false" onAction="#doBtnMidi" text="..." GridPane.columnIndex="3" GridPane.hgrow="ALWAYS" GridPane.rowIndex="2" GridPane.vgrow="ALWAYS" />
 	</children>
 </fx:root>
