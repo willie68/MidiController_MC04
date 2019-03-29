@@ -20,6 +20,7 @@
 <?scenebuilder-stylesheet application.css?>
 
 <?import application.SwitchControl?>
+<?import application.PedalControl?>
 <!--  
 -->
 
@@ -83,6 +84,8 @@
 												</SwitchControl>
 												<SwitchControl fx:id="switch3">
 												</SwitchControl>
+ 												<PedalControl fx:id="pedal1">
+												</PedalControl>
 											</children>
 										</VBox>
 									</content>

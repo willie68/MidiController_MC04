@@ -119,11 +119,21 @@ public class DataData {
   public String toHumanString(int intChn, int extChn) {
     switch (type) {
     case CC:
-      return String.format("CC@%d.%d.%d", channel.equals(CHANNEL.EXTERNAL) ? extChn : intChn, data1, data2);
+      return String.format("CC@%d.%d.%d", CHANNEL.EXTERNAL.equals(channel) ? extChn : intChn, data1, data2);
     case PC:
-      return String.format("PC@%d.%d", channel.equals(CHANNEL.EXTERNAL) ? extChn : intChn, data1);
+      return String.format("PC@%d.%d", CHANNEL.EXTERNAL.equals(channel) ? extChn : intChn, data1);
     case PAUSE:
       return String.format("PAUSE.%d", (data1 * 127 + data2));
+    case ALL_NOTE_OFF:
+      return String.format("ANO@%d", CHANNEL.EXTERNAL.equals(channel) ? extChn : intChn);
+    case NOTE_ON:
+      return String.format("NO@%d.%d.%d", CHANNEL.EXTERNAL.equals(channel) ? extChn : intChn, data1, data2);
+    case NOTE_OFF:
+      return String.format("NF@%d.%d.%d", CHANNEL.EXTERNAL.equals(channel) ? extChn : intChn, data1, data2);
+    case PC_NEXT:
+      return String.format("PN@%d", CHANNEL.EXTERNAL.equals(channel) ? extChn : intChn);
+    case PC_PREV:
+      return String.format("PP@%d", CHANNEL.EXTERNAL.equals(channel) ? extChn : intChn);
     default:
       break;
     }
