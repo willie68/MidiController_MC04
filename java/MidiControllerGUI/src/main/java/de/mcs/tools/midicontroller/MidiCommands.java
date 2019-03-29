@@ -16,13 +16,13 @@ public class MidiCommands {
 
   List<MidiCommand> commandList = new ArrayList<>();
 
-  public static MidiCommands parse(String midiString) {
+  public static MidiCommands parse(String midiString) throws Exception {
     MidiCommands midiCommands = new MidiCommands();
     String[] csvStringToArray = StringUtils.csvStringToArray(midiString);
     for (String string : csvStringToArray) {
       midiCommands.addMidiCommand(MidiCommand.parse(string));
     }
-    return null;
+    return midiCommands;
   }
 
   private void addMidiCommand(MidiCommand command) {

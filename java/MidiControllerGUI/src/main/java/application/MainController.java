@@ -1,8 +1,12 @@
 package application;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 
 import de.mcs.tools.midicontroller.data.ButtonData;
+import de.mcs.tools.midicontroller.data.ProgramData;
+import de.mcs.tools.midicontroller.data.SequenceData;
 import de.mcs.utils.Logger;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
@@ -147,10 +151,28 @@ public class MainController {
     statustext.textProperty().unbind();
   }
 
-  public void setButtonData(ButtonData[] buttons) {
-    switch1.setButtonData(buttons[0]);
-    switch2.setButtonData(buttons[1]);
-    switch3.setButtonData(buttons[2]);
+  public void setButtonData(ProgramData programData) {
+    ButtonData[] buttons = programData.getButtons();
+    SequenceData[] sequences = programData.getSequences();
+
+    switch1.setButtonData(buttons[0], getSquenceData(1, sequences), programData.getInternalMidi(),
+        programData.getExternalMidi());
+    switch2.setButtonData(buttons[1], getSquenceData(2, sequences), programData.getInternalMidi(),
+        programData.getExternalMidi());
+    switch3.setButtonData(buttons[2], getSquenceData(3, sequences), programData.getInternalMidi(),
+        programData.getExternalMidi());
+  }
+
+  private List<SequenceData> getSquenceData(int btnNumber, SequenceData[] sequences) {
+    List<SequenceData> sequenceDatas = new ArrayList<>();
+    for (SequenceData sequenceData : sequences) {
+      if (sequenceData.getType().equals(SequenceData.EVENTTYPE.BUTTON)) {
+        if (sequenceData.getValue() == btnNumber) {
+          sequenceDatas.add(sequenceData);
+        }
+      }
+    }
+    return sequenceDatas;
   }
 
   public void setResourceBundle(ResourceBundle bundle) {

@@ -5,11 +5,16 @@ package application;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
 import de.mcs.tools.midicontroller.MidiCommands;
 import de.mcs.tools.midicontroller.data.ButtonData;
+import de.mcs.tools.midicontroller.data.DataData;
+import de.mcs.tools.midicontroller.data.SequenceData;
+import de.mcs.utils.StringUtils;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -79,6 +84,8 @@ public class SwitchControl extends GridPane {
 
   private ButtonData buttonData;
 
+  private List<SequenceData> sequenceDatas;
+
   /**
    * 
    */
@@ -123,8 +130,9 @@ public class SwitchControl extends GridPane {
     nameField.setPromptText(resources.getString("switch.text.prompt.name"));
   }
 
-  public void setButtonData(ButtonData data) {
+  public void setButtonData(ButtonData data, List<SequenceData> sequenceDatas, int intChn, int extChn) {
     this.buttonData = data;
+    this.sequenceDatas = sequenceDatas;
     nameField.setText(data.getName());
     if (buttonData.getType().equals(ButtonData.TYPE.MOMENTARY)) {
       typeMomentary.setSelected(true);
@@ -139,6 +147,37 @@ public class SwitchControl extends GridPane {
     // System.out.printf("color:%d, r: %d, g: %d, b:%d%n", color, red, green, blue);
     Color value = new Color((double) (red / 3.0), (double) (green / 12.0), (double) (blue / 48.0), 1.0);
     switchColor.setValue(value);
+
+    for (SequenceData sequenceData : sequenceDatas) {
+      DataData[] datas = sequenceData.getDatas();
+      List<String> dataList = new ArrayList<>();
+      for (DataData dataData : datas) {
+        String humanString = dataData.toHumanString(intChn, extChn);
+        if (humanString != null) {
+          dataList.add(humanString);
+        }
+      }
+      String dataString = StringUtils.listToCSVString(dataList);
+      switch (sequenceData.getEvent()) {
+      case CLICK:
+        clickText.setText(dataString);
+        break;
+      case DOUBLECLICK:
+        dblclickText.setText(dataString);
+        break;
+      case LONGCLICK:
+        longText.setText(dataString);
+        break;
+      case PUSH:
+        pushText.setText(dataString);
+        break;
+      case RELEASE:
+        releaseText.setText(dataString);
+        break;
+      default:
+        break;
+      }
+    }
   }
 
   @FXML
@@ -157,8 +196,14 @@ public class SwitchControl extends GridPane {
       } else if (button.getId().equals(btnReleaseSwitch.getId())) {
         midiString = releaseText.getText();
       }
-
-      MidiCommands commands = MidiCommands.parse(midiString);
+      MidiCommands commands = null;
+      try {
+        if ((midiString != null) && !midiString.isEmpty()) {
+          commands = MidiCommands.parse(midiString);
+        }
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
 
       System.out.println(event.toString());
     }

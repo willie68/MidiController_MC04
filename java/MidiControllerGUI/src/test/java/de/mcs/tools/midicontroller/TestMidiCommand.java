@@ -38,11 +38,15 @@ class TestMidiCommand {
   }
 
   @Test
-  void testPCOK() {
+  void testPCOK() throws Exception {
     MidiCommandPC midiCommand = MidiCommand.createPCCommand(CHANNEL).setProgram(PROGRAM);
     assertEquals(PROGRAM, midiCommand.getProgram());
     assertEquals(CHANNEL, midiCommand.getChannel());
     assertEquals(PROGRAM_STRING, midiCommand.toString());
+
+    midiCommand = (MidiCommandPC) MidiCommand.parse(PROGRAM_STRING);
+    assertEquals(PROGRAM, midiCommand.getProgram());
+    assertEquals(CHANNEL, midiCommand.getChannel());
   }
 
   @Test
@@ -52,12 +56,17 @@ class TestMidiCommand {
   }
 
   @Test
-  void testCCOK() {
+  void testCCOK() throws Exception {
     MidiCommandCC midiCommand = MidiCommand.createCCCommand(CHANNEL).setController(CONTROL).setValue(CONTROL_VALUE);
     assertEquals(CONTROL, midiCommand.getController());
     assertEquals(CHANNEL, midiCommand.getChannel());
     assertEquals(CONTROL_VALUE, midiCommand.getValue());
     assertEquals(CONTROL_STRING, midiCommand.toString());
+
+    midiCommand = (MidiCommandCC) MidiCommand.parse(CONTROL_STRING);
+    assertEquals(CONTROL, midiCommand.getController());
+    assertEquals(CHANNEL, midiCommand.getChannel());
+    assertEquals(CONTROL_VALUE, midiCommand.getValue());
   }
 
   @Test
@@ -77,10 +86,13 @@ class TestMidiCommand {
   }
 
   @Test
-  void testPAUSEOK() {
+  void testPAUSEOK() throws Exception {
     MidiCommandPAUSE midiCommand = MidiCommand.createPAUSECommand().setTime(PAUSE_TIME);
     assertEquals(PAUSE_TIME, midiCommand.getTime());
     assertEquals(PAUSE_STRING, midiCommand.toString());
+
+    midiCommand = (MidiCommandPAUSE) MidiCommand.parse(PAUSE_STRING);
+    assertEquals(PAUSE_TIME, midiCommand.getTime());
   }
 
   @Test

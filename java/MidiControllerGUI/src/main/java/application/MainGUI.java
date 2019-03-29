@@ -3,7 +3,6 @@ package application;
 import java.io.IOException;
 import java.util.ResourceBundle;
 
-import de.mcs.tools.midicontroller.data.ButtonData;
 import de.mcs.tools.midicontroller.data.ProgramData;
 import javafx.fxml.FXMLLoader;
 
@@ -35,8 +34,7 @@ public class MainGUI {
   }
 
   public void setProgramData(ProgramData programData) {
-    ButtonData[] buttons = programData.getButtons();
-    controller.setButtonData(buttons);
+    controller.setButtonData(programData);
   }
 
 }
