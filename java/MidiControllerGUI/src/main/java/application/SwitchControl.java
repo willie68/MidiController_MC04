@@ -8,9 +8,12 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.function.UnaryOperator;
 
+import de.mcs.tools.midicontroller.MidiCommands;
 import de.mcs.tools.midicontroller.data.ButtonData;
+import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
 import javafx.scene.control.ColorPicker;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextField;
@@ -38,6 +41,36 @@ public class SwitchControl extends GridPane {
 
   @FXML
   RadioButton typeToggle;
+
+  @FXML
+  TextField pushText;
+
+  @FXML
+  TextField releaseText;
+
+  @FXML
+  TextField clickText;
+
+  @FXML
+  TextField dblclickText;
+
+  @FXML
+  TextField longText;
+
+  @FXML
+  Button btnPushSwitch;
+
+  @FXML
+  Button btnReleaseSwitch;
+
+  @FXML
+  Button btnClickSwitch;
+
+  @FXML
+  Button btnDblClickSwitch;
+
+  @FXML
+  Button btnLongSwitch;
 
   @FXML
   URL location;
@@ -106,5 +139,28 @@ public class SwitchControl extends GridPane {
     // System.out.printf("color:%d, r: %d, g: %d, b:%d%n", color, red, green, blue);
     Color value = new Color((double) (red / 3.0), (double) (green / 12.0), (double) (blue / 48.0), 1.0);
     switchColor.setValue(value);
+  }
+
+  @FXML
+  public void doBtnMidi(ActionEvent event) {
+    if (event.getSource() instanceof Button) {
+      String midiString = "";
+      Button button = (Button) event.getSource();
+      if (button.getId().equals(btnClickSwitch.getId())) {
+        midiString = clickText.getText();
+      } else if (button.getId().equals(btnDblClickSwitch.getId())) {
+        midiString = dblclickText.getText();
+      } else if (button.getId().equals(btnLongSwitch.getId())) {
+        midiString = longText.getText();
+      } else if (button.getId().equals(btnPushSwitch.getId())) {
+        midiString = pushText.getText();
+      } else if (button.getId().equals(btnReleaseSwitch.getId())) {
+        midiString = releaseText.getText();
+      }
+
+      MidiCommands commands = MidiCommands.parse(midiString);
+
+      System.out.println(event.toString());
+    }
   }
 }
