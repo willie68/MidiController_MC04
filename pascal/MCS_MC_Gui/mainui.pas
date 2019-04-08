@@ -26,6 +26,7 @@ type
     FileExit1: TFileExit;
     FileOpen1: TFileOpen;
     FileSaveAs1: TFileSaveAs;
+    GroupBox1: TGroupBox;
     HelpAbout: THelpOnHelp;
     Image1: TImage;
     ImageList1: TImageList;
@@ -38,6 +39,7 @@ type
     Label6: TLabel;
     Label7: TLabel;
     Label8: TLabel;
+    Label9: TLabel;
     LabeledEdit1: TLabeledEdit;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
