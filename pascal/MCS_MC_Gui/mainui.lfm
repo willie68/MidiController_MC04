@@ -1,0 +1,38 @@
+object Form1: TForm1
+  Left = 236
+  Height = 425
+  Top = 114
+  Width = 657
+  Caption = 'Form1'
+  ClientHeight = 425
+  ClientWidth = 657
+  LCLVersion = '2.0.0.4'
+  object StatusBar1: TStatusBar
+    Left = 0
+    Height = 23
+    Top = 402
+    Width = 657
+    Panels = <    
+      item
+        Width = 50
+      end    
+      item
+        Width = 50
+      end    
+      item
+        Alignment = taRightJustify
+        Width = 50
+      end>
+    SimplePanel = False
+  end
+  object JSONPropStorage1: TJSONPropStorage
+    StoredValues = <>
+    Formatted = True
+    left = 576
+    top = 360
+  end
+  object TrayIcon1: TTrayIcon
+    left = 536
+    top = 360
+  end
+end
