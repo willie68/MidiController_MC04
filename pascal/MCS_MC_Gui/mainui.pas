@@ -7,7 +7,7 @@ interface
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, JSONPropStorage,
   ExtCtrls, ComCtrls, Menus, ActnList, StdActns, StdCtrls, ColorBox, EditBtn,
-  ufrmMidiSwitch, ufrmPreset, ufrmexppedal;
+  ufrmMidiSwitch, ufrmPreset, ufrmexppedal, fpjson, jsonparser;
 
 const
   APPTITLE = 'MCS MC Gui';
@@ -17,13 +17,13 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    frmPreset1: TfrmPreset;
     PresetCopy: TAction;
     FlowPanel1: TFlowPanel;
     frmExpPedal1: TfrmExpPedal;
     frmMidiSwitch1: TfrmMidiSwitch;
     frmMidiSwitch2: TfrmMidiSwitch;
     frmMidiSwitch3: TfrmMidiSwitch;
-    frmPreset1: TfrmPreset;
     ListView1: TListView;
     PresetDelete: TAction;
     PresetAdd: TAction;
@@ -50,19 +50,26 @@ type
     ToolBar1: TToolBar;
     tbHelp: TToolButton;
     ToolBar2: TToolBar;
+    ToolButton1: TToolButton;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
     ToolButton4: TToolButton;
+    ToolButton5: TToolButton;
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
+    ToolButton8: TToolButton;
     TrayIcon1: TTrayIcon;
+    procedure FileOpen1Accept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
-    procedure Label4Click(Sender: TObject);
     procedure StatusBar1Resize(Sender: TObject);
-    procedure ToolBar1Click(Sender: TObject);
   private
     ConfigFile: string;
+    FileName: string;
+    FJSON: TJSONObject;
+
+    procedure OpenFile();
+    procedure GettingPrograms();
   public
 
   end;
@@ -75,7 +82,7 @@ implementation
 {$R *.lfm}
 
 uses MCSMessageBox, MCSStrings, MCSLogging, MCSIniFiles,
-  MCSIO, MCSTools, MCSAbout;
+  MCSIO, MCSTools, MCSAbout, jsonscanner;
 
 { TForm1 }
 
@@ -98,16 +105,27 @@ begin
   frmMidiSwitch1.Caption := 'Switch 1';
   frmMidiSwitch2.Caption := 'Switch 2';
   frmMidiSwitch3.Caption := 'Switch 3';
+
+  if (ParamCount > 0) then
+  begin
+    FileName := ParamStr(1);
+    OpenFile();
+  end;
+
+end;
+
+procedure TForm1.FileOpen1Accept(Sender: TObject);
+var
+  myFileName: string;
+begin
+  myFileName := FileOpen1.Dialog.FileName;
+  FileName := myFileName;
+  OpenFile();
 end;
 
 procedure TForm1.HelpAboutExecute(Sender: TObject);
 begin
   Infobox.Show;
-end;
-
-procedure TForm1.Label4Click(Sender: TObject);
-begin
-
 end;
 
 procedure TForm1.StatusBar1Resize(Sender: TObject);
@@ -119,9 +137,51 @@ begin
   StatusBar1.Panels[0].Width := size;
 end;
 
-procedure TForm1.ToolBar1Click(Sender: TObject);
+procedure TForm1.OpenFile();
+var
+  jData: TJSONData;
+  F: TFileStream;
 begin
+  Form1.Caption := Infobox.AppTitel + ' - ' + FileName;
 
+  F := TFileStream.Create(FileName, fmOpenRead);
+  try
+    with TJSONParser.Create(F, jsonscanner.DefaultOptions) do
+      try
+        jData := Parse;
+      finally
+        Free;
+      end;
+  finally
+    F.Free;
+  end;
+  if jData.JSONType <> jtObject then
+    raise Exception.Create('no json found');
+  if Assigned(FJSON) then
+    FreeAndNil(FJSON);
+  FJSON := jData as TJSONObject;
+
+  GettingPrograms();
 end;
+
+procedure TForm1.GettingPrograms();
+var
+  presets: TJsonArray;
+  preset: TJSONObject;
+  presetName : string;
+  item : TListItem;
+  i : integer;
+begin
+  ListView1.Clear;
+  presets := FJSON.Arrays['programs'] ;
+  for i := 0 to presets.Count - 1 do
+   begin
+    preset :=  presets.Objects[i];
+    presetName := preset.Get('name');
+    item := ListView1.Items.Add();
+    item.caption := presetName;
+  end;
+end;
+
 
 end.

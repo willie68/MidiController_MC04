@@ -38,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="5">
+    <Units Count="6">
       <Unit0>
         <Filename Value="MCGui.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -74,6 +74,11 @@
         <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
       </Unit4>
+      <Unit5>
+        <Filename Value="umodels.pas"/>
+        <IsPartOfProject Value="True"/>
+        <UnitName Value="uModels"/>
+      </Unit5>
     </Units>
   </ProjectOptions>
   <CompilerOptions>

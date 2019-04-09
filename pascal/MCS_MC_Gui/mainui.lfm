@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 382
+  Left = 593
   Height = 846
-  Top = 139
+  Top = 147
   Width = 1215
   Caption = 'Form1'
   ClientHeight = 821
@@ -44,9 +44,8 @@ object Form1: TForm1
     Images = ImageList1
     ParentFont = False
     TabOrder = 1
-    OnClick = ToolBar1Click
     object tbHelp: TToolButton
-      Left = 51
+      Left = 159
       Top = 2
       Action = HelpAbout
     end
@@ -62,30 +61,49 @@ object Form1: TForm1
       Caption = 'ToolButton3'
       Style = tbsDivider
     end
+    object ToolButton1: TToolButton
+      Left = 51
+      Top = 2
+      Action = FileOpen1
+      ImageIndex = 262
+    end
+    object ToolButton5: TToolButton
+      Left = 96
+      Top = 2
+      Action = FileSaveAs1
+      Style = tbsButtonDrop
+    end
+    object ToolButton8: TToolButton
+      Left = 154
+      Height = 45
+      Top = 2
+      Caption = 'ToolButton8'
+      Style = tbsDivider
+    end
   end
   object ScrollBox1: TScrollBox
     Left = 219
     Height = 740
     Top = 52
     Width = 996
-    HorzScrollBar.Page = 992
-    VertScrollBar.Page = 685
+    HorzScrollBar.Page = 718
+    VertScrollBar.Page = 689
     Align = alClient
-    ClientHeight = 715
+    ClientHeight = 736
     ClientWidth = 992
     ParentFont = False
     TabOrder = 2
     object FlowPanel1: TFlowPanel
       Left = 0
-      Height = 715
+      Height = 736
       Top = 0
-      Width = 1261
+      Width = 992
       Align = alClient
       AutoSize = True
       ControlList = <      
         item
           Control = frmPreset1
-          WrapAfter = waAvoid
+          WrapAfter = waAuto
           Index = 0
         end      
         item
@@ -111,76 +129,33 @@ object Form1: TForm1
       FlowLayout = tlTop
       FlowStyle = fsLeftRightTopBottom
       TabOrder = 0
-      inline frmPreset1: TfrmPreset
-        Left = 1
-        Height = 112
-        Top = 1
-        Align = alTop
-        ClientHeight = 112
-        inherited GroupBox1: TGroupBox
-          Height = 112
-          Width = 947
-          ClientHeight = 87
-          ClientWidth = 943
-          inherited LabeledEdit1: TLabeledEdit
-            Left = 64
-            Top = 0
-          end
-          inherited Label1: TLabel
-            Left = 0
-            Top = 40
-          end
-          inherited SpinEdit1: TSpinEdit
-            Left = 64
-            Top = 40
-          end
-          inherited Label2: TLabel
-            Left = 192
-            Top = 0
-          end
-          inherited SpinEdit2: TSpinEdit
-            Left = 256
-            Top = 0
-          end
-          inherited Label3: TLabel
-            Left = 192
-            Top = 40
-          end
-          inherited SpinEdit3: TSpinEdit
-            Left = 256
-            Top = 40
-          end
-        end
-        inherited GroupBox2: TGroupBox
-          Left = 947
-          Height = 112
-          Width = 0
-          ClientHeight = 87
-          ClientWidth = 0
-        end
-      end
       inline frmMidiSwitch1: TfrmMidiSwitch
         Left = 1
-        Top = 113
+        Top = 117
         Anchors = []
-        TabOrder = 1
       end
       inline frmMidiSwitch2: TfrmMidiSwitch
         Left = 1
-        Top = 258
+        Top = 262
         Anchors = []
-        TabOrder = 2
+        TabOrder = 1
       end
       inline frmMidiSwitch3: TfrmMidiSwitch
         Left = 1
-        Top = 403
+        Top = 407
         Anchors = []
-        TabOrder = 3
+        TabOrder = 2
       end
       inline frmExpPedal1: TfrmExpPedal
         Left = 1
-        Top = 548
+        Top = 552
         Anchors = []
+        TabOrder = 3
+      end
+      inline frmPreset1: TfrmPreset
+        Left = 1
+        Top = 1
+        Align = alTop
         TabOrder = 4
       end
     end
@@ -208,12 +183,19 @@ object Form1: TForm1
       Width = 213
       Align = alClient
       Columns = <>
+      Font.CharSet = ANSI_CHARSET
+      Font.Color = clBlack
+      Font.Height = -23
+      Font.Name = 'Segoe UI'
+      Font.Pitch = fpVariable
+      Font.Quality = fqDraft
       Items.LazData = {
         6A00000004000000FFFFFFFFFFFFFFFFFFFFFFFF0000000004000000526F636B
         FFFFFFFFFFFFFFFFFFFFFFFF0000000003000000506F70FFFFFFFFFFFFFFFFFF
         FFFFFF0000000004000000536F756CFFFFFFFFFFFFFFFFFFFFFFFF0000000007
         000000416B757374696B
       }
+      ParentFont = False
       TabOrder = 0
     end
     object ToolBar2: TToolBar
@@ -286,13 +268,23 @@ object Form1: TForm1
     object FileOpen1: TFileOpen
       Category = 'File'
       Caption = '&Open'
+      Dialog.DefaultExt = '.json'
+      Dialog.Filter = 'json files (*.json)|*.json|all files (*.*)|*'
+      Dialog.Options = [ofPathMustExist, ofFileMustExist, ofEnableSizing]
       Hint = 'open preset file'
+      ImageIndex = 287
       ShortCut = 16463
+      OnAccept = FileOpen1Accept
     end
     object FileSaveAs1: TFileSaveAs
       Category = 'File'
       Caption = 'Save &as'
+      Dialog.DefaultExt = '.json'
+      Dialog.FileName = 'programdata.json'
+      Dialog.Filter = 'json file (*.json)|*.json'
+      Dialog.Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
       Hint = 'save as'
+      ImageIndex = 303
     end
     object FileExit1: TFileExit
       Category = 'File'
