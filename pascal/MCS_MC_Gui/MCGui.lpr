@@ -7,7 +7,8 @@ uses
   cthreads,
   {$ENDIF}{$ENDIF}
   Interfaces, // this includes the LCL widgetset
-  Forms, mainUi, ufrmMidiSwitch, ufrmPreset, ufrmexppedal, uModels
+  Forms, mainUi, ufrmMidiSwitch, ufrmPreset, ufrmexppedal, uModels,
+  ufrmMidiSequenz, ufrmMidiData
   { you can add units after this };
 
 {$R *.res}
@@ -17,6 +18,7 @@ begin
   Application.Scaled:=True;
   Application.Initialize;
   Application.CreateForm(TForm1, Form1);
+  Application.CreateForm(TFrmMidiSequenz, FrmMidiSequenz);
   Application.Run;
 end.
 

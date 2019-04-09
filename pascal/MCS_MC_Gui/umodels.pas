@@ -8,9 +8,20 @@ uses
   Classes, SysUtils, Graphics, contnrs;
 
 type
-  TButton = class;
+  TMidiButton = class;
   TSequence = class;
   TMidiData = class;
+  TPreset = class;
+
+  { TPresets }
+
+  TPresets = class
+    FPresets: TObjectList;
+  public
+    constructor Create;
+    destructor Destroy; override;
+  published
+  end;
 
   { TPreset }
 
@@ -25,7 +36,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    procedure AddButton(Button: TButton);
+    procedure AddButton(Button: TMidiButton);
   published
     property Name: string read FName write FName;
     property ProgramNumber: integer read FPrgNumber write FPrgNumber default 0;
@@ -33,22 +44,22 @@ type
     property ExternalMidi: integer read FExternalMidi write FExternalMidi default 0;
   end;
 
-  TButtonType = (MOMENTARY, TOGGLE);
+  TMidiButtonType = (MOMENTARY, TOGGLE);
 
-  TButton = class
+  TMidiButton = class
   private
     FName: string;
-    FType: TButtonType;
+    FType: TMidiButtonType;
     FColor: TColor;
   public
   published
     property Name: string read FName write FName;
-    property ButtonType: TButtonType read FType write FType default MOMENTARY;
+    property ButtonType: TMidiButtonType read FType write FType default MOMENTARY;
     property Color: TColor read FColor write FColor default 0;
   end;
 
   TSequenceType = (INTERNAL, BUTTON, EXPRESSION);
-  TSequenceEvent = (PUSH, Release, START, STOP, CLICK, DOUBLECLICK,
+  TSequenceEvent = (PUSH, RELEASE, START, STOP, CLICK, DOUBLECLICK,
     LONGCLICK, VALUECHANGE);
 
   { TSequence }
@@ -86,6 +97,19 @@ type
 
 implementation
 
+{ TPresets }
+
+constructor TPresets.Create;
+begin
+  FPresets := TObjectList.Create(True);
+end;
+
+destructor TPresets.Destroy;
+begin
+  inherited Destroy;
+  FPresets.Free;
+end;
+
 { TSequence }
 
 constructor TSequence.Create;
@@ -95,6 +119,7 @@ end;
 
 destructor TSequence.Destroy;
 begin
+  inherited Destroy;
   FDatas.Free;
 end;
 
@@ -116,11 +141,12 @@ end;
 
 destructor TPreset.Destroy;
 begin
+  inherited Destroy;
   FButtons.Free;
   FSequences.Free;
 end;
 
-procedure TPreset.AddButton(Button: TButton);
+procedure TPreset.AddButton(Button: TMidiButton);
 begin
   FButtons.Add(Button);
 end;

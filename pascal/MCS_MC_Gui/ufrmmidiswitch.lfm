@@ -1,31 +1,31 @@
 object frmMidiSwitch: TfrmMidiSwitch
   Left = 0
-  Height = 145
+  Height = 116
   Top = 0
-  Width = 947
-  ClientHeight = 145
-  ClientWidth = 947
-  DesignTimePPI = 120
+  Width = 758
+  ClientHeight = 116
+  ClientWidth = 758
   OnClick = FrameClick
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 409
-  DesignTop = 253
+  DesignLeft = 379
+  DesignTop = 110
   object GroupBox2: TGroupBox
     Left = 0
-    Height = 145
+    Height = 116
     Top = 0
-    Width = 344
+    Width = 275
     Align = alLeft
     Caption = 'Button'
-    ClientHeight = 120
-    ClientWidth = 340
+    ClientHeight = 96
+    ClientWidth = 271
+    ParentFont = False
     TabOrder = 0
     object Label1: TLabel
-      Left = 8
-      Height = 20
-      Top = 82
-      Width = 79
+      Left = 6
+      Height = 16
+      Top = 66
+      Width = 63
       Alignment = taCenter
       AutoSize = False
       Caption = 'Switch'
@@ -33,10 +33,10 @@ object frmMidiSwitch: TfrmMidiSwitch
       ParentFont = False
     end
     object Image1: TImage
-      Left = 8
-      Height = 72
+      Left = 6
+      Height = 58
       Top = 2
-      Width = 80
+      Width = 64
       Picture.Data = {
         1754506F727461626C654E6574776F726B477261706869637B4B000089504E47
         0D0A1A0A0000000D4948445200000080000000800806000000C33E61CB000000
@@ -647,21 +647,21 @@ object frmMidiSwitch: TfrmMidiSwitch
       Proportional = True
     end
     object Label3: TLabel
-      Left = 100
-      Height = 20
-      Top = 60
-      Width = 36
+      Left = 80
+      Height = 15
+      Top = 56
+      Width = 29
       Caption = 'Color'
       ParentColor = False
       ParentFont = False
     end
-    object LabeledEdit1: TLabeledEdit
-      Left = 150
-      Height = 28
+    object lbName: TLabeledEdit
+      Left = 120
+      Height = 23
       Top = 2
-      Width = 180
-      EditLabel.Height = 20
-      EditLabel.Width = 40
+      Width = 144
+      EditLabel.Height = 15
+      EditLabel.Width = 32
       EditLabel.Caption = 'Name'
       EditLabel.ParentColor = False
       EditLabel.ParentFont = False
@@ -669,158 +669,171 @@ object frmMidiSwitch: TfrmMidiSwitch
       LabelSpacing = 8
       ParentFont = False
       TabOrder = 0
-      Text = 'LabeledEdit1'
+      Text = 'lbName'
     end
-    object RadioButton1: TRadioButton
-      Left = 150
-      Height = 24
-      Top = 32
-      Width = 71
+    object rbToggle: TRadioButton
+      Left = 120
+      Height = 19
+      Top = 26
+      Width = 57
       Caption = 'Toggle'
       ParentFont = False
       TabOrder = 1
     end
-    object RadioButton2: TRadioButton
-      Left = 230
-      Height = 24
-      Top = 32
-      Width = 100
+    object rbMomentary: TRadioButton
+      Left = 184
+      Height = 19
+      Top = 26
+      Width = 82
       Caption = 'Momentary'
       ParentFont = False
       TabOrder = 2
     end
-    object ColorButton1: TColorButton
-      Left = 150
-      Height = 31
-      Top = 62
-      Width = 180
+    object btnColor: TColorButton
+      Left = 120
+      Height = 25
+      Top = 54
+      Width = 144
       BorderWidth = 2
       ButtonColorSize = 16
       ButtonColor = clBlack
       ParentFont = False
     end
+    object Label2: TLabel
+      Left = 80
+      Height = 15
+      Top = 27
+      Width = 25
+      Caption = 'Type'
+      ParentColor = False
+    end
   end
   object GroupBox1: TGroupBox
-    Left = 344
-    Height = 145
+    Left = 275
+    Height = 116
     Top = 0
-    Width = 603
+    Width = 483
     Align = alClient
     Anchors = [akTop, akRight]
     Caption = 'Midi'
-    ClientHeight = 120
-    ClientWidth = 599
+    ClientHeight = 96
+    ClientWidth = 479
     ParentFont = False
     TabOrder = 1
-    object EditButton1: TEditButton
-      Left = 112
-      Height = 28
+    object ebClick: TEditButton
+      Left = 90
+      Height = 23
       Top = 0
-      Width = 200
-      ButtonWidth = 29
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = ebClickButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 2
-      Text = 'EditButton1'
+      Text = 'ebClick'
     end
     object Label4: TLabel
-      Left = 22
-      Height = 20
+      Left = 18
+      Height = 15
       Top = 2
-      Width = 31
+      Width = 26
       Caption = 'Click'
       ParentColor = False
       ParentFont = False
     end
     object Label5: TLabel
-      Left = 22
-      Height = 20
-      Top = 38
-      Width = 78
+      Left = 18
+      Height = 15
+      Top = 30
+      Width = 62
       Caption = 'Doubleclick'
       ParentColor = False
       ParentFont = False
     end
     object Label6: TLabel
-      Left = 13
-      Height = 20
-      Top = 75
-      Width = 62
+      Left = 18
+      Height = 15
+      Top = 60
+      Width = 51
       Caption = 'Longclick'
       ParentColor = False
       ParentFont = False
     end
     object Label7: TLabel
-      Left = 332
-      Height = 20
+      Left = 266
+      Height = 15
       Top = 2
-      Width = 30
+      Width = 26
       Caption = 'Push'
       ParentColor = False
       ParentFont = False
     end
     object Label8: TLabel
-      Left = 332
-      Height = 20
-      Top = 38
-      Width = 51
+      Left = 266
+      Height = 15
+      Top = 30
+      Width = 39
       Caption = 'Release'
       ParentColor = False
       ParentFont = False
     end
-    object EditButton2: TEditButton
-      Left = 112
-      Height = 28
-      Top = 34
-      Width = 200
-      ButtonWidth = 29
+    object ebDblClick: TEditButton
+      Left = 90
+      Height = 23
+      Top = 27
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = ebClickButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 4
-      Text = 'EditButton2'
+      Text = 'ebDblClick'
     end
-    object EditButton3: TEditButton
-      Left = 112
-      Height = 28
-      Top = 70
-      Width = 200
-      ButtonWidth = 29
+    object ebLongClick: TEditButton
+      Left = 90
+      Height = 23
+      Top = 56
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = ebClickButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 0
-      Text = 'EditButton3'
+      Text = 'ebLongClick'
     end
-    object EditButton4: TEditButton
-      Left = 392
-      Height = 28
+    object ebPush: TEditButton
+      Left = 314
+      Height = 23
       Top = 0
-      Width = 200
-      ButtonWidth = 29
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = ebClickButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 1
-      Text = 'EditButton4'
+      Text = 'ebPush'
     end
-    object EditButton5: TEditButton
-      Left = 392
-      Height = 28
-      Top = 34
-      Width = 200
-      ButtonWidth = 29
+    object ebRelease: TEditButton
+      Left = 314
+      Height = 23
+      Top = 27
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = ebClickButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 3
-      Text = 'EditButton5'
+      Text = 'ebRelease'
     end
   end
 end

@@ -5,9 +5,9 @@ unit mainUi;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, JSONPropStorage,
+  Classes, SysUtils, Forms, Controls, Graphics, Dialogs, LCLType, JSONPropStorage,
   ExtCtrls, ComCtrls, Menus, ActnList, StdActns, StdCtrls, ColorBox, EditBtn,
-  ufrmMidiSwitch, ufrmPreset, ufrmexppedal, fpjson, jsonparser;
+  ufrmMidiSwitch, ufrmPreset, ufrmexppedal, fpjson, jsonparser, uModels;
 
 const
   APPTITLE = 'MCS MC Gui';
@@ -17,13 +17,10 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    frmExpPedal1: TfrmExpPedal;
     frmPreset1: TfrmPreset;
     PresetCopy: TAction;
     FlowPanel1: TFlowPanel;
-    frmExpPedal1: TfrmExpPedal;
-    frmMidiSwitch1: TfrmMidiSwitch;
-    frmMidiSwitch2: TfrmMidiSwitch;
-    frmMidiSwitch3: TfrmMidiSwitch;
     ListView1: TListView;
     PresetDelete: TAction;
     PresetAdd: TAction;
@@ -62,11 +59,20 @@ type
     procedure FileOpen1Accept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
+    procedure PresetAddExecute(Sender: TObject);
+    procedure PresetCopyExecute(Sender: TObject);
+    procedure PresetDeleteExecute(Sender: TObject);
     procedure StatusBar1Resize(Sender: TObject);
   private
     ConfigFile: string;
     FileName: string;
     FJSON: TJSONObject;
+
+    Presets : TPresets;
+
+    frmMidiSwitch1: TfrmMidiSwitch;
+    frmMidiSwitch2: TfrmMidiSwitch;
+    frmMidiSwitch3: TfrmMidiSwitch;
 
     procedure OpenFile();
     procedure GettingPrograms();
@@ -87,6 +93,7 @@ uses MCSMessageBox, MCSStrings, MCSLogging, MCSIniFiles,
 { TForm1 }
 
 procedure TForm1.FormCreate(Sender: TObject);
+
 begin
   ConfigFile := GetAppConfigFile(False);
   JSONPropStorage1.JSONFileName := ConfigFile;
@@ -102,9 +109,25 @@ begin
 
   tbHelp.Align := alRight;
 
+  frmMidiSwitch1 := TfrmMidiSwitch.Create(FlowPanel1);
+  frmMidiSwitch1.Name:= 'frmMidiSwitch1';
+  frmMidiSwitch2 := TfrmMidiSwitch.Create(FlowPanel1);
+  frmMidiSwitch2.Name:= 'frmMidiSwitch2';
+  frmMidiSwitch3 := TfrmMidiSwitch.Create(FlowPanel1);
+  frmMidiSwitch3.Name:= 'frmMidiSwitch3';
+
+  FlowPanel1.InsertControl(frmMidiSwitch1, 0);
+  FlowPanel1.InsertControl(frmMidiSwitch2, 1);
+  FlowPanel1.InsertControl(frmMidiSwitch3, 2);
+  FlowPanel1.ControlList.Items[2].Index:=1;
+  FlowPanel1.ControlList.Items[3].Index:=2;
+  FlowPanel1.ControlList.Items[4].Index:=3;
+
   frmMidiSwitch1.Caption := 'Switch 1';
   frmMidiSwitch2.Caption := 'Switch 2';
   frmMidiSwitch3.Caption := 'Switch 3';
+
+  Presets := TPresets.Create;
 
   if (ParamCount > 0) then
   begin
@@ -126,6 +149,36 @@ end;
 procedure TForm1.HelpAboutExecute(Sender: TObject);
 begin
   Infobox.Show;
+end;
+
+procedure TForm1.PresetAddExecute(Sender: TObject);
+var
+  presetName: string;
+  item: TListItem;
+begin
+  if (InputQuery('Name of the preset', 'Name:', presetName)) then
+  begin
+    item := ListView1.Items.Add;
+    item.Caption := presetName;
+  end;
+end;
+
+procedure TForm1.PresetCopyExecute(Sender: TObject);
+begin
+
+end;
+
+procedure TForm1.PresetDeleteExecute(Sender: TObject);
+begin
+  if (not (ListView1.Selected = nil)) then
+  begin
+    if Application.MessageBox(PChar('Do you want to delete the preset "' +
+      ListView1.Selected.Caption + '" ? '), 'Delete', MB_ICONQUESTION + MB_OKCANCEL) =
+      ID_YES then
+    begin
+      ShowMessage('Caption ' + ListView1.Selected.Caption);
+    end;
+  end;
 end;
 
 procedure TForm1.StatusBar1Resize(Sender: TObject);
@@ -165,22 +218,29 @@ begin
 end;
 
 procedure TForm1.GettingPrograms();
+var MidiButton : TMidiButton;
 var
-  presets: TJsonArray;
-  preset: TJSONObject;
-  presetName : string;
-  item : TListItem;
-  i : integer;
+  jsonPresets: TJsonArray;
+  jsonPreset: TJSONObject;
+  presetName: string;
+  item: TListItem;
+  i: integer;
 begin
   ListView1.Clear;
-  presets := FJSON.Arrays['programs'] ;
-  for i := 0 to presets.Count - 1 do
-   begin
-    preset :=  presets.Objects[i];
-    presetName := preset.Get('name');
+  jsonPresets := FJSON.Arrays['programs'];
+  for i := 0 to jsonPresets.Count - 1 do
+  begin
+    jsonPreset := jsonPresets.Objects[i];
+    presetName := jsonPreset.Get('name');
     item := ListView1.Items.Add();
-    item.caption := presetName;
+    item.Caption := presetName;
   end;
+
+  MidiButton := TMidiButton.Create;
+  MidiButton.Name:= 'Chorus';
+  MidiButton.ButtonType:=TOGGLE;
+  MidiButton.Color:=clRed;
+  frmMidiSwitch1.SetMidiButton(MidiButton);
 end;
 
 

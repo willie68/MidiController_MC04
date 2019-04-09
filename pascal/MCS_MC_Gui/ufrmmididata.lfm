@@ -1,0 +1,67 @@
+object frmMidiData: TfrmMidiData
+  Left = 0
+  Height = 122
+  Top = 0
+  Width = 320
+  ClientHeight = 122
+  ClientWidth = 320
+  TabOrder = 0
+  DesignLeft = 588
+  DesignTop = 128
+  object GroupBox1: TGroupBox
+    Left = 0
+    Height = 122
+    Top = 0
+    Width = 320
+    Align = alClient
+    Caption = 'Mididata'
+    ClientHeight = 102
+    ClientWidth = 316
+    TabOrder = 0
+    object cbMidiCOmmand: TComboBox
+      Left = 72
+      Height = 23
+      Top = 0
+      Width = 168
+      ItemHeight = 15
+      ItemIndex = 0
+      Items.Strings = (
+        'Program Change'
+        'Control Change'
+        'Next Program'
+        'Previous Program'
+        'Note On'
+        'Note Off'
+      )
+      Style = csDropDownList
+      TabOrder = 0
+      Text = 'Program Change'
+    end
+    object SpeedButton1: TSpeedButton
+      Left = 288
+      Height = 22
+      Top = 0
+      Width = 23
+      Caption = '-'
+      OnClick = SpeedButton1Click
+    end
+    object TrackBar1: TTrackBar
+      Left = 72
+      Height = 25
+      Top = 32
+      Width = 172
+      Max = 127
+      Position = 0
+      TabOrder = 1
+    end
+    object TrackBar2: TTrackBar
+      Left = 72
+      Height = 25
+      Top = 64
+      Width = 168
+      Max = 127
+      Position = 0
+      TabOrder = 2
+    end
+  end
+end

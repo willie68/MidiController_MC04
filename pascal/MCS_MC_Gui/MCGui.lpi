@@ -38,7 +38,7 @@
         <PackageName Value="LCL"/>
       </Item1>
     </RequiredPackages>
-    <Units Count="6">
+    <Units Count="8">
       <Unit0>
         <Filename Value="MCGui.lpr"/>
         <IsPartOfProject Value="True"/>
@@ -79,6 +79,20 @@
         <IsPartOfProject Value="True"/>
         <UnitName Value="uModels"/>
       </Unit5>
+      <Unit6>
+        <Filename Value="ufrmmidisequenz.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="FrmMidiSequenz"/>
+        <ResourceBaseClass Value="Form"/>
+        <UnitName Value="ufrmMidiSequenz"/>
+      </Unit6>
+      <Unit7>
+        <Filename Value="ufrmmididata.pas"/>
+        <IsPartOfProject Value="True"/>
+        <ComponentName Value="frmMidiData"/>
+        <ResourceBaseClass Value="Frame"/>
+        <UnitName Value="ufrmMidiData"/>
+      </Unit7>
     </Units>
   </ProjectOptions>
   <CompilerOptions>
@@ -89,7 +103,7 @@
     </Target>
     <SearchPaths>
       <IncludeFiles Value="$(ProjOutDir)"/>
-      <OtherUnitFiles Value="H:\privat\git-sourcen\Lazarus_Libraries\"/>
+      <OtherUnitFiles Value="H:\privat\git-sourcen\Lazarus_Libraries\;..\..\..\Lazarus_Libraries"/>
       <UnitOutputDirectory Value="lib\$(TargetCPU)-$(TargetOS)"/>
     </SearchPaths>
     <Linking>
@@ -101,7 +115,7 @@
     </Linking>
   </CompilerOptions>
   <Debugging>
-    <Exceptions Count="3">
+    <Exceptions Count="4">
       <Item1>
         <Name Value="EAbort"/>
       </Item1>
@@ -111,6 +125,9 @@
       <Item3>
         <Name Value="EFOpenError"/>
       </Item3>
+      <Item4>
+        <Name Value="EComponentError"/>
+      </Item4>
     </Exceptions>
   </Debugging>
 </CONFIG>
