@@ -6,7 +6,8 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, JSONPropStorage,
-  ExtCtrls, ComCtrls, Menus, ActnList, StdActns, StdCtrls, ColorBox, EditBtn;
+  ExtCtrls, ComCtrls, Menus, ActnList, StdActns, StdCtrls, ColorBox, EditBtn,
+  ufrmMidiSwitch, ufrmPreset, ufrmexppedal;
 
 const
   APPTITLE = 'MCS MC Gui';
@@ -16,31 +17,24 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
+    PresetCopy: TAction;
+    FlowPanel1: TFlowPanel;
+    frmExpPedal1: TfrmExpPedal;
+    frmMidiSwitch1: TfrmMidiSwitch;
+    frmMidiSwitch2: TfrmMidiSwitch;
+    frmMidiSwitch3: TfrmMidiSwitch;
+    frmPreset1: TfrmPreset;
+    ListView1: TListView;
+    PresetDelete: TAction;
+    PresetAdd: TAction;
     ActionList1: TActionList;
-    ColorButton1: TColorButton;
-    EditButton1: TEditButton;
-    EditButton2: TEditButton;
-    EditButton3: TEditButton;
-    EditButton4: TEditButton;
-    EditButton5: TEditButton;
     FileExit1: TFileExit;
     FileOpen1: TFileOpen;
     FileSaveAs1: TFileSaveAs;
-    GroupBox1: TGroupBox;
     HelpAbout: THelpOnHelp;
-    Image1: TImage;
     ImageList1: TImageList;
     JSONPropStorage1: TJSONPropStorage;
-    Label1: TLabel;
-    Label2: TLabel;
-    Label3: TLabel;
-    Label4: TLabel;
-    Label5: TLabel;
-    Label6: TLabel;
-    Label7: TLabel;
-    Label8: TLabel;
     Label9: TLabel;
-    LabeledEdit1: TLabeledEdit;
     MainMenu1: TMainMenu;
     MenuItem1: TMenuItem;
     FileOpen: TMenuItem;
@@ -49,16 +43,18 @@ type
     MenuItem4: TMenuItem;
     MenuItem5: TMenuItem;
     N1: TMenuItem;
-    Panel1: TPanel;
-    Panel2: TPanel;
-    RadioButton1: TRadioButton;
-    RadioButton2: TRadioButton;
+    Panel3: TPanel;
     ScrollBox1: TScrollBox;
+    Splitter1: TSplitter;
     StatusBar1: TStatusBar;
     ToolBar1: TToolBar;
     tbHelp: TToolButton;
+    ToolBar2: TToolBar;
     ToolButton2: TToolButton;
     ToolButton3: TToolButton;
+    ToolButton4: TToolButton;
+    ToolButton6: TToolButton;
+    ToolButton7: TToolButton;
     TrayIcon1: TTrayIcon;
     procedure FormCreate(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
@@ -97,7 +93,11 @@ begin
 
   Caption := Infobox.AppTitel;
 
-  tbHelp.Align:=alRight;
+  tbHelp.Align := alRight;
+
+  frmMidiSwitch1.Caption := 'Switch 1';
+  frmMidiSwitch2.Caption := 'Switch 2';
+  frmMidiSwitch3.Caption := 'Switch 3';
 end;
 
 procedure TForm1.HelpAboutExecute(Sender: TObject);
