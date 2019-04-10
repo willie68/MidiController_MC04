@@ -3,6 +3,7 @@ object frmMidiSwitch: TfrmMidiSwitch
   Height = 116
   Top = 0
   Width = 758
+  AutoSize = True
   ClientHeight = 116
   ClientWidth = 758
   OnClick = FrameClick
@@ -669,7 +670,6 @@ object frmMidiSwitch: TfrmMidiSwitch
       LabelSpacing = 8
       ParentFont = False
       TabOrder = 0
-      Text = 'lbName'
     end
     object rbToggle: TRadioButton
       Left = 120
@@ -714,7 +714,6 @@ object frmMidiSwitch: TfrmMidiSwitch
     Top = 0
     Width = 483
     Align = alClient
-    Anchors = [akTop, akRight]
     Caption = 'Midi'
     ClientHeight = 96
     ClientWidth = 479
@@ -732,7 +731,6 @@ object frmMidiSwitch: TfrmMidiSwitch
       ParentFont = False
       PasswordChar = #0
       TabOrder = 2
-      Text = 'ebClick'
     end
     object Label4: TLabel
       Left = 18
@@ -791,7 +789,6 @@ object frmMidiSwitch: TfrmMidiSwitch
       ParentFont = False
       PasswordChar = #0
       TabOrder = 4
-      Text = 'ebDblClick'
     end
     object ebLongClick: TEditButton
       Left = 90
@@ -805,7 +802,6 @@ object frmMidiSwitch: TfrmMidiSwitch
       ParentFont = False
       PasswordChar = #0
       TabOrder = 0
-      Text = 'ebLongClick'
     end
     object ebPush: TEditButton
       Left = 314
@@ -819,7 +815,6 @@ object frmMidiSwitch: TfrmMidiSwitch
       ParentFont = False
       PasswordChar = #0
       TabOrder = 1
-      Text = 'ebPush'
     end
     object ebRelease: TEditButton
       Left = 314
@@ -833,7 +828,6 @@ object frmMidiSwitch: TfrmMidiSwitch
       ParentFont = False
       PasswordChar = #0
       TabOrder = 3
-      Text = 'ebRelease'
     end
   end
 end

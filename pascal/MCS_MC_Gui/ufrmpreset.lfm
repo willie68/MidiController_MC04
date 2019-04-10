@@ -1,112 +1,120 @@
 object frmPreset: TfrmPreset
   Left = 0
-  Height = 116
+  Height = 93
   Top = 0
-  Width = 947
-  ClientHeight = 116
-  ClientWidth = 947
-  DesignTimePPI = 120
+  Width = 579
+  AutoSize = True
+  ClientHeight = 93
+  ClientWidth = 579
   ParentFont = False
   TabOrder = 0
   DesignLeft = 409
   DesignTop = 179
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 116
+    Height = 93
     Top = 0
-    Width = 400
+    Width = 320
     Align = alLeft
     Caption = 'Preset'
-    ClientHeight = 91
-    ClientWidth = 396
+    ClientHeight = 73
+    ClientWidth = 316
+    ParentFont = False
     TabOrder = 0
     object LabeledEdit1: TLabeledEdit
-      Left = 80
-      Height = 28
-      Top = 8
-      Width = 100
-      EditLabel.Height = 20
-      EditLabel.Width = 40
+      Left = 64
+      Height = 23
+      Top = 6
+      Width = 80
+      EditLabel.Height = 15
+      EditLabel.Width = 32
       EditLabel.Caption = 'Name'
       EditLabel.ParentColor = False
+      EditLabel.ParentFont = False
       LabelPosition = lpLeft
       LabelSpacing = 8
+      ParentFont = False
       TabOrder = 0
       Text = 'LabeledEdit1'
     end
     object Label1: TLabel
-      Left = 16
-      Height = 20
-      Top = 48
-      Width = 58
+      Left = 13
+      Height = 15
+      Top = 38
+      Width = 48
       Caption = 'Nummer'
       ParentColor = False
+      ParentFont = False
     end
     object SpinEdit1: TSpinEdit
-      Left = 80
-      Height = 28
-      Top = 48
-      Width = 99
+      Left = 64
+      Height = 23
+      Top = 38
+      Width = 79
       MaxValue = 128
       MinValue = 1
+      ParentFont = False
       TabOrder = 1
       Value = 1
     end
     object Label2: TLabel
-      Left = 208
-      Height = 20
-      Top = 8
-      Width = 41
+      Left = 166
+      Height = 15
+      Top = 6
+      Width = 35
       Caption = 'int. PC'
       ParentColor = False
+      ParentFont = False
     end
     object SpinEdit2: TSpinEdit
-      Left = 272
-      Height = 28
-      Top = 8
-      Width = 99
+      Left = 218
+      Height = 23
+      Top = 6
+      Width = 79
       MaxValue = 128
       MinValue = 1
+      ParentFont = False
       TabOrder = 2
       Value = 1
     end
     object Label3: TLabel
-      Left = 208
-      Height = 20
-      Top = 48
-      Width = 44
+      Left = 166
+      Height = 15
+      Top = 38
+      Width = 36
       Caption = 'ext. PC'
       ParentColor = False
+      ParentFont = False
     end
     object SpinEdit3: TSpinEdit
-      Left = 272
-      Height = 28
-      Top = 48
-      Width = 99
+      Left = 218
+      Height = 23
+      Top = 38
+      Width = 79
       MaxValue = 128
       MinValue = 1
+      ParentFont = False
       TabOrder = 3
       Value = 1
     end
   end
   object GroupBox2: TGroupBox
-    Left = 400
-    Height = 116
+    Left = 320
+    Height = 93
     Top = 0
-    Width = 547
+    Width = 259
     Align = alClient
-    Anchors = [akTop, akRight]
     Caption = 'Midi'
-    ClientHeight = 91
-    ClientWidth = 543
+    ClientHeight = 73
+    ClientWidth = 255
     ParentFont = False
     TabOrder = 1
     object EditButton1: TEditButton
-      Left = 112
-      Height = 28
-      Top = 8
-      Width = 200
-      ButtonWidth = 29
+      Left = 90
+      Height = 23
+      Top = 6
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
       ParentFont = False
@@ -115,29 +123,29 @@ object frmPreset: TfrmPreset
       Text = 'EditButton1'
     end
     object Label4: TLabel
-      Left = 22
-      Height = 20
-      Top = 10
-      Width = 31
+      Left = 18
+      Height = 15
+      Top = 8
+      Width = 24
       Caption = 'Start'
       ParentColor = False
       ParentFont = False
     end
     object Label5: TLabel
-      Left = 22
-      Height = 20
-      Top = 46
-      Width = 31
+      Left = 18
+      Height = 15
+      Top = 37
+      Width = 24
       Caption = 'Stop'
       ParentColor = False
       ParentFont = False
     end
     object EditButton2: TEditButton
-      Left = 112
-      Height = 28
-      Top = 42
-      Width = 200
-      ButtonWidth = 29
+      Left = 90
+      Height = 23
+      Top = 34
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
       ParentFont = False

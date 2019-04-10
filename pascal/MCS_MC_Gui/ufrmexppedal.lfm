@@ -1,30 +1,31 @@
 object frmExpPedal: TfrmExpPedal
   Left = 0
-  Height = 135
+  Height = 108
   Top = 0
-  Width = 947
-  ClientHeight = 135
-  ClientWidth = 947
-  DesignTimePPI = 120
+  Width = 335
+  AutoSize = True
+  ClientHeight = 108
+  ClientWidth = 335
   ParentFont = False
   TabOrder = 0
   DesignLeft = 366
   DesignTop = 179
   object GroupBox2: TGroupBox
     Left = 0
-    Height = 135
+    Height = 108
     Top = 0
-    Width = 947
+    Width = 335
     Align = alClient
     Caption = 'Expression Pedal'
-    ClientHeight = 110
-    ClientWidth = 943
+    ClientHeight = 88
+    ClientWidth = 331
+    ParentFont = False
     TabOrder = 0
     object Label1: TLabel
-      Left = 8
-      Height = 20
-      Top = 82
-      Width = 79
+      Left = 6
+      Height = 16
+      Top = 66
+      Width = 63
       Alignment = taCenter
       AutoSize = False
       Caption = 'Expression'
@@ -32,10 +33,10 @@ object frmExpPedal: TfrmExpPedal
       ParentFont = False
     end
     object Image1: TImage
-      Left = 8
-      Height = 72
+      Left = 6
+      Height = 58
       Top = 2
-      Width = 80
+      Width = 64
       OnClick = Image1Click
       Picture.Data = {
         1754506F727461626C654E6574776F726B47726170686963D73D000089504E47
@@ -538,20 +539,20 @@ object frmExpPedal: TfrmExpPedal
       Proportional = True
     end
     object Label4: TLabel
-      Left = 104
-      Height = 20
+      Left = 83
+      Height = 15
       Top = 2
-      Width = 88
+      Width = 70
       Caption = 'Value change'
       ParentColor = False
       ParentFont = False
     end
     object EditButton1: TEditButton
-      Left = 200
-      Height = 28
+      Left = 160
+      Height = 23
       Top = 0
-      Width = 200
-      ButtonWidth = 29
+      Width = 160
+      ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
       ParentFont = False

@@ -79,7 +79,9 @@ type
     property Datas: TObjectList read FDatas;
   end;
 
-  TMidiDataType = (PC, CC, NON, NOFF, PC_PREV, PC_NEXT);
+  TMidiDataType = (PC, CC, NON, NOFF, PC_PREV, PC_NEXT, WAIT);
+
+  { TMidiData }
 
   TMidiData = class
   private
@@ -87,15 +89,68 @@ type
     FChannel: byte;
     FData1: byte;
     FData2: byte;
+    function GetHumanString: string;
+    procedure SetHumanString(AValue: string);
   public
   published
     property MidiType: TMidiDataType read FMidiType write FMidiType;
     property Channel: byte read FChannel write FChannel;
     property Data1: byte read FData1 write FData1;
     property Data2: byte read FData2 write FData2;
+    property HumanString : string read GetHumanString write SetHumanString;
   end;
 
 implementation
+
+{ TMidiData }
+
+function TMidiData.GetHumanString: string;
+var shortType, mask : string;
+begin
+  case FMidiType of
+   PC:
+   begin
+     shortType := 'PC';
+     mask := '%0:s%2:.2d@%1:.2d'
+   end;
+   CC:
+   begin
+     shortType := 'CC';
+     mask := '%0:s%2:.2d:%3:d@%1:.2d'
+   end;
+   NON:
+   begin
+     shortType := 'NOTE_ON';
+     mask := '%0:s%2:.2d:%3:d@%1:.2d'
+   end;
+   NOFF:
+   begin
+     shortType := 'NOTE_OFF';
+     mask := '%0:s%2:.2d:%3:d@%1:.2d'
+   end;
+   PC_PREV:
+   begin
+     shortType := 'PC_PREV';
+     mask := '%0:s@%1:.2d'
+   end;
+   PC_NEXT:
+   begin
+     shortType := 'PC_NEXT';
+     mask := '%0:s@%1:.2d'
+   end;
+   WAIT:
+   begin
+     shortType := 'WAIT';
+     mask := '%0:s@%4:d'
+   end;
+  end;
+  Result := Format(mask, [shortType, FChannel, FData1, FData2, (FData1*127)+FData2]);
+end;
+
+procedure TMidiData.SetHumanString(AValue: string);
+begin
+
+end;
 
 { TPresets }
 
