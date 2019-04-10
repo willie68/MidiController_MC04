@@ -17,8 +17,6 @@ type
   { TForm1 }
 
   TForm1 = class(TForm)
-    frmExpPedal1: TfrmExpPedal;
-    frmPreset1: TfrmPreset;
     PresetCopy: TAction;
     FlowPanel1: TFlowPanel;
     ListView1: TListView;
@@ -69,7 +67,8 @@ type
     FJSON: TJSONObject;
 
     Presets : TPresets;
-
+    frmPreset: TfrmPreset;
+    frmexppedal : TfrmExpPedal;
     frmMidiSwitch1: TfrmMidiSwitch;
     frmMidiSwitch2: TfrmMidiSwitch;
     frmMidiSwitch3: TfrmMidiSwitch;
@@ -108,6 +107,12 @@ begin
   Caption := Infobox.AppTitel;
 
   tbHelp.Align := alRight;
+
+  frmPreset := TfrmPreset.Create(FlowPanel1);
+  FlowPanel1.InsertControl(frmPreset, 0);
+
+  frmexppedal := TfrmExpPedal.Create(FlowPanel1);
+  FlowPanel1.InsertControl(frmexppedal, 1);
 
   frmMidiSwitch1 := TfrmMidiSwitch.Create(FlowPanel1);
   frmMidiSwitch1.Name:= 'frmMidiSwitch1';

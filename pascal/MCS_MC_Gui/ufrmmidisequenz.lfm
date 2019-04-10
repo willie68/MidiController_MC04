@@ -15,13 +15,14 @@ object FrmMidiSequenz: TFrmMidiSequenz
     Left = 64
     Height = 23
     Top = 16
-    Width = 176
+    Width = 144
     EditLabel.Height = 15
     EditLabel.Width = 44
     EditLabel.Caption = 'Sequenz'
     EditLabel.ParentColor = False
     LabelPosition = lpLeft
     LabelSpacing = 8
+    ReadOnly = True
     TabOrder = 0
   end
   object ScrollBox1: TScrollBox
@@ -88,20 +89,30 @@ object FrmMidiSequenz: TFrmMidiSequenz
     end
   end
   object sbSave: TSpeedButton
-    Left = 280
+    Left = 248
     Height = 32
     Top = 16
     Width = 32
-    Caption = 'OK'
+    Images = Form1.ImageList1
+    ImageIndex = 303
     OnClick = sbSaveClick
   end
   object SpeedButton1: TSpeedButton
-    Left = 248
+    Left = 216
     Height = 32
     Top = 16
     Width = 32
     Images = Form1.ImageList1
     ImageIndex = 251
     OnClick = SpeedButton1Click
+  end
+  object sbCancel: TSpeedButton
+    Left = 280
+    Height = 32
+    Top = 16
+    Width = 32
+    Images = Form1.ImageList1
+    ImageIndex = 106
+    OnClick = sbCancelClick
   end
 end

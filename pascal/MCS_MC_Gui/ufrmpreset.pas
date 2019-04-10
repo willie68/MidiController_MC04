@@ -25,6 +25,7 @@ type
     SpinEdit1: TSpinEdit;
     SpinEdit2: TSpinEdit;
     SpinEdit3: TSpinEdit;
+    procedure EditButtonButtonClick(Sender: TObject);
   private
 
   public
@@ -34,6 +35,15 @@ type
 implementation
 
 {$R *.lfm}
+
+uses ufrmMidiSequenz;
+
+{ TfrmPreset }
+
+procedure TfrmPreset.EditButtonButtonClick(Sender: TObject);
+begin
+  FrmMidiSequenz.Show();
+end;
 
 end.
 

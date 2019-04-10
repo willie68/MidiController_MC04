@@ -555,10 +555,10 @@ object frmExpPedal: TfrmExpPedal
       ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = EditButtonButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 0
-      Text = 'EditButton1'
     end
   end
 end

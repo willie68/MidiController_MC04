@@ -125,12 +125,13 @@ begin
   end
   else if (cbMidiCOmmand.ItemIndex = 6) then
   begin
-    lbData1.Visible := true;
-    lbChannel.Caption := 'mseconds';
-    seData1.Visible := true;
-    tbData1.Visible := true;
     seChannel.MaxValue:= 16000;
     tbChannel.Max:=16000;
+    lbChannel.Caption := 'mseconds';
+
+    lbData1.Visible := false;
+    seData1.Visible := false;
+    tbData1.Visible := false;
 
     lbData2.Visible := False;
     seData2.Visible := False;
@@ -177,8 +178,8 @@ begin
   FMidiData.Data2 := seData2.Value;
   if (cbMidiCOmmand.ItemIndex = 6) then
   begin
-    FMidiData.Data1 := seData1.Value DIV 127;
-    FMidiData.Data2 := seData1.Value MOD 127;
+    FMidiData.Data1 := seChannel.Value DIV 127;
+    FMidiData.Data2 := seChannel.Value MOD 127;
   end;
 end;
 

@@ -86,7 +86,7 @@ object Form1: TForm1
     Top = 42
     Width = 797
     HorzScrollBar.Page = 1
-    VertScrollBar.Page = 204
+    VertScrollBar.Page = 1
     Align = alClient
     ClientHeight = 588
     ClientWidth = 793
@@ -99,96 +99,11 @@ object Form1: TForm1
       Width = 793
       Align = alClient
       AutoSize = True
-      ControlList = <      
-        item
-          Control = frmPreset1
-          WrapAfter = waAuto
-          Index = 0
-        end      
-        item
-          Control = frmExpPedal1
-          WrapAfter = waAuto
-          Index = 1
-        end>
+      ControlList = <>
       FlowLayout = tlTop
       FlowStyle = fsLeftRightTopBottom
       ParentFont = False
       TabOrder = 0
-      inline frmPreset1: TfrmPreset
-        Left = 1
-        Top = 1
-        Anchors = []
-        inherited GroupBox1: TGroupBox
-          Height = 93
-          ClientHeight = 73
-          inherited LabeledEdit1: TLabeledEdit
-            Height = 23
-            EditLabel.Height = 15
-            EditLabel.Width = 32
-          end
-          inherited Label1: TLabel
-            Height = 15
-            Width = 48
-          end
-          inherited SpinEdit1: TSpinEdit
-            Height = 23
-          end
-          inherited Label2: TLabel
-            Height = 15
-            Width = 35
-          end
-          inherited SpinEdit2: TSpinEdit
-            Height = 23
-          end
-          inherited Label3: TLabel
-            Height = 15
-            Width = 36
-          end
-          inherited SpinEdit3: TSpinEdit
-            Height = 23
-          end
-        end
-        inherited GroupBox2: TGroupBox
-          Left = 320
-          Height = 93
-          Width = 438
-          ClientHeight = 73
-          ClientWidth = 434
-          inherited EditButton1: TEditButton
-            Height = 23
-          end
-          inherited Label4: TLabel
-            Height = 15
-            Width = 24
-          end
-          inherited Label5: TLabel
-            Height = 15
-            Width = 24
-          end
-          inherited EditButton2: TEditButton
-            Height = 23
-          end
-        end
-      end
-      inline frmExpPedal1: TfrmExpPedal
-        Left = 1
-        Top = 94
-        Anchors = []
-        TabOrder = 1
-        inherited GroupBox2: TGroupBox
-          Height = 108
-          Width = 758
-          ClientHeight = 88
-          ClientWidth = 754
-          inherited Label4: TLabel
-            Height = 15
-            Width = 70
-          end
-          inherited EditButton1: TEditButton
-            Height = 23
-          end
-        end
-      end
     end
   end
   object Splitter1: TSplitter
@@ -228,6 +143,7 @@ object Form1: TForm1
         000000416B757374696B
       }
       ParentFont = False
+      ReadOnly = True
       TabOrder = 0
     end
     object ToolBar2: TToolBar

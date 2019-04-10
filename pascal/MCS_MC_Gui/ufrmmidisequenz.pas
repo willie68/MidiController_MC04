@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Buttons;
+  Buttons, LCLType;
 
 type
 
@@ -17,17 +17,20 @@ type
     Label1: TLabel;
     LabeledEdit1: TLabeledEdit;
     Panel1: TPanel;
+    sbCancel: TSpeedButton;
     ScrollBox1: TScrollBox;
     sbAddMidiCommand: TSpeedButton;
     sbSave: TSpeedButton;
     SpeedButton1: TSpeedButton;
     procedure sbAddMidiCommandClick(Sender: TObject);
+    procedure sbCancelClick(Sender: TObject);
     procedure sbSaveClick(Sender: TObject);
     procedure SpeedButton1Click(Sender: TObject);
   private
     Fcounter: integer;
+    FStatus: integer;
   public
-
+    property Status: integer read FStatus;
   end;
 
 var
@@ -45,16 +48,28 @@ procedure TFrmMidiSequenz.sbAddMidiCommandClick(Sender: TObject);
 var
   frmMidiData: TFrmMidiData;
 begin
-  FCOunter := Fcounter + 1;
-  frmMidiData := TfrmMidiData.Create(FlowPanel1);
-  frmMidiData.Name := 'frmMidiData' + IntToStr(Fcounter);
+  Inc(FCounter);
+  if (FlowPanel1.ControlCount < 17) then
+  begin
+    frmMidiData := TfrmMidiData.Create(FlowPanel1);
+    frmMidiData.Name := 'frmMidiData' + IntToStr(Fcounter);
 
-  FlowPanel1.InsertControl(frmMidiData, 0);
-  FlowPanel1.ControlList.Items[FlowPanel1.ControlList.Count - 1].Index := 0;
+    FlowPanel1.InsertControl(frmMidiData, 0);
+    FlowPanel1.ControlList.Items[FlowPanel1.ControlList.Count - 1].Index := 0;
+  end else begin
+    Application.MessageBox('no more midi commands possible', 'Information', MB_OK + MB_ICONWARNING);
+  end;
+end;
+
+procedure TFrmMidiSequenz.sbCancelClick(Sender: TObject);
+begin
+  FStatus := ID_CANCEL;
+  Hide;
 end;
 
 procedure TFrmMidiSequenz.sbSaveClick(Sender: TObject);
 begin
+  FStatus := ID_OK;
   Hide;
 end;
 

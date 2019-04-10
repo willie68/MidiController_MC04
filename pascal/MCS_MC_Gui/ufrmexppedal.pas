@@ -17,6 +17,7 @@ type
     Image1: TImage;
     Label1: TLabel;
     Label4: TLabel;
+    procedure EditButtonButtonClick(Sender: TObject);
     procedure Image1Click(Sender: TObject);
   private
     FCaption: TCaption;
@@ -30,11 +31,18 @@ implementation
 
 {$R *.lfm}
 
+uses ufrmMidiSequenz;
+
 { TfrmExpPedal }
 
 procedure TfrmExpPedal.Image1Click(Sender: TObject);
 begin
 
+end;
+
+procedure TfrmExpPedal.EditButtonButtonClick(Sender: TObject);
+begin
+  FrmMidiSequenz.Show();
 end;
 
 procedure TfrmExpPedal.SetCaption(Value: TCaption);

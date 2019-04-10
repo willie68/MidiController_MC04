@@ -35,7 +35,6 @@ object frmPreset: TfrmPreset
       LabelSpacing = 8
       ParentFont = False
       TabOrder = 0
-      Text = 'LabeledEdit1'
     end
     object Label1: TLabel
       Left = 13
@@ -117,10 +116,10 @@ object frmPreset: TfrmPreset
       ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = EditButtonButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 0
-      Text = 'EditButton1'
     end
     object Label4: TLabel
       Left = 18
@@ -148,10 +147,10 @@ object frmPreset: TfrmPreset
       ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
+      OnButtonClick = EditButtonButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 1
-      Text = 'EditButton2'
     end
   end
 end
