@@ -83,6 +83,7 @@
         <Filename Value="ufrmmidisequenz.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="FrmMidiSequenz"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Form"/>
         <UnitName Value="ufrmMidiSequenz"/>
       </Unit6>
@@ -90,6 +91,7 @@
         <Filename Value="ufrmmididata.pas"/>
         <IsPartOfProject Value="True"/>
         <ComponentName Value="frmMidiData"/>
+        <HasResources Value="True"/>
         <ResourceBaseClass Value="Frame"/>
         <UnitName Value="ufrmMidiData"/>
       </Unit7>

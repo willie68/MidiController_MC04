@@ -1,7 +1,7 @@
 object FrmMidiSequenz: TFrmMidiSequenz
-  Left = 258
+  Left = 512
   Height = 447
-  Top = 127
+  Top = 125
   Width = 320
   BorderIcons = []
   BorderStyle = bsDialog
@@ -30,18 +30,22 @@ object FrmMidiSequenz: TFrmMidiSequenz
     Height = 399
     Top = 48
     Width = 320
-    HorzScrollBar.Page = 26
+    HorzScrollBar.Page = 1
+    HorzScrollBar.Visible = False
+    VertScrollBar.Increment = 2
     VertScrollBar.Page = 29
+    VertScrollBar.Smooth = True
     Align = alBottom
     Anchors = [akTop, akLeft, akRight, akBottom]
-    ClientHeight = 395
-    ClientWidth = 316
+    BorderStyle = bsNone
+    ClientHeight = 399
+    ClientWidth = 320
     TabOrder = 1
     object FlowPanel1: TFlowPanel
       Left = 0
-      Height = 395
+      Height = 399
       Top = 0
-      Width = 316
+      Width = 320
       Align = alClient
       Caption = 'FlowPanel1'
       ControlList = <      

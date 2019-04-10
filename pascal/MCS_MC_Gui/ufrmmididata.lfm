@@ -14,12 +14,13 @@ object frmMidiData: TfrmMidiData
     Top = 0
     Width = 320
     Align = alClient
+    AutoSize = True
     Caption = 'Mididata'
     ClientHeight = 102
     ClientWidth = 316
     TabOrder = 0
     object cbMidiCOmmand: TComboBox
-      Left = 72
+      Left = 32
       Height = 23
       Top = 0
       Width = 168
@@ -33,35 +34,65 @@ object frmMidiData: TfrmMidiData
         'Note On'
         'Note Off'
       )
+      OnChange = cbMidiCOmmandChange
       Style = csDropDownList
       TabOrder = 0
       Text = 'Program Change'
     end
-    object SpeedButton1: TSpeedButton
-      Left = 288
+    object sbRemove: TSpeedButton
+      Left = 0
       Height = 22
       Top = 0
       Width = 23
       Caption = '-'
-      OnClick = SpeedButton1Click
+      OnClick = sbRemoveClick
     end
     object TrackBar1: TTrackBar
-      Left = 72
+      Left = 32
       Height = 25
       Top = 32
-      Width = 172
+      Width = 168
       Max = 127
+      OnChange = TrackBarChange
       Position = 0
       TabOrder = 1
     end
     object TrackBar2: TTrackBar
-      Left = 72
+      Left = 32
       Height = 25
       Top = 64
       Width = 168
       Max = 127
+      OnChange = TrackBarChange
       Position = 0
       TabOrder = 2
+    end
+    object SpinEdit1: TSpinEdit
+      Left = 208
+      Height = 23
+      Top = 32
+      Width = 50
+      MaxValue = 127
+      OnChange = SpinEditChange
+      TabOrder = 3
+    end
+    object SpinEdit2: TSpinEdit
+      Left = 208
+      Height = 23
+      Top = 64
+      Width = 50
+      MaxValue = 127
+      OnChange = SpinEditChange
+      TabOrder = 4
+    end
+    object SpinEdit3: TSpinEdit
+      Left = 208
+      Height = 23
+      Top = 0
+      Width = 50
+      MaxValue = 16
+      OnChange = SpinEditChange
+      TabOrder = 5
     end
   end
 end
