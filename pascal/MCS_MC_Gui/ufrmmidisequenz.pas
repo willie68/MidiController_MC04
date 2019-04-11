@@ -6,7 +6,7 @@ interface
 
 uses
   Classes, SysUtils, Forms, Controls, Graphics, Dialogs, StdCtrls, ExtCtrls,
-  Buttons, LCLType;
+  Buttons, LCLType, uModels;
 
 type
 
@@ -29,8 +29,12 @@ type
   private
     Fcounter: integer;
     FStatus: integer;
+    FMidiDatas: TMidiDataArray;
+
+    procedure FreeMidiDatas;
   public
     property Status: integer read FStatus;
+    property MidiDatas: TMidiDataArray read FMidiDatas write FMidiDatas;
   end;
 
 var
@@ -56,21 +60,57 @@ begin
 
     FlowPanel1.InsertControl(frmMidiData, 0);
     FlowPanel1.ControlList.Items[FlowPanel1.ControlList.Count - 1].Index := 0;
-  end else begin
-    Application.MessageBox('no more midi commands possible', 'Information', MB_OK + MB_ICONWARNING);
+  end
+  else
+  begin
+    Application.MessageBox('no more midi commands possible', 'Information',
+      MB_OK + MB_ICONWARNING);
   end;
 end;
 
 procedure TFrmMidiSequenz.sbCancelClick(Sender: TObject);
 begin
   FStatus := ID_CANCEL;
-  Hide;
+  ModalResult := mrCancel;
 end;
 
 procedure TFrmMidiSequenz.sbSaveClick(Sender: TObject);
+var
+  i: integer;
+  Count: integer;
+  midiData: TfrmMidiData;
+  commandString: string;
 begin
   FStatus := ID_OK;
-  Hide;
+  Count := 0;
+  for i := 0 to FlowPanel1.ControlCount - 1 do
+    if (FlowPanel1.Controls[i] is TfrmMidiData) then
+      Inc(Count);
+
+  FreeMidiDatas();
+  SetLength(FMidiDatas, Count);
+
+  Count := 0;
+  for i := 0 to FlowPanel1.ControlCount - 1 do
+  begin
+    if (FlowPanel1.Controls[i] is TfrmMidiData) then
+    begin
+      Inc(Count);
+      midiData := FlowPanel1.Controls[i] as TfrmMidiData;
+      FMidiDatas[Count] := midiData.MidiData.clone;
+      Inc(Count);
+    end;
+  end;
+  commandString := '';
+  for i := 0 to Length(MidiDatas) - 1 do
+  begin
+    if (i > 0) then
+      commandString := commandString + ', ';
+    commandString := commandString + FMidiDatas[i].HumanString;
+  end;
+  LabeledEdit1.Text := commandString;
+
+  ModalResult := mrOk;
 end;
 
 procedure TFrmMidiSequenz.SpeedButton1Click(Sender: TObject);
@@ -91,6 +131,16 @@ begin
     end;
   end;
   LabeledEdit1.Text := commandString;
+end;
+
+procedure TFrmMidiSequenz.FreeMidiDatas;
+var
+  i: integer;
+  midiData: TfrmMidiData;
+begin
+  for i := 0 to length(FMidiDatas) - 1 do
+    FreeAndNil(FMidiDatas[i]);
+  SetLength(FMidiDatas, 0);
 end;
 
 end.

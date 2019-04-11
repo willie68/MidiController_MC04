@@ -59,7 +59,7 @@ type
   end;
 
   TSequenceType = (INTERNAL, BUTTON, EXPRESSION);
-  TSequenceEvent = (PUSH, RELEASE, START, STOP, CLICK, DOUBLECLICK,
+  TSequenceEvent = (PUSH, Release, START, STOP, CLICK, DOUBLECLICK,
     LONGCLICK, VALUECHANGE);
 
   { TSequence }
@@ -92,64 +92,77 @@ type
     function GetHumanString: string;
     procedure SetHumanString(AValue: string);
   public
+    function clone(): TMidiData;
   published
     property MidiType: TMidiDataType read FMidiType write FMidiType;
     property Channel: byte read FChannel write FChannel;
     property Data1: byte read FData1 write FData1;
     property Data2: byte read FData2 write FData2;
-    property HumanString : string read GetHumanString write SetHumanString;
+    property HumanString: string read GetHumanString write SetHumanString;
   end;
+
+  TMidiDataArray = array of TMidiData;
 
 implementation
 
 { TMidiData }
 
 function TMidiData.GetHumanString: string;
-var shortType, mask : string;
+var
+  shortType, mask: string;
 begin
   case FMidiType of
-   PC:
-   begin
-     shortType := 'PC';
-     mask := '%0:s%2:.2d@%1:.2d'
-   end;
-   CC:
-   begin
-     shortType := 'CC';
-     mask := '%0:s%2:.2d:%3:d@%1:.2d'
-   end;
-   NON:
-   begin
-     shortType := 'NOTE_ON';
-     mask := '%0:s%2:.2d:%3:d@%1:.2d'
-   end;
-   NOFF:
-   begin
-     shortType := 'NOTE_OFF';
-     mask := '%0:s%2:.2d:%3:d@%1:.2d'
-   end;
-   PC_PREV:
-   begin
-     shortType := 'PC_PREV';
-     mask := '%0:s@%1:.2d'
-   end;
-   PC_NEXT:
-   begin
-     shortType := 'PC_NEXT';
-     mask := '%0:s@%1:.2d'
-   end;
-   WAIT:
-   begin
-     shortType := 'WAIT';
-     mask := '%0:s@%4:d'
-   end;
+    PC:
+    begin
+      shortType := 'PC';
+      mask := '%0:s%2:.2d@%1:.2d';
+    end;
+    CC:
+    begin
+      shortType := 'CC';
+      mask := '%0:s%2:.2d:%3:d@%1:.2d';
+    end;
+    NON:
+    begin
+      shortType := 'NOTE_ON';
+      mask := '%0:s%2:.2d:%3:d@%1:.2d';
+    end;
+    NOFF:
+    begin
+      shortType := 'NOTE_OFF';
+      mask := '%0:s%2:.2d:%3:d@%1:.2d';
+    end;
+    PC_PREV:
+    begin
+      shortType := 'PC_PREV';
+      mask := '%0:s@%1:.2d';
+    end;
+    PC_NEXT:
+    begin
+      shortType := 'PC_NEXT';
+      mask := '%0:s@%1:.2d';
+    end;
+    WAIT:
+    begin
+      shortType := 'WAIT';
+      mask := '%0:s@%4:d';
+    end;
   end;
-  Result := Format(mask, [shortType, FChannel, FData1, FData2, (FData1*127)+FData2]);
+  Result := Format(mask, [shortType, FChannel, FData1, FData2, (FData1 * 127) + FData2]);
 end;
 
 procedure TMidiData.SetHumanString(AValue: string);
 begin
 
+end;
+
+function TMidiData.clone(): TMidiData;
+begin
+  Result := TMidiData.Create;
+  Result.FData1 := self.FData1;
+  Result.FData2 := self.FData2;
+  Result.FChannel:= self.FChannel;
+  Result.FMidiType:=self.FMidiType;
 end;
 
 { TPresets }

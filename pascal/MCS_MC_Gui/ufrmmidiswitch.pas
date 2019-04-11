@@ -66,8 +66,26 @@ begin
 end;
 
 procedure TfrmMidiSwitch.ebClickButtonClick(Sender: TObject);
+var
+  MidiDatas: TMidiDataArray;
+  eb: TEditButton;
+  i: integer;
+  midiData: TMidiData;
+  commandString: string;
 begin
-  FrmMidiSequenz.Show();
+  FrmMidiSequenz.ShowModal();
+  MidiDatas := FrmMidiSequenz.MidiDatas;
+  if (Sender is TEditButton) then
+  begin
+    eb := Sender as TEditButton;
+    for i := 0 to Length(MidiDatas) - 1 do
+    begin
+      if (i > 0) then
+        commandString := commandString + ', ';
+      commandString := commandString + MidiDatas[i].HumanString;
+    end;
+    eb.Text := commandString;
+  end;
 end;
 
 procedure TfrmMidiSwitch.ebLongClickChange(Sender: TObject);
@@ -109,9 +127,8 @@ begin
     lbName.Text := FButton.Name;
     rbMomentary.Checked := (FButton.ButtonType = MOMENTARY);
     rbToggle.Checked := (FButton.ButtonType = TOGGLE);
-    btnColor.ButtonColor:= FButton.Color;
+    btnColor.ButtonColor := FButton.Color;
   end;
 end;
 
 end.
-
