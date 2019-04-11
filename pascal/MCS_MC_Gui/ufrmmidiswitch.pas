@@ -33,12 +33,16 @@ type
     rbToggle: TRadioButton;
     rbMomentary: TRadioButton;
     procedure ebClickButtonClick(Sender: TObject);
-    procedure ebLongClickChange(Sender: TObject);
     procedure FrameClick(Sender: TObject);
   private
     FCaption: TCaption;
 
     FButton: TMidiButton;
+    FMidiClickSequence: TSequence;
+    FMidiDblClickSequence: TSequence;
+    FMidiLongClickSequence: TSequence;
+    FMidiPushSequence: TSequence;
+    FMidiReleaseSequence: TSequence;
 
     procedure SetCaption(Value: TCaption);
 
@@ -86,11 +90,16 @@ begin
     end;
     eb.Text := commandString;
   end;
-end;
-
-procedure TfrmMidiSwitch.ebLongClickChange(Sender: TObject);
-begin
-
+  if (Sender = ebClick) then
+    FMidiClickSequence.AddMidiDatas(MidiDatas);
+  if (Sender = ebDblClick) then
+    FMidiDblClickSequence.AddMidiDatas(MidiDatas);
+  if (Sender = ebLongClick) then
+    FMidiLongClickSequence.AddMidiDatas(MidiDatas);
+  if (Sender = ebPush) then
+    FMidiPushSequence.AddMidiDatas(MidiDatas);
+  if (Sender = ebRelease) then
+    FMidiReleaseSequence.AddMidiDatas(MidiDatas);
 end;
 
 procedure TfrmMidiSwitch.SetCaption(Value: TCaption);
@@ -103,6 +112,11 @@ constructor TfrmMidiSwitch.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
   FButton := TMidiButton.Create;
+  FMidiClickSequence := TSequence.Create;
+  FMidiDblClickSequence := TSequence.Create;
+  FMidiLongClickSequence := TSequence.Create;
+  FMidiPushSequence := TSequence.Create;
+  FMidiReleaseSequence := TSequence.Create;
   SetProperties;
 end;
 

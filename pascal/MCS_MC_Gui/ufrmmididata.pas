@@ -27,6 +27,8 @@ type
     seData2: TSpinEdit;
     seData1: TSpinEdit;
     seChannel: TSpinEdit;
+    sbUp: TSpeedButton;
+    sbDown: TSpeedButton;
     tbData2: TTrackBar;
     tbData1: TTrackBar;
     tbChannel: TTrackBar;

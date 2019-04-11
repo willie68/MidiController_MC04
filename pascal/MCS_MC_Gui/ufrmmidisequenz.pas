@@ -78,7 +78,8 @@ procedure TFrmMidiSequenz.sbSaveClick(Sender: TObject);
 var
   i: integer;
   Count: integer;
-  midiData: TfrmMidiData;
+  midiData : TfrmMidiData;
+  midiDataClone : TMidiData;
   commandString: string;
 begin
   FStatus := ID_OK;
@@ -95,21 +96,12 @@ begin
   begin
     if (FlowPanel1.Controls[i] is TfrmMidiData) then
     begin
-      Inc(Count);
       midiData := FlowPanel1.Controls[i] as TfrmMidiData;
-      FMidiDatas[Count] := midiData.MidiData.clone;
+      midiDataClone := midiData.MidiData.clone;
+      FMidiDatas[Count] := midiDataClone;
       Inc(Count);
     end;
   end;
-  commandString := '';
-  for i := 0 to Length(MidiDatas) - 1 do
-  begin
-    if (i > 0) then
-      commandString := commandString + ', ';
-    commandString := commandString + FMidiDatas[i].HumanString;
-  end;
-  LabeledEdit1.Text := commandString;
-
   ModalResult := mrOk;
 end;
 

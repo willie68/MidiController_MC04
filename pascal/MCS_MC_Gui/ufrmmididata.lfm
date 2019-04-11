@@ -8,21 +8,21 @@ object frmMidiData: TfrmMidiData
   ClientHeight = 209
   ClientWidth = 320
   TabOrder = 0
-  DesignLeft = 868
-  DesignTop = 125
+  DesignLeft = 1137
+  DesignTop = 119
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 141
+    Height = 149
     Top = 0
     Width = 320
     Align = alTop
     AutoSize = True
     Caption = 'Mididata'
-    ClientHeight = 121
+    ClientHeight = 129
     ClientWidth = 316
     TabOrder = 0
     object cbMidiCOmmand: TComboBox
-      Left = 72
+      Left = 48
       Height = 23
       Top = 0
       Width = 168
@@ -43,17 +43,18 @@ object frmMidiData: TfrmMidiData
     end
     object sbRemove: TSpeedButton
       Left = 0
-      Height = 22
+      Height = 34
       Hint = 'Remove Midi Command'
       Top = 0
-      Width = 23
-      Caption = '-'
+      Width = 34
+      Images = Form1.ImageList1
+      ImageIndex = 192
       OnClick = sbRemoveClick
     end
     object tbData2: TTrackBar
       Left = 72
       Height = 25
-      Top = 96
+      Top = 104
       Width = 168
       Max = 127
       OnChange = TrackBarChange
@@ -63,7 +64,7 @@ object frmMidiData: TfrmMidiData
     object seData2: TSpinEdit
       Left = 248
       Height = 23
-      Top = 96
+      Top = 104
       Width = 50
       MaxValue = 127
       OnChange = SpinEditChange
@@ -72,7 +73,7 @@ object frmMidiData: TfrmMidiData
     object tbData1: TTrackBar
       Left = 72
       Height = 25
-      Top = 64
+      Top = 72
       Width = 168
       Max = 127
       OnChange = TrackBarChange
@@ -82,7 +83,7 @@ object frmMidiData: TfrmMidiData
     object seData1: TSpinEdit
       Left = 248
       Height = 23
-      Top = 64
+      Top = 72
       Width = 50
       MaxValue = 127
       OnChange = SpinEditChange
@@ -91,7 +92,7 @@ object frmMidiData: TfrmMidiData
     object tbChannel: TTrackBar
       Left = 72
       Height = 25
-      Top = 32
+      Top = 40
       Width = 168
       Max = 16
       OnChange = TrackBarChange
@@ -101,7 +102,7 @@ object frmMidiData: TfrmMidiData
     object seChannel: TSpinEdit
       Left = 248
       Height = 23
-      Top = 32
+      Top = 40
       Width = 50
       MaxValue = 16
       OnChange = SpinEditChange
@@ -110,7 +111,7 @@ object frmMidiData: TfrmMidiData
     object lbChannel: TLabel
       Left = 0
       Height = 15
-      Top = 35
+      Top = 43
       Width = 64
       Alignment = taRightJustify
       AutoSize = False
@@ -120,7 +121,7 @@ object frmMidiData: TfrmMidiData
     object lbData1: TLabel
       Left = 0
       Height = 15
-      Top = 65
+      Top = 73
       Width = 64
       Alignment = taRightJustify
       AutoSize = False
@@ -130,12 +131,28 @@ object frmMidiData: TfrmMidiData
     object lbData2: TLabel
       Left = 0
       Height = 15
-      Top = 96
+      Top = 104
       Width = 64
       Alignment = taRightJustify
       AutoSize = False
       Caption = 'Data1'
       ParentColor = False
+    end
+    object sbUp: TSpeedButton
+      Left = 232
+      Height = 34
+      Top = 0
+      Width = 34
+      Images = Form1.ImageList1
+      ImageIndex = 195
+    end
+    object sbDown: TSpeedButton
+      Left = 264
+      Height = 34
+      Top = 0
+      Width = 34
+      Images = Form1.ImageList1
+      ImageIndex = 194
     end
   end
 end

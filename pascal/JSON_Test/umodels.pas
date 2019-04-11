@@ -12,7 +12,6 @@ type
   TSequence = class;
   TMidiData = class;
   TPreset = class;
-  TMidiDataArray = array of TMidiData;
 
   { TPresets }
 
@@ -69,15 +68,15 @@ type
   private
     FSequenceType: TSequenceType;
     FEvent: TSequenceEvent;
-    FDatas: TMidiDataArray;
+    FDatas: TObjectList;
   public
     constructor Create;
     destructor Destroy; override;
-    procedure AddMidiDatas(MidiDatas: TMidiDataArray);
+    procedure AddMidiData(MidiData: TMidiData);
   published
     property SequenceType: TSequenceType read FSequenceType write FSequenceType;
     property Event: TSequenceEvent read FEvent write FEvent;
-    property Datas: TMidiDataArray read FDatas;
+    property Datas: TObjectList read FDatas;
   end;
 
   TMidiDataType = (PC, CC, NON, NOFF, PC_PREV, PC_NEXT, WAIT);
@@ -105,6 +104,8 @@ type
     property HumanString: string read GetHumanString write SetHumanString;
     property toJson: TJsonObject read GetJson;
   end;
+
+  TMidiDataArray = array of TMidiData;
 
 implementation
 
@@ -196,8 +197,8 @@ begin
   Result := TMidiData.Create;
   Result.FData1 := self.FData1;
   Result.FData2 := self.FData2;
-  Result.FChannel:= self.FChannel;
-  Result.FMidiType:=self.FMidiType;
+  Result.FChannel := self.FChannel;
+  Result.FMidiType := self.FMidiType;
 end;
 
 { TPresets }
@@ -217,23 +218,18 @@ end;
 
 constructor TSequence.Create;
 begin
+  FDatas := TObjectList.Create(True);
 end;
 
 destructor TSequence.Destroy;
-var i : integer;
 begin
-  if (Assigned(FDatas)) then
-  begin
-    for i := 0 to Length(FDatas)-1 do
-      FDatas[i].Free;
-  end;
-  SetLength(FDatas,0);
   inherited Destroy;
+  FDatas.Free;
 end;
 
-procedure TSequence.AddMidiDatas(MidiDatas: TMidiDataArray);
+procedure TSequence.AddMidiData(MidiData: TMidiData);
 begin
-  FDatas := MidiDatas;
+  FDatas.Add(MidiData);
 end;
 
 { TPreset }
