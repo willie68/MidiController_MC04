@@ -108,7 +108,7 @@ object frmPreset: TfrmPreset
     ClientWidth = 255
     ParentFont = False
     TabOrder = 1
-    object EditButton1: TEditButton
+    object ebStart: TEditButton
       Left = 90
       Height = 23
       Top = 6
@@ -139,7 +139,7 @@ object frmPreset: TfrmPreset
       ParentColor = False
       ParentFont = False
     end
-    object EditButton2: TEditButton
+    object ebStop: TEditButton
       Left = 90
       Height = 23
       Top = 34

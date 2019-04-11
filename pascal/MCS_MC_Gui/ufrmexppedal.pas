@@ -5,7 +5,7 @@ unit ufrmexppedal;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Dialogs, EditBtn;
+  Classes, SysUtils, Forms, Controls, StdCtrls, ExtCtrls, Dialogs, EditBtn, uModels;
 
 type
 
@@ -21,10 +21,14 @@ type
     procedure Image1Click(Sender: TObject);
   private
     FCaption: TCaption;
+    FMidiChangeSequence: TMidiSequence;
+
     procedure SetCaption(Value: TCaption);
   public
-    property Caption: TCaption read FCaption write SetCaption;
+    constructor Create(TheOwner: TComponent); override;
+    destructor Destroy; override;
 
+    property Caption: TCaption read FCaption write SetCaption;
   end;
 
 implementation
@@ -49,6 +53,19 @@ procedure TfrmExpPedal.SetCaption(Value: TCaption);
 begin
   FCaption := Value;
   Label1.Caption := Value;
+end;
+
+constructor TfrmExpPedal.Create(TheOwner: TComponent);
+begin
+  inherited Create(TheOwner);
+  FMidiChangeSequence:= TMidiSequence.Create;
+  FMidiChangeSequence.SequenceType := EXPRESSION;
+end;
+
+destructor TfrmExpPedal.Destroy;
+begin
+  FMidiChangeSequence.free;
+  inherited Destroy;
 end;
 
 end.

@@ -5,15 +5,15 @@ unit ufrmPreset;
 interface
 
 uses
-  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Spin, EditBtn;
+  Classes, SysUtils, Forms, Controls, ExtCtrls, StdCtrls, Spin, EditBtn, uModels;
 
 type
 
   { TfrmPreset }
 
   TfrmPreset = class(TFrame)
-    EditButton1: TEditButton;
-    EditButton2: TEditButton;
+    ebStart: TEditButton;
+    ebStop: TEditButton;
     GroupBox1: TGroupBox;
     GroupBox2: TGroupBox;
     Label1: TLabel;
@@ -27,8 +27,12 @@ type
     SpinEdit3: TSpinEdit;
     procedure EditButtonButtonClick(Sender: TObject);
   private
+    FMidiStartSequence: TMidiSequence;
+    FMidiStopSequence: TMidiSequence;
 
   public
+    constructor Create(TheOwner: TComponent); override;
+    destructor Destroy; override;
 
   end;
 
@@ -41,8 +45,51 @@ uses ufrmMidiSequenz;
 { TfrmPreset }
 
 procedure TfrmPreset.EditButtonButtonClick(Sender: TObject);
+var
+  MidiDatas: TMidiDataArray;
+  eb: TEditButton;
+  i: integer;
+  midiData: TMidiData;
+  commandString: string;
 begin
-  FrmMidiSequenz.Show();
+  if (FrmMidiSequenz.ShowModal() = mrOK) then
+  begin
+    commandString := '';
+    MidiDatas := FrmMidiSequenz.MidiDatas;
+    if (Sender is TEditButton) then
+    begin
+      eb := Sender as TEditButton;
+      for i := 0 to Length(MidiDatas) - 1 do
+      begin
+        if (i > 0) then
+          commandString := commandString + ', ';
+        commandString := commandString + MidiDatas[i].HumanString;
+      end;
+      eb.Text := commandString;
+      eb.Tag := Length(MidiDatas);
+    end;
+    if (Sender = ebStart) then
+      FMidiStartSequence.AddMidiDatas(MidiDatas);
+    if (Sender = ebStop) then
+      FMidiStopSequence.AddMidiDatas(MidiDatas);
+  end;
+end;
+
+constructor TfrmPreset.Create(TheOwner: TComponent);
+begin
+  inherited Create(TheOwner);
+  FMidiStartSequence := TMidiSequence.Create;
+  FMidiStopSequence := TMidiSequence.Create;
+
+  FMidiStartSequence.SequenceType := INTERNAL;
+  FMidiStopSequence.SequenceType := INTERNAL;
+end;
+
+destructor TfrmPreset.Destroy;
+begin
+  FMidiStartSequence.Free;
+  FMidiStopSequence.Free;
+  inherited Destroy;
 end;
 
 end.

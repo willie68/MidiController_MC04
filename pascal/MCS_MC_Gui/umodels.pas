@@ -9,14 +9,15 @@ uses
 
 type
   TMidiButton = class;
-  TSequence = class;
+  TMidiSequence = class;
   TMidiData = class;
-  TPreset = class;
+  TMidiPreset = class;
   TMidiDataArray = array of TMidiData;
+  TMidiSequenceArray = array of TMidiSequence;
 
-  { TPresets }
+  { TMidiPresets }
 
-  TPresets = class
+  TMidiPresets = class
     FPresets: TObjectList;
   public
     constructor Create;
@@ -24,9 +25,9 @@ type
   published
   end;
 
-  { TPreset }
+  { TMidiPreset }
 
-  TPreset = class
+  TMidiPreset = class
   private
     FName: string;
     FPrgNumber: integer;
@@ -59,25 +60,27 @@ type
     property Color: TColor read FColor write FColor default 0;
   end;
 
-  TSequenceType = (INTERNAL, BUTTON, EXPRESSION);
-  TSequenceEvent = (PUSH, Release, START, STOP, CLICK, DOUBLECLICK,
+  TMidiSequenceType = (INTERNAL, BUTTON, EXPRESSION);
+  TMidiSequenceEvent = (PUSH, RELEASE, START, STOP, CLICK, DOUBLECLICK,
     LONGCLICK, VALUECHANGE);
 
-  { TSequence }
+  { TMidiSequence }
 
-  TSequence = class
+  TMidiSequence = class
   private
-    FSequenceType: TSequenceType;
-    FEvent: TSequenceEvent;
+    FSequenceType: TMidiSequenceType;
+    FEvent: TMidiSequenceEvent;
     FDatas: TMidiDataArray;
+    FValue: integer;
   public
     constructor Create;
     destructor Destroy; override;
     procedure AddMidiDatas(MidiDatas: TMidiDataArray);
   published
-    property SequenceType: TSequenceType read FSequenceType write FSequenceType;
-    property Event: TSequenceEvent read FEvent write FEvent;
+    property SequenceType: TMidiSequenceType read FSequenceType write FSequenceType;
+    property Event: TMidiSequenceEvent read FEvent write FEvent;
     property Datas: TMidiDataArray read FDatas;
+    property Value: integer read FValue write FValue;
   end;
 
   TMidiDataType = (PC, CC, NON, NOFF, PC_PREV, PC_NEXT, WAIT);
@@ -200,26 +203,26 @@ begin
   Result.FMidiType:=self.FMidiType;
 end;
 
-{ TPresets }
+{ TMidiPresets }
 
-constructor TPresets.Create;
+constructor TMidiPresets.Create;
 begin
   FPresets := TObjectList.Create(True);
 end;
 
-destructor TPresets.Destroy;
+destructor TMidiPresets.Destroy;
 begin
   inherited Destroy;
   FPresets.Free;
 end;
 
-{ TSequence }
+{ TMidiSequence }
 
-constructor TSequence.Create;
+constructor TMidiSequence.Create;
 begin
 end;
 
-destructor TSequence.Destroy;
+destructor TMidiSequence.Destroy;
 var i : integer;
 begin
   if (Assigned(FDatas)) then
@@ -231,14 +234,14 @@ begin
   inherited Destroy;
 end;
 
-procedure TSequence.AddMidiDatas(MidiDatas: TMidiDataArray);
+procedure TMidiSequence.AddMidiDatas(MidiDatas: TMidiDataArray);
 begin
   FDatas := MidiDatas;
 end;
 
-{ TPreset }
+{ TMidiPreset }
 
-constructor TPreset.Create;
+constructor TMidiPreset.Create;
 begin
   FButtons := TObjectList.Create;
   FButtons.OwnsObjects := True;
@@ -247,14 +250,14 @@ begin
   FSequences.OwnsObjects := True;
 end;
 
-destructor TPreset.Destroy;
+destructor TMidiPreset.Destroy;
 begin
   inherited Destroy;
   FButtons.Free;
   FSequences.Free;
 end;
 
-procedure TPreset.AddButton(Button: TMidiButton);
+procedure TMidiPreset.AddButton(Button: TMidiButton);
 begin
   FButtons.Add(Button);
 end;

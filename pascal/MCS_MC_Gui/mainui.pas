@@ -66,7 +66,7 @@ type
     FileName: string;
     FJSON: TJSONObject;
 
-    Presets : TPresets;
+    Presets : TMidiPreset;
     frmPreset: TfrmPreset;
     frmexppedal : TfrmExpPedal;
     frmMidiSwitch1: TfrmMidiSwitch;
@@ -116,10 +116,15 @@ begin
 
   frmMidiSwitch1 := TfrmMidiSwitch.Create(FlowPanel1);
   frmMidiSwitch1.Name:= 'frmMidiSwitch1';
+  frmMidiSwitch1.ButtonNumber:= 1;
+
   frmMidiSwitch2 := TfrmMidiSwitch.Create(FlowPanel1);
   frmMidiSwitch2.Name:= 'frmMidiSwitch2';
+  frmMidiSwitch2.ButtonNumber:= 2;
+
   frmMidiSwitch3 := TfrmMidiSwitch.Create(FlowPanel1);
   frmMidiSwitch3.Name:= 'frmMidiSwitch3';
+  frmMidiSwitch3.ButtonNumber:= 3;
 
   FlowPanel1.InsertControl(frmMidiSwitch1, 0);
   FlowPanel1.InsertControl(frmMidiSwitch2, 1);
@@ -132,7 +137,7 @@ begin
   frmMidiSwitch2.Caption := 'Switch 2';
   frmMidiSwitch3.Caption := 'Switch 3';
 
-  Presets := TPresets.Create;
+  Presets := TMidiPreset.Create;
 
   if (ParamCount > 0) then
   begin
