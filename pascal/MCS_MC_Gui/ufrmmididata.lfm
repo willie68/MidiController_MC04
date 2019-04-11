@@ -43,12 +43,12 @@ object frmMidiData: TfrmMidiData
     end
     object sbRemove: TSpeedButton
       Left = 0
-      Height = 34
+      Height = 22
       Hint = 'Remove Midi Command'
       Top = 0
-      Width = 34
+      Width = 22
       Images = Form1.ImageList1
-      ImageIndex = 192
+      ImageIndex = 11
       OnClick = sbRemoveClick
     end
     object tbData2: TTrackBar
@@ -140,19 +140,19 @@ object frmMidiData: TfrmMidiData
     end
     object sbUp: TSpeedButton
       Left = 232
-      Height = 34
+      Height = 22
       Top = 0
-      Width = 34
+      Width = 22
       Images = Form1.ImageList1
-      ImageIndex = 195
+      ImageIndex = 7
     end
     object sbDown: TSpeedButton
       Left = 264
-      Height = 34
+      Height = 22
       Top = 0
-      Width = 34
+      Width = 22
       Images = Form1.ImageList1
-      ImageIndex = 194
+      ImageIndex = 0
     end
   end
 end
