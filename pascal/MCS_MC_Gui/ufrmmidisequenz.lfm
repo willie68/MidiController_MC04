@@ -47,7 +47,6 @@ object FrmMidiSequenz: TFrmMidiSequenz
       Top = 0
       Width = 320
       Align = alClient
-      Caption = 'FlowPanel1'
       ControlList = <      
         item
           Control = Panel1
@@ -99,14 +98,14 @@ object FrmMidiSequenz: TFrmMidiSequenz
     ImageIndex = 303
     OnClick = sbSaveClick
   end
-  object SpeedButton1: TSpeedButton
+  object sbReloadCommandString: TSpeedButton
     Left = 216
     Height = 32
     Top = 16
     Width = 32
     Images = Form1.ImageList1
     ImageIndex = 251
-    OnClick = SpeedButton1Click
+    OnClick = sbReloadCommandStringClick
   end
   object sbCancel: TSpeedButton
     Left = 280

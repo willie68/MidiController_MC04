@@ -21,11 +21,11 @@ type
     ScrollBox1: TScrollBox;
     sbAddMidiCommand: TSpeedButton;
     sbSave: TSpeedButton;
-    SpeedButton1: TSpeedButton;
+    sbReloadCommandString: TSpeedButton;
     procedure sbAddMidiCommandClick(Sender: TObject);
     procedure sbCancelClick(Sender: TObject);
     procedure sbSaveClick(Sender: TObject);
-    procedure SpeedButton1Click(Sender: TObject);
+    procedure sbReloadCommandStringClick(Sender: TObject);
   private
     Fcounter: integer;
     FStatus: integer;
@@ -105,7 +105,7 @@ begin
   ModalResult := mrOk;
 end;
 
-procedure TFrmMidiSequenz.SpeedButton1Click(Sender: TObject);
+procedure TFrmMidiSequenz.sbReloadCommandStringClick(Sender: TObject);
 var
   i: integer;
   midiData: TfrmMidiData;
