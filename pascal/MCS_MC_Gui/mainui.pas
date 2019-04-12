@@ -53,28 +53,33 @@ type
     ToolButton6: TToolButton;
     ToolButton7: TToolButton;
     ToolButton8: TToolButton;
+    ToolButton9: TToolButton;
     TrayIcon1: TTrayIcon;
     procedure FileOpen1Accept(Sender: TObject);
+    procedure FileSaveAs1Accept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
     procedure PresetAddExecute(Sender: TObject);
     procedure PresetCopyExecute(Sender: TObject);
     procedure PresetDeleteExecute(Sender: TObject);
     procedure StatusBar1Resize(Sender: TObject);
+    procedure ToolButton9Click(Sender: TObject);
   private
     ConfigFile: string;
     FileName: string;
     FJSON: TJSONObject;
 
-    Presets : TMidiPreset;
+
+    Presets: TMidiPresets;
     frmPreset: TfrmPreset;
-    frmexppedal : TfrmExpPedal;
+    frmexppedal: TfrmExpPedal;
     frmMidiSwitch1: TfrmMidiSwitch;
     frmMidiSwitch2: TfrmMidiSwitch;
     frmMidiSwitch3: TfrmMidiSwitch;
 
     procedure OpenFile();
     procedure GettingPrograms();
+    function GetActualPreset(): TMidiPreset;
   public
 
   end;
@@ -115,29 +120,27 @@ begin
   FlowPanel1.InsertControl(frmexppedal, 1);
 
   frmMidiSwitch1 := TfrmMidiSwitch.Create(FlowPanel1);
-  frmMidiSwitch1.Name:= 'frmMidiSwitch1';
-  frmMidiSwitch1.ButtonNumber:= 1;
+  frmMidiSwitch1.Name := 'frmMidiSwitch1';
+  frmMidiSwitch1.ButtonNumber := 1;
 
   frmMidiSwitch2 := TfrmMidiSwitch.Create(FlowPanel1);
-  frmMidiSwitch2.Name:= 'frmMidiSwitch2';
-  frmMidiSwitch2.ButtonNumber:= 2;
+  frmMidiSwitch2.Name := 'frmMidiSwitch2';
+  frmMidiSwitch2.ButtonNumber := 2;
 
   frmMidiSwitch3 := TfrmMidiSwitch.Create(FlowPanel1);
-  frmMidiSwitch3.Name:= 'frmMidiSwitch3';
-  frmMidiSwitch3.ButtonNumber:= 3;
+  frmMidiSwitch3.Name := 'frmMidiSwitch3';
+  frmMidiSwitch3.ButtonNumber := 3;
 
   FlowPanel1.InsertControl(frmMidiSwitch1, 0);
   FlowPanel1.InsertControl(frmMidiSwitch2, 1);
   FlowPanel1.InsertControl(frmMidiSwitch3, 2);
-  FlowPanel1.ControlList.Items[2].Index:=1;
-  FlowPanel1.ControlList.Items[3].Index:=2;
-  FlowPanel1.ControlList.Items[4].Index:=3;
+  FlowPanel1.ControlList.Items[2].Index := 1;
+  FlowPanel1.ControlList.Items[3].Index := 2;
+  FlowPanel1.ControlList.Items[4].Index := 3;
 
   frmMidiSwitch1.Caption := 'Switch 1';
   frmMidiSwitch2.Caption := 'Switch 2';
   frmMidiSwitch3.Caption := 'Switch 3';
-
-  Presets := TMidiPreset.Create;
 
   if (ParamCount > 0) then
   begin
@@ -154,6 +157,16 @@ begin
   myFileName := FileOpen1.Dialog.FileName;
   FileName := myFileName;
   OpenFile();
+end;
+
+procedure TForm1.FileSaveAs1Accept(Sender: TObject);
+var
+  jsonString: string;
+  preset : TMidiPreset;
+begin
+  preset := GetActualPreset();
+  jsonString := preset.toJson.AsJSON;
+  ShowMessage(jsonString);
 end;
 
 procedure TForm1.HelpAboutExecute(Sender: TObject);
@@ -200,6 +213,16 @@ begin
   StatusBar1.Panels[0].Width := size;
 end;
 
+procedure TForm1.ToolButton9Click(Sender: TObject);
+var
+  jsonString: string;
+  preset : TMidiPreset;
+begin
+  preset := GetActualPreset();
+  jsonString := preset.toJson.AsJSON;
+  ShowMessage(jsonString);
+end;
+
 procedure TForm1.OpenFile();
 var
   jData: TJSONData;
@@ -228,29 +251,47 @@ begin
 end;
 
 procedure TForm1.GettingPrograms();
-var MidiButton : TMidiButton;
+var
+  MidiButton: TMidiButton;
 var
   jsonPresets: TJsonArray;
   jsonPreset: TJSONObject;
   presetName: string;
   item: TListItem;
   i: integer;
+  Preset: TMidiPreset;
 begin
   ListView1.Clear;
   jsonPresets := FJSON.Arrays['programs'];
+  SetLength(Presets, jsonPresets.Count);
   for i := 0 to jsonPresets.Count - 1 do
   begin
     jsonPreset := jsonPresets.Objects[i];
-    presetName := jsonPreset.Get('name');
+
+    Preset := TMidiPreset.Create;
+    Preset.Name := jsonPreset.Get('name');
+    Preset.ProgramNumber := jsonPreset.Get('prgNumber');
+    Preset.ExternalMidi := jsonPreset.Get('externalMidi');
+    Preset.InternalMidi := jsonPreset.Get('internalMidi');
+
+    frmPreset.Preset := Preset;
+
     item := ListView1.Items.Add();
-    item.Caption := presetName;
+    item.Caption := Preset.Name;
+    exit;
   end;
 
-  MidiButton := TMidiButton.Create;
-  MidiButton.Name:= 'Chorus';
-  MidiButton.ButtonType:=TOGGLE;
-  MidiButton.Color:=clRed;
-  frmMidiSwitch1.SetMidiButton(MidiButton);
+end;
+
+function TForm1.GetActualPreset(): TMidiPreset;
+begin
+  Result := frmPreset.Preset;
+  Result.AddButton(frmMidiSwitch1.MidiButton);
+  Result.AddButton(frmMidiSwitch2.MidiButton);
+  Result.AddButton(frmMidiSwitch3.MidiButton);
+
+  frmMidiSwitch1.MidiSequences;
+
 end;
 
 

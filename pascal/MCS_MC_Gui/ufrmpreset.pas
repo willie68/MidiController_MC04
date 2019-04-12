@@ -21,19 +21,23 @@ type
     Label3: TLabel;
     Label4: TLabel;
     Label5: TLabel;
-    LabeledEdit1: TLabeledEdit;
-    SpinEdit1: TSpinEdit;
-    SpinEdit2: TSpinEdit;
-    SpinEdit3: TSpinEdit;
+    lebName: TLabeledEdit;
+    sePCNumber: TSpinEdit;
+    seIntChannel: TSpinEdit;
+    seExtChannel: TSpinEdit;
     procedure EditButtonButtonClick(Sender: TObject);
   private
     FMidiStartSequence: TMidiSequence;
     FMidiStopSequence: TMidiSequence;
+    FPreset: TMidiPreset;
+    function GetPreset: TMidiPreset;
+    procedure SetPreset(AValue: TMidiPreset);
 
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
 
+    property Preset : TMidiPreset read GetPreset write SetPreset;
   end;
 
 implementation
@@ -73,6 +77,23 @@ begin
     if (Sender = ebStop) then
       FMidiStopSequence.AddMidiDatas(MidiDatas);
   end;
+end;
+
+procedure TfrmPreset.SetPreset(AValue: TMidiPreset);
+begin
+  if FPreset=AValue then Exit;
+  FPreset:=AValue;
+  lebName.Text := FPreset.Name;
+  sePCNumber.Value:= FPreset.ProgramNumber;
+  seExtChannel.Value:=FPreset.ExternalMidi;
+  seIntChannel.Value:=FPreset.InternalMidi;
+end;
+
+function TfrmPreset.GetPreset: TMidiPreset;
+begin
+  Preset.ClearSequences;
+  Preset.AddSequence(FMidiStartSequence);
+  Preset.AddSequence(FMidiStopSequence);
 end;
 
 constructor TfrmPreset.Create(TheOwner: TComponent);

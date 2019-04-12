@@ -547,7 +547,7 @@ object frmExpPedal: TfrmExpPedal
       ParentColor = False
       ParentFont = False
     end
-    object EditButton1: TEditButton
+    object ebValueChange: TEditButton
       Left = 160
       Height = 23
       Top = 0
@@ -555,7 +555,7 @@ object frmExpPedal: TfrmExpPedal
       ButtonWidth = 23
       MaxLength = 0
       NumGlyphs = 1
-      OnButtonClick = EditButtonButtonClick
+      OnButtonClick = ebValueChangeButtonClick
       ParentFont = False
       PasswordChar = #0
       TabOrder = 0

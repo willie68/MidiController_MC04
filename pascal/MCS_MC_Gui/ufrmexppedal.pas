@@ -12,12 +12,12 @@ type
   { TfrmExpPedal }
 
   TfrmExpPedal = class(TFrame)
-    EditButton1: TEditButton;
+    ebValueChange: TEditButton;
     GroupBox2: TGroupBox;
     Image1: TImage;
     Label1: TLabel;
     Label4: TLabel;
-    procedure EditButtonButtonClick(Sender: TObject);
+    procedure ebValueChangeButtonClick(Sender: TObject);
     procedure Image1Click(Sender: TObject);
   private
     FCaption: TCaption;
@@ -44,9 +44,33 @@ begin
 
 end;
 
-procedure TfrmExpPedal.EditButtonButtonClick(Sender: TObject);
+procedure TfrmExpPedal.ebValueChangeButtonClick(Sender: TObject);
+var
+  MidiDatas: TMidiDataArray;
+  eb: TEditButton;
+  i: integer;
+  midiData: TMidiData;
+  commandString: string;
 begin
-  FrmMidiSequenz.Show();
+  if (FrmMidiSequenz.ShowModal() = mrOk) then
+  begin
+    commandString := '';
+    MidiDatas := FrmMidiSequenz.MidiDatas;
+    if (Sender is TEditButton) then
+    begin
+      eb := Sender as TEditButton;
+      for i := 0 to Length(MidiDatas) - 1 do
+      begin
+        if (i > 0) then
+          commandString := commandString + ', ';
+        commandString := commandString + MidiDatas[i].HumanString;
+      end;
+      eb.Text := commandString;
+      eb.Tag := Length(MidiDatas);
+    end;
+    if (Sender = ebValueChange) then
+      FMidiChangeSequence.AddMidiDatas(MidiDatas);
+  end;
 end;
 
 procedure TfrmExpPedal.SetCaption(Value: TCaption);
@@ -58,13 +82,13 @@ end;
 constructor TfrmExpPedal.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
-  FMidiChangeSequence:= TMidiSequence.Create;
+  FMidiChangeSequence := TMidiSequence.Create;
   FMidiChangeSequence.SequenceType := EXPRESSION;
 end;
 
 destructor TfrmExpPedal.Destroy;
 begin
-  FMidiChangeSequence.free;
+  FMidiChangeSequence.Free;
   inherited Destroy;
 end;
 

@@ -8,8 +8,8 @@ object frmPreset: TfrmPreset
   ClientWidth = 579
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 409
-  DesignTop = 179
+  DesignLeft = 400
+  DesignTop = 135
   object GroupBox1: TGroupBox
     Left = 0
     Height = 93
@@ -21,7 +21,7 @@ object frmPreset: TfrmPreset
     ClientWidth = 316
     ParentFont = False
     TabOrder = 0
-    object LabeledEdit1: TLabeledEdit
+    object lebName: TLabeledEdit
       Left = 64
       Height = 23
       Top = 6
@@ -39,15 +39,16 @@ object frmPreset: TfrmPreset
     object Label1: TLabel
       Left = 13
       Height = 15
-      Top = 38
+      Top = 40
       Width = 48
       Caption = 'Nummer'
       ParentColor = False
       ParentFont = False
     end
-    object SpinEdit1: TSpinEdit
+    object sePCNumber: TSpinEdit
       Left = 64
       Height = 23
+      Hint = 'the midi program change number'
       Top = 38
       Width = 79
       MaxValue = 128
@@ -59,39 +60,37 @@ object frmPreset: TfrmPreset
     object Label2: TLabel
       Left = 166
       Height = 15
-      Top = 6
-      Width = 35
-      Caption = 'int. PC'
+      Top = 8
+      Width = 64
+      Caption = 'int. Channel'
       ParentColor = False
       ParentFont = False
     end
-    object SpinEdit2: TSpinEdit
-      Left = 218
+    object seIntChannel: TSpinEdit
+      Left = 248
       Height = 23
       Top = 6
-      Width = 79
-      MaxValue = 128
-      MinValue = 1
+      Width = 49
+      MaxValue = 16
       ParentFont = False
       TabOrder = 2
       Value = 1
     end
     object Label3: TLabel
-      Left = 166
+      Left = 165
       Height = 15
-      Top = 38
-      Width = 36
-      Caption = 'ext. PC'
+      Top = 40
+      Width = 65
+      Caption = 'ext. Channel'
       ParentColor = False
       ParentFont = False
     end
-    object SpinEdit3: TSpinEdit
-      Left = 218
+    object seExtChannel: TSpinEdit
+      Left = 248
       Height = 23
       Top = 38
-      Width = 79
-      MaxValue = 128
-      MinValue = 1
+      Width = 49
+      MaxValue = 16
       ParentFont = False
       TabOrder = 3
       Value = 1

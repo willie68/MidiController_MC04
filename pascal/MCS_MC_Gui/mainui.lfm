@@ -1,7 +1,7 @@
 object Form1: TForm1
-  Left = 438
+  Left = 238
   Height = 677
-  Top = 119
+  Top = 113
   Width = 972
   Caption = 'Form1'
   ClientHeight = 657
@@ -77,6 +77,12 @@ object Form1: TForm1
       Top = 2
       Caption = 'ToolButton8'
       Style = tbsDivider
+    end
+    object ToolButton9: TToolButton
+      Left = 165
+      Top = 2
+      Caption = 'ToolButton9'
+      OnClick = ToolButton9Click
     end
   end
   object ScrollBox1: TScrollBox
@@ -233,6 +239,7 @@ object Form1: TForm1
       Dialog.Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
       Hint = 'save as'
       ImageIndex = 55
+      OnAccept = FileSaveAs1Accept
     end
     object FileExit1: TFileExit
       Category = 'File'
