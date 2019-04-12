@@ -8,8 +8,8 @@ object frmExpPedal: TfrmExpPedal
   ClientWidth = 335
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 366
-  DesignTop = 179
+  DesignLeft = 297
+  DesignTop = 157
   object GroupBox2: TGroupBox
     Left = 0
     Height = 108

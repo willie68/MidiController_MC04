@@ -139,23 +139,23 @@ begin
   if (Assigned(FMidiReleaseSequence)) then
     if (Length(FMidiReleaseSequence.Datas) > 0) then
       Inc(Result);
-
 end;
 
 procedure TfrmMidiSwitch.SetSequences(AValue: TMidiSequenceArray);
-var i : integer;
-    mySequence : TMidiSequence;
+var
+  i: integer;
+  mySequence: TMidiSequence;
 begin
   if (Assigned(AValue)) then
   begin
-    for i := 0 to Length(AValue) -1 do
+    for i := 0 to Length(AValue) - 1 do
     begin
       mySequence := AValue[i];
       if (mySequence.SequenceType = BUTTON) then
       begin
         if (mySequence.Event = PUSH) then
           FMidiClickSequence := mySequence.Clone;
-        if (mySequence.Event = RELEASE) then
+        if (mySequence.Event = Release) then
           FMidiReleaseSequence := mySequence.Clone;
         if (mySequence.Event = SINGLECLICK) then
           FMidiClickSequence := mySequence.Clone;
@@ -178,35 +178,35 @@ begin
   if (Assigned(FMidiClickSequence)) then
     if (Length(FMidiClickSequence.Datas) > 0) then
     begin
-      FMidiClickSequence.Value:= FButtonNumber;
+      FMidiClickSequence.Value := FButtonNumber;
       Result[Count] := FMidiClickSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiDblClickSequence)) then
     if (Length(FMidiDblClickSequence.Datas) > 0) then
     begin
-      FMidiDblClickSequence.Value:= FButtonNumber;
+      FMidiDblClickSequence.Value := FButtonNumber;
       Result[Count] := FMidiDblClickSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiLongClickSequence)) then
     if (Length(FMidiLongClickSequence.Datas) > 0) then
     begin
-      FMidiLongClickSequence.Value:= FButtonNumber;
+      FMidiLongClickSequence.Value := FButtonNumber;
       Result[Count] := FMidiLongClickSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiPushSequence)) then
     if (Length(FMidiPushSequence.Datas) > 0) then
     begin
-      FMidiPushSequence.Value:= FButtonNumber;
+      FMidiPushSequence.Value := FButtonNumber;
       Result[Count] := FMidiPushSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiReleaseSequence)) then
     if (Length(FMidiReleaseSequence.Datas) > 0) then
     begin
-      FMidiReleaseSequence.Value:= FButtonNumber;
+      FMidiReleaseSequence.Value := FButtonNumber;
       Result[Count] := FMidiReleaseSequence;
       Inc(Count);
     end;
@@ -259,11 +259,16 @@ end;
 
 destructor TfrmMidiSwitch.Destroy;
 begin
-  FMidiClickSequence.Free;
-  FMidiDblClickSequence.Free;
-  FMidiLongClickSequence.Free;
-  FMidiPushSequence.Free;
-  FMidiReleaseSequence.Free;
+  if (Assigned(FMidiClickSequence)) then
+    FreeAndNil(FMidiClickSequence);
+  if (Assigned(FMidiDblClickSequence)) then
+    FreeAndNil(FMidiDblClickSequence);
+  if (Assigned(FMidiLongClickSequence)) then
+    FreeAndNil(FMidiLongClickSequence);
+  if (Assigned(FMidiPushSequence)) then
+    FreeAndNil(FMidiPushSequence);
+  if (Assigned(FMidiReleaseSequence)) then
+    FreeAndNil(FMidiReleaseSequence);
 
   inherited Destroy;
 end;

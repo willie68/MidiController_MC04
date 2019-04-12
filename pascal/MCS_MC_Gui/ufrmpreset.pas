@@ -35,7 +35,7 @@ type
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
 
-    property Preset : TMidiPreset read GetPreset write SetPreset;
+    property Preset: TMidiPreset read GetPreset write SetPreset;
   end;
 
 implementation
@@ -60,7 +60,7 @@ begin
   if (Sender = ebStop) then
     MidiDatas := FMidiStopSequence.Datas;
   FrmMidiSequenz.MidiDatas := mididatas;
-  if (FrmMidiSequenz.ShowModal() = mrOK) then
+  if (FrmMidiSequenz.ShowModal() = mrOk) then
   begin
     commandString := '';
     MidiDatas := FrmMidiSequenz.MidiDatas;
@@ -84,19 +84,20 @@ begin
 end;
 
 procedure TfrmPreset.SetPreset(AValue: TMidiPreset);
-var i : integer;
-    mySequences : TMidiSequenceArray;
-    mySequence : TMidiSequence;
+var
+  i: integer;
+  mySequences: TMidiSequenceArray;
+  mySequence: TMidiSequence;
 begin
   lebName.Text := AValue.Name;
-  sePCNumber.Value:= AValue.ProgramNumber;
-  seExtChannel.Value:=AValue.ExternalMidi;
-  seIntChannel.Value:=AValue.InternalMidi;
+  sePCNumber.Value := AValue.ProgramNumber;
+  seExtChannel.Value := AValue.ExternalMidi;
+  seIntChannel.Value := AValue.InternalMidi;
 
-  mySequences :=  AValue.Sequences;
+  mySequences := AValue.Sequences;
   if (Assigned(mySequences)) then
   begin
-    for i := 0 to Length(mySequences) -1 do
+    for i := 0 to Length(mySequences) - 1 do
     begin
       mySequence := mySequences[i];
       if (mySequence.SequenceType = INTERNAL) then
@@ -115,11 +116,11 @@ function TfrmPreset.GetPreset: TMidiPreset;
 begin
   Result := TMidiPreset.Create;
   Result.Name := lebName.Text;
-  Result.ProgramNumber:=sePCNumber.Value;
-  Result.InternalMidi:=seIntChannel.Value;
-  Result.ExternalMidi:=seExtChannel.Value;
-  Result.AddSequence(FMidiStartSequence);
-  Result.AddSequence(FMidiStopSequence);
+  Result.ProgramNumber := sePCNumber.Value;
+  Result.InternalMidi := seIntChannel.Value;
+  Result.ExternalMidi := seExtChannel.Value;
+  Result.AddSequence(FMidiStartSequence.Clone);
+  Result.AddSequence(FMidiStopSequence.Clone);
 end;
 
 constructor TfrmPreset.Create(TheOwner: TComponent);
@@ -129,15 +130,18 @@ begin
   FMidiStopSequence := TMidiSequence.Create;
 
   FMidiStartSequence.SequenceType := INTERNAL;
+  FMidiStartSequence.Event:=START;
   FMidiStopSequence.SequenceType := INTERNAL;
+  FMidiStopSequence.Event:=START;
 end;
 
 destructor TfrmPreset.Destroy;
 begin
-  FMidiStartSequence.Free;
-  FMidiStopSequence.Free;
+  if (Assigned(FMidiStartSequence)) then
+    FreeAndNil(FMidiStartSequence);
+  if (Assigned(FMidiStopSequence)) then
+    FreeAndNil(FMidiStopSequence);
   inherited Destroy;
 end;
 
 end.
-

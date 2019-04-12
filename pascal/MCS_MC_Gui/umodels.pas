@@ -340,6 +340,7 @@ function TMidiPreset.GetJson: TJsonObject;
 var
   jsonDatas: TJsonArray;
   i: integer;
+  sequence: TMidiSequence;
 begin
   Result := TJSONObject.Create;
   Result.Add('name', FName);
@@ -360,7 +361,9 @@ begin
   begin
     for i := 0 to length(FSequences) - 1 do
     begin
-      jsonDatas.add(FSequences[i].toJson);
+      sequence := FSequences[i];
+      if (length(sequence.Fdatas) > 0) then
+      jsonDatas.add(sequence.toJson);
     end;
   end;
   Result.Add('sequences', jsonDatas);
