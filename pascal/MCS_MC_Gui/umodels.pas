@@ -320,19 +320,23 @@ end;
 
 procedure TMidiPreset.SetButtons(AValue: TMidiButtonArray);
 begin
-  if FButtons=AValue then Exit;
-  FButtons:=AValue;
+  if FButtons = AValue then
+    Exit;
+  FButtons := AValue;
 end;
 
 procedure TMidiPreset.SetSequences(AValue: TMidiSequenceArray);
 begin
-  if FSequences=AValue then Exit;
-  FSequences:=AValue;
+  if FSequences = AValue then
+    Exit;
+  FSequences := AValue;
 end;
 
 constructor TMidiPreset.Create;
 begin
   inherited Create;
+  SetLength(FButtons, 0);
+  SetLength(FSequences, 0);
 end;
 
 destructor TMidiPreset.Destroy;
@@ -342,24 +346,39 @@ end;
 
 procedure TMidiPreset.AddButton(Button: TMidiButton);
 begin
-  SetLength(FButtons, Length(FButtons)+1);
-  FButtons[Length(FButtons)-1] := Button;
+  if (NOT Assigned(FButtons)) then
+    SetLength(FButtons, 1)
+  else
+    SetLength(FButtons, Length(FButtons) + 1);
+  FButtons[Length(FButtons) - 1] := Button;
 end;
 
 procedure TMidiPreset.ClearButtons;
+var
+  i: integer;
 begin
-
+  for i := 0 to Length(FButtons) - 1 do
+  begin
+    FreeAndNil(FButtons[i]);
+  end;
+  SetLength(FButtons, 0);
 end;
 
 procedure TMidiPreset.AddSequence(Sequence: TMidiSequence);
 begin
-  SetLength(FSequences, Length(FSequences)+1);
-  FSequences[Length(FSequences)-1] := Sequence;
+  SetLength(FSequences, Length(FSequences) + 1);
+  FSequences[Length(FSequences) - 1] := Sequence;
 end;
 
 procedure TMidiPreset.ClearSequences;
+var
+  i: integer;
 begin
-
+  for i := 0 to Length(FSequences) - 1 do
+  begin
+    FreeAndNil(FSequences[i]);
+  end;
+  SetLength(FSequences, 0);
 end;
 
 end.

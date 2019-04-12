@@ -81,7 +81,8 @@ end;
 
 procedure TfrmPreset.SetPreset(AValue: TMidiPreset);
 begin
-  if FPreset=AValue then Exit;
+  if (Assigned(FPreset)) then
+     FPreset.Free;
   FPreset:=AValue;
   lebName.Text := FPreset.Name;
   sePCNumber.Value:= FPreset.ProgramNumber;
@@ -91,14 +92,15 @@ end;
 
 function TfrmPreset.GetPreset: TMidiPreset;
 begin
-  Preset.ClearSequences;
-  Preset.AddSequence(FMidiStartSequence);
-  Preset.AddSequence(FMidiStopSequence);
+  FPreset.ClearSequences;
+  FPreset.AddSequence(FMidiStartSequence);
+  FPreset.AddSequence(FMidiStopSequence);
 end;
 
 constructor TfrmPreset.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
+  FPreset := TMidiPreset.Create;
   FMidiStartSequence := TMidiSequence.Create;
   FMidiStopSequence := TMidiSequence.Create;
 
@@ -108,6 +110,7 @@ end;
 
 destructor TfrmPreset.Destroy;
 begin
+  FPreset.Free;
   FMidiStartSequence.Free;
   FMidiStopSequence.Free;
   inherited Destroy;

@@ -8,8 +8,8 @@ object frmPreset: TfrmPreset
   ClientWidth = 579
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 400
-  DesignTop = 135
+  DesignLeft = 434
+  DesignTop = 134
   object GroupBox1: TGroupBox
     Left = 0
     Height = 93

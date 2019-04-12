@@ -162,7 +162,7 @@ end;
 procedure TForm1.FileSaveAs1Accept(Sender: TObject);
 var
   jsonString: string;
-  preset : TMidiPreset;
+  preset: TMidiPreset;
 begin
   preset := GetActualPreset();
   jsonString := preset.toJson.AsJSON;
@@ -216,7 +216,7 @@ end;
 procedure TForm1.ToolButton9Click(Sender: TObject);
 var
   jsonString: string;
-  preset : TMidiPreset;
+  preset: TMidiPreset;
 begin
   preset := GetActualPreset();
   jsonString := preset.toJson.AsJSON;
@@ -284,14 +284,28 @@ begin
 end;
 
 function TForm1.GetActualPreset(): TMidiPreset;
+var
+  myPreset: TMidiPreset;
+  myButton: TMidiButton;
 begin
-  Result := frmPreset.Preset;
-  Result.AddButton(frmMidiSwitch1.MidiButton);
-  Result.AddButton(frmMidiSwitch2.MidiButton);
-  Result.AddButton(frmMidiSwitch3.MidiButton);
+  myPreset := frmPreset.Preset;
+  if (Assigned(myPreset)) then
+  begin
 
-  frmMidiSwitch1.MidiSequences;
+    myButton := frmMidiSwitch1.MidiButton;
+    myPreset.AddButton(myButton);
 
+    myButton := frmMidiSwitch2.MidiButton;
+    myPreset.AddButton(myButton);
+
+    myButton := frmMidiSwitch3.MidiButton;
+    myPreset.AddButton(myBUtton);
+
+  end else begin
+    myPreset := TMidiPreset.Create;
+  end;
+
+  Result := myPreset;
 end;
 
 
