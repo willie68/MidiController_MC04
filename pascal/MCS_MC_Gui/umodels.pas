@@ -68,7 +68,7 @@ type
   end;
 
   TMidiSequenceType = (INTERNAL, BUTTON, EXPRESSION);
-  TMidiSequenceEvent = (PUSH, Release, START, STOP, CLICK, DOUBLECLICK,
+  TMidiSequenceEvent = (PUSH, Release, START, STOP, SINGLECLICK, DOUBLECLICK,
     LONGCLICK, VALUECHANGE);
 
   { TMidiSequence }
@@ -137,7 +137,7 @@ begin
     Release: Result := 'RELEASE';
     START: Result := 'START';
     STOP: Result := 'STOP';
-    CLICK: Result := 'CLICK';
+    SINGLECLICK: Result := 'CLICK';
     DOUBLECLICK: Result := 'DOUBLECLICK';
     LONGCLICK: Result := 'LONGCLICK';
     VALUECHANGE: Result := 'VALUECHANGE';

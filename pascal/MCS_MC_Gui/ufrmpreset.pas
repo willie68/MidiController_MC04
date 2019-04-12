@@ -26,13 +26,11 @@ type
     seIntChannel: TSpinEdit;
     seExtChannel: TSpinEdit;
     procedure EditButtonButtonClick(Sender: TObject);
+    function GetPreset: TMidiPreset;
+    procedure SetPreset(AValue: TMidiPreset);
   private
     FMidiStartSequence: TMidiSequence;
     FMidiStopSequence: TMidiSequence;
-    FPreset: TMidiPreset;
-    function GetPreset: TMidiPreset;
-    procedure SetPreset(AValue: TMidiPreset);
-
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
@@ -56,6 +54,12 @@ var
   midiData: TMidiData;
   commandString: string;
 begin
+  SetLength(MidiDatas, 0);
+  if (Sender = ebStart) then
+    MidiDatas := FMidiStartSequence.Datas;
+  if (Sender = ebStop) then
+    MidiDatas := FMidiStopSequence.Datas;
+  FrmMidiSequenz.MidiDatas := mididatas;
   if (FrmMidiSequenz.ShowModal() = mrOK) then
   begin
     commandString := '';
@@ -80,14 +84,30 @@ begin
 end;
 
 procedure TfrmPreset.SetPreset(AValue: TMidiPreset);
+var i : integer;
+    mySequences : TMidiSequenceArray;
+    mySequence : TMidiSequence;
 begin
-  if (Assigned(FPreset)) then
-     FPreset.Free;
-  FPreset:=AValue;
-  lebName.Text := FPreset.Name;
-  sePCNumber.Value:= FPreset.ProgramNumber;
-  seExtChannel.Value:=FPreset.ExternalMidi;
-  seIntChannel.Value:=FPreset.InternalMidi;
+  lebName.Text := AValue.Name;
+  sePCNumber.Value:= AValue.ProgramNumber;
+  seExtChannel.Value:=AValue.ExternalMidi;
+  seIntChannel.Value:=AValue.InternalMidi;
+
+  mySequences :=  AValue.Sequences;
+  if (Assigned(mySequences)) then
+  begin
+    for i := 0 to Length(mySequences) -1 do
+    begin
+      mySequence := mySequences[i];
+      if (mySequence.SequenceType = INTERNAL) then
+      begin
+        if (mySequence.Event = START) then
+          FMidiStartSequence := mySequence.Clone;
+        if (mySequence.Event = STOP) then
+          FMidiStopSequence := mySequence.Clone;
+      end;
+    end;
+  end;
 end;
 
 function TfrmPreset.GetPreset: TMidiPreset;
@@ -105,7 +125,6 @@ end;
 constructor TfrmPreset.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
-  FPreset := TMidiPreset.Create;
   FMidiStartSequence := TMidiSequence.Create;
   FMidiStopSequence := TMidiSequence.Create;
 
@@ -115,7 +134,6 @@ end;
 
 destructor TfrmPreset.Destroy;
 begin
-  FPreset.Free;
   FMidiStartSequence.Free;
   FMidiStopSequence.Free;
   inherited Destroy;

@@ -1,23 +1,22 @@
 object frmPreset: TfrmPreset
   Left = 0
-  Height = 93
+  Height = 88
   Top = 0
   Width = 579
-  AutoSize = True
-  ClientHeight = 93
+  ClientHeight = 88
   ClientWidth = 579
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 434
-  DesignTop = 134
+  DesignLeft = 416
+  DesignTop = 116
   object GroupBox1: TGroupBox
     Left = 0
-    Height = 93
+    Height = 88
     Top = 0
     Width = 320
     Align = alLeft
     Caption = 'Preset'
-    ClientHeight = 73
+    ClientHeight = 68
     ClientWidth = 316
     ParentFont = False
     TabOrder = 0
@@ -98,12 +97,12 @@ object frmPreset: TfrmPreset
   end
   object GroupBox2: TGroupBox
     Left = 320
-    Height = 93
+    Height = 88
     Top = 0
     Width = 259
     Align = alClient
     Caption = 'Midi'
-    ClientHeight = 73
+    ClientHeight = 68
     ClientWidth = 255
     ParentFont = False
     TabOrder = 1
@@ -132,7 +131,7 @@ object frmPreset: TfrmPreset
     object Label5: TLabel
       Left = 18
       Height = 15
-      Top = 37
+      Top = 40
       Width = 24
       Caption = 'Stop'
       ParentColor = False
@@ -141,7 +140,7 @@ object frmPreset: TfrmPreset
     object ebStop: TEditButton
       Left = 90
       Height = 23
-      Top = 34
+      Top = 38
       Width = 160
       ButtonWidth = 23
       MaxLength = 0

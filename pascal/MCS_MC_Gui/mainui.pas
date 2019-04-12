@@ -70,7 +70,6 @@ type
     FJSON: TJSONObject;
 
 
-    Presets: TMidiPresets;
     frmPreset: TfrmPreset;
     frmexppedal: TfrmExpPedal;
     frmMidiSwitch1: TfrmMidiSwitch;
@@ -167,6 +166,7 @@ begin
   preset := GetActualPreset();
   jsonString := preset.toJson.AsJSON;
   ShowMessage(jsonString);
+  preset.Free;
 end;
 
 procedure TForm1.HelpAboutExecute(Sender: TObject);
@@ -264,7 +264,6 @@ var
 begin
   ListView1.Clear;
   jsonPresets := FJSON.Arrays['programs'];
-  SetLength(Presets, jsonPresets.Count);
   for i := 0 to jsonPresets.Count - 1 do
   begin
     jsonPreset := jsonPresets.Objects[i];
@@ -279,6 +278,8 @@ begin
 
     item := ListView1.Items.Add();
     item.Caption := Preset.Name;
+    Preset.Free;
+
     exit;
   end;
 
@@ -286,11 +287,10 @@ end;
 
 function TForm1.GetActualPreset(): TMidiPreset;
 var
-  myPreset: TMidiPreset;
   myButton: TMidiButton;
 begin
-  myPreset := frmPreset.Preset;
-  if (Assigned(myPreset)) then
+  Result := frmPreset.Preset;
+  if (Assigned(Result)) then
   begin
 {
     myButton := frmMidiSwitch1.MidiButton;
@@ -303,10 +303,8 @@ begin
     myPreset.AddButton(myBUtton);
  }
   end else begin
-    myPreset := TMidiPreset.Create;
+    Result := TMidiPreset.Create;
   end;
-
-  Result := myPreset;
 end;
 
 

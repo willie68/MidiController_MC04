@@ -36,9 +36,7 @@ type
     procedure FrameClick(Sender: TObject);
   private
     FButtonNumber: integer;
-    FCaption: TCaption;
 
-    FButton: TMidiButton;
     FMidiClickSequence: TMidiSequence;
     FMidiDblClickSequence: TMidiSequence;
     FMidiLongClickSequence: TMidiSequence;
@@ -47,20 +45,17 @@ type
 
     function GetButton: TMidiButton;
     function GetSequences: TMidiSequenceArray;
+    procedure SetButton(AValue: TMidiButton);
     procedure SetButtonNumber(AValue: integer);
-    procedure SetCaption(Value: TCaption);
     function GetSequencesCount: integer;
+    procedure SetSequences(AValue: TMidiSequenceArray);
 
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
-    procedure SetMidiButton(MidiButton: TMidiButton);
-    procedure SetProperties;
-    procedure SyncProperties;
   published
-    property Caption: TCaption read FCaption write SetCaption;
-    property MidiButton: TMidiButton read GetButton;
-    property MidiSequences: TMidiSequenceArray read GetSequences;
+    property MidiButton: TMidiButton read GetButton write SetButton;
+    property MidiSequences: TMidiSequenceArray read GetSequences write SetSequences;
     property ButtonNumber: integer read FButtonNumber write SetButtonNumber;
   end;
 
@@ -85,6 +80,18 @@ var
   midiData: TMidiData;
   commandString: string;
 begin
+  SetLength(MidiDatas, 0);
+  if (Sender = ebClick) then
+    MidiDatas := FMidiClickSequence.Datas;
+  if (Sender = ebDblClick) then
+    MidiDatas := FMidiDblClickSequence.Datas;
+  if (Sender = ebLongClick) then
+    MidiDatas := FMidiLongClickSequence.Datas;
+  if (Sender = ebPush) then
+    MidiDatas := FMidiPushSequence.Datas;
+  if (Sender = ebRelease) then
+    MidiDatas := FMidiReleaseSequence.Datas;
+  FrmMidiSequenz.MidiDatas := mididatas;
   if (FrmMidiSequenz.ShowModal() = mrOk) then
   begin
     commandString := '';
@@ -114,12 +121,6 @@ begin
   end;
 end;
 
-procedure TfrmMidiSwitch.SetCaption(Value: TCaption);
-begin
-  FCaption := Value;
-  Label1.Caption := Value;
-end;
-
 function TfrmMidiSwitch.GetSequencesCount: integer;
 begin
   Result := 0;
@@ -141,6 +142,33 @@ begin
 
 end;
 
+procedure TfrmMidiSwitch.SetSequences(AValue: TMidiSequenceArray);
+var i : integer;
+    mySequence : TMidiSequence;
+begin
+  if (Assigned(AValue)) then
+  begin
+    for i := 0 to Length(AValue) -1 do
+    begin
+      mySequence := AValue[i];
+      if (mySequence.SequenceType = BUTTON) then
+      begin
+        if (mySequence.Event = PUSH) then
+          FMidiClickSequence := mySequence.Clone;
+        if (mySequence.Event = RELEASE) then
+          FMidiReleaseSequence := mySequence.Clone;
+        if (mySequence.Event = SINGLECLICK) then
+          FMidiClickSequence := mySequence.Clone;
+        if (mySequence.Event = DOUBLECLICK) then
+          FMidiDblClickSequence := mySequence.Clone;
+        if (mySequence.Event = LONGCLICK) then
+          FMidiLongClickSequence := mySequence.Clone;
+      end;
+    end;
+  end;
+
+end;
+
 function TfrmMidiSwitch.GetSequences: TMidiSequenceArray;
 var
   Count: integer;
@@ -150,41 +178,54 @@ begin
   if (Assigned(FMidiClickSequence)) then
     if (Length(FMidiClickSequence.Datas) > 0) then
     begin
+      FMidiClickSequence.Value:= FButtonNumber;
       Result[Count] := FMidiClickSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiDblClickSequence)) then
     if (Length(FMidiDblClickSequence.Datas) > 0) then
     begin
+      FMidiDblClickSequence.Value:= FButtonNumber;
       Result[Count] := FMidiDblClickSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiLongClickSequence)) then
     if (Length(FMidiLongClickSequence.Datas) > 0) then
     begin
+      FMidiLongClickSequence.Value:= FButtonNumber;
       Result[Count] := FMidiLongClickSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiPushSequence)) then
     if (Length(FMidiPushSequence.Datas) > 0) then
     begin
+      FMidiPushSequence.Value:= FButtonNumber;
       Result[Count] := FMidiPushSequence;
       Inc(Count);
     end;
   if (Assigned(FMidiReleaseSequence)) then
     if (Length(FMidiReleaseSequence.Datas) > 0) then
     begin
+      FMidiReleaseSequence.Value:= FButtonNumber;
       Result[Count] := FMidiReleaseSequence;
       Inc(Count);
     end;
 end;
 
+procedure TfrmMidiSwitch.SetButton(AValue: TMidiButton);
+begin
+
+end;
+
 function TfrmMidiSwitch.GetButton: TMidiButton;
 begin
-  if (not Assigned(FButton)) then
-    FButton := TMidiButton.Create;
-  SyncProperties;
-  Result := FButton.clone;
+  Result := TMidiButton.Create;
+  Result.Name := lbName.Text;
+  if rbMomentary.Checked then
+    Result.ButtonType := MOMENTARY;
+  if rbToggle.Checked then
+    Result.ButtonType := TOGGLE;
+  Result.Color := btnColor.ButtonColor;
 end;
 
 procedure TfrmMidiSwitch.SetButtonNumber(AValue: integer);
@@ -201,7 +242,6 @@ end;
 constructor TfrmMidiSwitch.Create(TheOwner: TComponent);
 begin
   inherited Create(TheOwner);
-  FButton := TMidiButton.Create;
 
   FMidiClickSequence := TMidiSequence.Create;
   FMidiDblClickSequence := TMidiSequence.Create;
@@ -215,14 +255,10 @@ begin
   FMidiPushSequence.SequenceType := BUTTON;
   FMidiReleaseSequence.SequenceType := BUTTON;
 
-  SetProperties;
 end;
 
 destructor TfrmMidiSwitch.Destroy;
 begin
-  if Assigned(FButton) then
-    FreeAndNil(FButton);
-
   FMidiClickSequence.Free;
   FMidiDblClickSequence.Free;
   FMidiLongClickSequence.Free;
@@ -230,37 +266,6 @@ begin
   FMidiReleaseSequence.Free;
 
   inherited Destroy;
-end;
-
-procedure TfrmMidiSwitch.SetMidiButton(MidiButton: TMidiButton);
-begin
-  if Assigned(FButton) then
-    FreeAndNil(FButton);
-  FButton := MidiButton;
-  SetProperties();
-end;
-
-procedure TfrmMidiSwitch.SetProperties;
-begin
-  if (Assigned(FButton)) then
-  begin
-    lbName.Text := FButton.Name;
-    rbMomentary.Checked := (FButton.ButtonType = MOMENTARY);
-    rbToggle.Checked := (FButton.ButtonType = TOGGLE);
-    btnColor.ButtonColor := FButton.Color;
-  end;
-end;
-
-procedure TfrmMidiSwitch.SyncProperties;
-begin
-  if (not Assigned(FButton)) then
-    FButton := TMidiButton.Create;
-  FButton.Name := lbName.Text;
-  if rbMomentary.Checked then
-    FButton.ButtonType := MOMENTARY;
-  if rbToggle.Checked then
-    FButton.ButtonType := TOGGLE;
-  FButton.Color := btnColor.ButtonColor;
 end;
 
 end.

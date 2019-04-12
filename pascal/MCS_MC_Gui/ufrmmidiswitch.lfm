@@ -9,8 +9,8 @@ object frmMidiSwitch: TfrmMidiSwitch
   OnClick = FrameClick
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 379
-  DesignTop = 110
+  DesignLeft = 423
+  DesignTop = 230
   object GroupBox2: TGroupBox
     Left = 0
     Height = 116

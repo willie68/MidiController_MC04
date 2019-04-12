@@ -127,13 +127,32 @@ begin
 end;
 
 procedure TFrmMidiSequenz.SetMidiDatas(AValue: TMidiDataArray);
-var i : integer;
+var
+  i: integer;
+  frmMidiData : TfrmMidiData;
 begin
   for i := FlowPanel1.ControlCount - 1 downto 0 do
   begin
     if (FlowPanel1.Controls[i] is TfrmMidiData) then
     begin
       FlowPanel1.RemoveControl(FlowPanel1.Controls[i]);
+    end;
+  end;
+  if (assigned(AValue)) then
+  begin
+    for i := 0 to Length(AValue) - 1 do
+    begin
+      Inc(FCounter);
+      if (FlowPanel1.ControlCount < 17) then
+      begin
+        frmMidiData := TfrmMidiData.Create(FlowPanel1);
+        frmMidiData.Name := 'frmMidiData' + IntToStr(Fcounter);
+
+        frmMidiData.SetMidiData(AValue[i]);
+
+        FlowPanel1.InsertControl(frmMidiData, 0);
+        FlowPanel1.ControlList.Items[FlowPanel1.ControlList.Count - 1].Index := 0;
+      end;
     end;
   end;
 end;
