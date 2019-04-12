@@ -27,6 +27,7 @@ type
     FExternalMidi: integer;
     FButtons: TMidiButtonArray;
     FSequences: TMidiSequenceArray;
+
     function GetJson: TJsonObject;
     procedure SetButtons(AValue: TMidiButtonArray);
     procedure SetSequences(AValue: TMidiSequenceArray);
@@ -58,6 +59,7 @@ type
     FColor: TColor;
     function GetJson: TJsonObject;
   public
+    function clone: TMidiButton;
   published
     property Name: string read FName write FName;
     property ButtonType: TMidiButtonType read FType write FType default MOMENTARY;
@@ -75,13 +77,15 @@ type
   private
     FSequenceType: TMidiSequenceType;
     FEvent: TMidiSequenceEvent;
-    FDatas: TMidiDataArray;
     FValue: integer;
+    FDatas: TMidiDataArray;
     function GetJson: TJsonObject;
   public
     constructor Create;
     destructor Destroy; override;
     procedure AddMidiDatas(MidiDatas: TMidiDataArray);
+    procedure FreeDatas;
+    function Clone:TMidiSequence;
   published
     property SequenceType: TMidiSequenceType read FSequenceType write FSequenceType;
     property Event: TMidiSequenceEvent read FEvent write FEvent;
@@ -106,7 +110,7 @@ type
   public
     constructor Create;
     destructor Destroy; override;
-    function clone(): TMidiData;
+    function clone: TMidiData;
   published
     property MidiType: TMidiDataType read FMidiType write FMidiType;
     property Channel: byte read FChannel write FChannel;
@@ -172,6 +176,14 @@ begin
   Result.Add('color', '0x' + IntToHex(FColor, 6));
 end;
 
+function TMidiButton.clone: TMidiButton;
+begin
+  Result := TMidiButton.Create;
+  Result.FName := Self.FName;
+  Result.FType := Self.FType;
+  Result.FColor := Self.FColor;
+end;
+
 { TMidiData }
 
 function TMidiData.GetHumanString: string;
@@ -234,7 +246,7 @@ end;
 
 constructor TMidiData.Create;
 begin
-
+  inherited Create;
 end;
 
 destructor TMidiData.Destroy;
@@ -242,7 +254,7 @@ begin
   inherited Destroy;
 end;
 
-function TMidiData.clone(): TMidiData;
+function TMidiData.clone: TMidiData;
 begin
   Result := TMidiData.Create;
   Result.FData1 := self.FData1;
@@ -263,9 +275,12 @@ begin
   Result.Add('value', FValue);
   Result.Add('event', MidiSequenceEventToString(FEvent));
   jsonDatas := TJSONArray.Create;
-  for i := 0 to length(FDatas) - 1 do
+  if (Assigned(FDatas)) then
   begin
-    jsonDatas.add(FDatas[i].toJson);
+    for i := 0 to length(FDatas) - 1 do
+    begin
+      jsonDatas.add(FDatas[i].toJson);
+    end;
   end;
   Result.Add('datas', jsonDatas);
 end;
@@ -278,18 +293,45 @@ destructor TMidiSequence.Destroy;
 var
   i: integer;
 begin
-  if (Assigned(FDatas)) then
-  begin
-    for i := 0 to Length(FDatas) - 1 do
-      FDatas[i].Free;
-  end;
-  SetLength(FDatas, 0);
+  FreeDatas;
   inherited Destroy;
 end;
 
 procedure TMidiSequence.AddMidiDatas(MidiDatas: TMidiDataArray);
 begin
+  if (Assigned(FDatas)) then
+    FreeDatas;
   FDatas := MidiDatas;
+end;
+
+procedure TMidiSequence.FreeDatas;
+var i : integer;
+begin
+  if (Assigned(FDatas)) then
+  begin
+    for i := 0 to Length(FDatas) - 1 do
+    begin
+      FreeAndNil(FDatas[i]);
+    end;
+    SetLength(FDatas, 0);
+  end;
+end;
+
+function TMidiSequence.Clone: TMidiSequence;
+var i : integer;
+begin
+  Result := TMidiSequence.Create;
+  Result.FValue:= Self.FValue;
+  Result.FEvent:= Self.Event;
+  Result.FSequenceType:= Self.FSequenceType;
+  if (Assigned(FDatas)) then
+  begin
+    SetLength(Result.FDatas, Length(Self.FDatas));
+    for i := 0 to Length(Self.FDatas) -1 do
+    begin
+      Result.FDatas[i] := Self.FDatas[i].Clone;
+    end;
+  end;
 end;
 
 { TMidiPreset }
@@ -305,15 +347,21 @@ begin
   Result.Add('internalMidi', FInternalMidi);
   Result.Add('externalMidi', FExternalMidi);
   jsonDatas := TJSONArray.Create;
-  for i := 0 to length(FButtons) - 1 do
+  if (Assigned(FButtons)) then
   begin
-    jsonDatas.add(FButtons[i].toJson);
+    for i := 0 to length(FButtons) - 1 do
+    begin
+      jsonDatas.add(FButtons[i].toJson);
+    end;
   end;
   Result.Add('buttons', jsonDatas);
   jsonDatas := TJSONArray.Create;
-  for i := 0 to length(FSequences) - 1 do
+  if (Assigned(FSequences)) then
   begin
-    jsonDatas.add(FSequences[i].toJson);
+    for i := 0 to length(FSequences) - 1 do
+    begin
+      jsonDatas.add(FSequences[i].toJson);
+    end;
   end;
   Result.Add('sequences', jsonDatas);
 end;
@@ -341,12 +389,14 @@ end;
 
 destructor TMidiPreset.Destroy;
 begin
+  ClearButtons;
+  ClearSequences;
   inherited Destroy;
 end;
 
 procedure TMidiPreset.AddButton(Button: TMidiButton);
 begin
-  if (NOT Assigned(FButtons)) then
+  if (not Assigned(FButtons)) then
     SetLength(FButtons, 1)
   else
     SetLength(FButtons, Length(FButtons) + 1);

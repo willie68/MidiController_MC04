@@ -29,12 +29,11 @@ type
   private
     Fcounter: integer;
     FStatus: integer;
-    FMidiDatas: TMidiDataArray;
-
-    procedure FreeMidiDatas;
+    function GetMidiDatas: TMidiDataArray;
+    procedure SetMidiDatas(AValue: TMidiDataArray);
   public
     property Status: integer read FStatus;
-    property MidiDatas: TMidiDataArray read FMidiDatas write FMidiDatas;
+    property MidiDatas: TMidiDataArray read GetMidiDatas write SetMidiDatas;
   end;
 
 var
@@ -75,33 +74,8 @@ begin
 end;
 
 procedure TFrmMidiSequenz.sbSaveClick(Sender: TObject);
-var
-  i: integer;
-  Count: integer;
-  midiData : TfrmMidiData;
-  midiDataClone : TMidiData;
-  commandString: string;
 begin
   FStatus := ID_OK;
-  Count := 0;
-  for i := 0 to FlowPanel1.ControlCount - 1 do
-    if (FlowPanel1.Controls[i] is TfrmMidiData) then
-      Inc(Count);
-
-  FreeMidiDatas();
-  SetLength(FMidiDatas, Count);
-
-  Count := 0;
-  for i := 0 to FlowPanel1.ControlCount - 1 do
-  begin
-    if (FlowPanel1.Controls[i] is TfrmMidiData) then
-    begin
-      midiData := FlowPanel1.Controls[i] as TfrmMidiData;
-      midiDataClone := midiData.MidiData.clone;
-      FMidiDatas[Count] := midiDataClone;
-      Inc(Count);
-    end;
-  end;
   ModalResult := mrOk;
 end;
 
@@ -125,14 +99,43 @@ begin
   LabeledEdit1.Text := commandString;
 end;
 
-procedure TFrmMidiSequenz.FreeMidiDatas;
+function TFrmMidiSequenz.GetMidiDatas: TMidiDataArray;
 var
   i: integer;
+  Count: integer;
   midiData: TfrmMidiData;
 begin
-  for i := 0 to length(FMidiDatas) - 1 do
-    FreeAndNil(FMidiDatas[i]);
-  SetLength(FMidiDatas, 0);
+  Count := 0;
+  for i := 0 to FlowPanel1.ControlCount - 1 do
+  begin
+    if (FlowPanel1.Controls[i] is TfrmMidiData) then
+      Inc(Count);
+  end;
+
+  SetLength(Result, Count);
+
+  Count := 0;
+  for i := 0 to FlowPanel1.ControlCount - 1 do
+  begin
+    if (FlowPanel1.Controls[i] is TfrmMidiData) then
+    begin
+      midiData := FlowPanel1.Controls[i] as TfrmMidiData;
+      Result[Count] := midiData.MidiData;
+      Inc(Count);
+    end;
+  end;
+end;
+
+procedure TFrmMidiSequenz.SetMidiDatas(AValue: TMidiDataArray);
+var i : integer;
+begin
+  for i := FlowPanel1.ControlCount - 1 downto 0 do
+  begin
+    if (FlowPanel1.Controls[i] is TfrmMidiData) then
+    begin
+      FlowPanel1.RemoveControl(FlowPanel1.Controls[i]);
+    end;
+  end;
 end;
 
 end.

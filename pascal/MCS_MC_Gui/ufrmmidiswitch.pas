@@ -45,6 +45,7 @@ type
     FMidiPushSequence: TMidiSequence;
     FMidiReleaseSequence: TMidiSequence;
 
+    function GetButton: TMidiButton;
     function GetSequences: TMidiSequenceArray;
     procedure SetButtonNumber(AValue: integer);
     procedure SetCaption(Value: TCaption);
@@ -55,9 +56,10 @@ type
     destructor Destroy; override;
     procedure SetMidiButton(MidiButton: TMidiButton);
     procedure SetProperties;
+    procedure SyncProperties;
   published
     property Caption: TCaption read FCaption write SetCaption;
-    property MidiButton: TMidiButton read FButton;
+    property MidiButton: TMidiButton read GetButton;
     property MidiSequences: TMidiSequenceArray read GetSequences;
     property ButtonNumber: integer read FButtonNumber write SetButtonNumber;
   end;
@@ -83,7 +85,7 @@ var
   midiData: TMidiData;
   commandString: string;
 begin
-  if (FrmMidiSequenz.ShowModal() = mrOK) then
+  if (FrmMidiSequenz.ShowModal() = mrOk) then
   begin
     commandString := '';
     MidiDatas := FrmMidiSequenz.MidiDatas;
@@ -177,6 +179,14 @@ begin
     end;
 end;
 
+function TfrmMidiSwitch.GetButton: TMidiButton;
+begin
+  if (not Assigned(FButton)) then
+    FButton := TMidiButton.Create;
+  SyncProperties;
+  Result := FButton.clone;
+end;
+
 procedure TfrmMidiSwitch.SetButtonNumber(AValue: integer);
 begin
   FButtonNumber := AValue;
@@ -210,7 +220,8 @@ end;
 
 destructor TfrmMidiSwitch.Destroy;
 begin
-  FButton.Free;
+  if Assigned(FButton) then
+    FreeAndNil(FButton);
 
   FMidiClickSequence.Free;
   FMidiDblClickSequence.Free;
@@ -238,6 +249,18 @@ begin
     rbToggle.Checked := (FButton.ButtonType = TOGGLE);
     btnColor.ButtonColor := FButton.Color;
   end;
+end;
+
+procedure TfrmMidiSwitch.SyncProperties;
+begin
+  if (not Assigned(FButton)) then
+    FButton := TMidiButton.Create;
+  FButton.Name := lbName.Text;
+  if rbMomentary.Checked then
+    FButton.ButtonType := MOMENTARY;
+  if rbToggle.Checked then
+    FButton.ButtonType := TOGGLE;
+  FButton.Color := btnColor.ButtonColor;
 end;
 
 end.

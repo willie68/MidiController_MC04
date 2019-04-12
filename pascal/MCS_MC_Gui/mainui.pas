@@ -221,6 +221,7 @@ begin
   preset := GetActualPreset();
   jsonString := preset.toJson.AsJSON;
   ShowMessage(jsonString);
+  preset.Free;
 end;
 
 procedure TForm1.OpenFile();
@@ -291,7 +292,7 @@ begin
   myPreset := frmPreset.Preset;
   if (Assigned(myPreset)) then
   begin
-
+{
     myButton := frmMidiSwitch1.MidiButton;
     myPreset.AddButton(myButton);
 
@@ -300,7 +301,7 @@ begin
 
     myButton := frmMidiSwitch3.MidiButton;
     myPreset.AddButton(myBUtton);
-
+ }
   end else begin
     myPreset := TMidiPreset.Create;
   end;

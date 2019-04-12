@@ -1,7 +1,7 @@
 object FrmMidiSequenz: TFrmMidiSequenz
-  Left = 609
+  Left = 814
   Height = 447
-  Top = 196
+  Top = 118
   Width = 320
   BorderIcons = []
   BorderStyle = bsDialog

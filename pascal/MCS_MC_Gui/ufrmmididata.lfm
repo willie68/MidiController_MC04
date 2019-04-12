@@ -8,8 +8,8 @@ object frmMidiData: TfrmMidiData
   ClientHeight = 209
   ClientWidth = 320
   TabOrder = 0
-  DesignLeft = 1137
-  DesignTop = 119
+  DesignLeft = 1136
+  DesignTop = 122
   object GroupBox1: TGroupBox
     Left = 0
     Height = 149

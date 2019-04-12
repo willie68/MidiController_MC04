@@ -91,10 +91,15 @@ begin
 end;
 
 function TfrmPreset.GetPreset: TMidiPreset;
+
 begin
-  FPreset.ClearSequences;
-  FPreset.AddSequence(FMidiStartSequence);
-  FPreset.AddSequence(FMidiStopSequence);
+  Result := TMidiPreset.Create;
+  Result.Name := lebName.Text;
+  Result.ProgramNumber:=sePCNumber.Value;
+  Result.InternalMidi:=seIntChannel.Value;
+  Result.ExternalMidi:=seExtChannel.Value;
+  Result.AddSequence(FMidiStartSequence);
+  Result.AddSequence(FMidiStopSequence);
 end;
 
 constructor TfrmPreset.Create(TheOwner: TComponent);
