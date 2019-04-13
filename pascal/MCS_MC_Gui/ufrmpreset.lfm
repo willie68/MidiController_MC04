@@ -2,9 +2,9 @@ object frmPreset: TfrmPreset
   Left = 0
   Height = 88
   Top = 0
-  Width = 579
+  Width = 564
   ClientHeight = 88
-  ClientWidth = 579
+  ClientWidth = 564
   ParentFont = False
   TabOrder = 0
   DesignLeft = 416
@@ -13,11 +13,11 @@ object frmPreset: TfrmPreset
     Left = 0
     Height = 88
     Top = 0
-    Width = 320
+    Width = 304
     Align = alLeft
     Caption = 'Preset'
     ClientHeight = 68
-    ClientWidth = 316
+    ClientWidth = 300
     ParentFont = False
     TabOrder = 0
     object lebName: TLabeledEdit
@@ -69,7 +69,7 @@ object frmPreset: TfrmPreset
       Left = 248
       Height = 23
       Top = 6
-      Width = 49
+      Width = 41
       MaxValue = 16
       ParentFont = False
       TabOrder = 2
@@ -88,7 +88,7 @@ object frmPreset: TfrmPreset
       Left = 248
       Height = 23
       Top = 38
-      Width = 49
+      Width = 41
       MaxValue = 16
       ParentFont = False
       TabOrder = 3
@@ -96,14 +96,14 @@ object frmPreset: TfrmPreset
     end
   end
   object GroupBox2: TGroupBox
-    Left = 320
+    Left = 304
     Height = 88
     Top = 0
-    Width = 259
+    Width = 260
     Align = alClient
     Caption = 'Midi'
     ClientHeight = 68
-    ClientWidth = 255
+    ClientWidth = 256
     ParentFont = False
     TabOrder = 1
     object ebStart: TEditButton

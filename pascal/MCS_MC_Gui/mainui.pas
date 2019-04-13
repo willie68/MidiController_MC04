@@ -58,6 +58,7 @@ type
     procedure FileOpen1Accept(Sender: TObject);
     procedure FileSaveAs1Accept(Sender: TObject);
     procedure FormCreate(Sender: TObject);
+    procedure FormDestroy(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
     procedure PresetAddExecute(Sender: TObject);
     procedure PresetCopyExecute(Sender: TObject);
@@ -68,6 +69,8 @@ type
     ConfigFile: string;
     FileName: string;
     FJSON: TJSONObject;
+
+    Presets : TMidiPresets;
 
 
     frmPreset: TfrmPreset;
@@ -147,6 +150,16 @@ begin
     OpenFile();
   end;
 
+end;
+
+procedure TForm1.FormDestroy(Sender: TObject);
+var i : integer;
+begin
+  for i := 0 to Length(Presets) -1 do
+  begin
+    FreeAndNil(Presets[i]);
+  end;
+  SetLength(Presets, 0);
 end;
 
 procedure TForm1.FileOpen1Accept(Sender: TObject);
@@ -253,14 +266,15 @@ end;
 
 procedure TForm1.GettingPrograms();
 var
-  MidiButton: TMidiButton;
-var
-  jsonPresets: TJsonArray;
+  jsonPresets: TJSONArray;
   jsonPreset: TJSONObject;
+  jsonArray: TJSONArray;
+  jsonButton: TJSONObject;
   presetName: string;
   item: TListItem;
-  i: integer;
+  i, x, y: integer;
   Preset: TMidiPreset;
+  Button: TMidiButton;
 begin
   ListView1.Clear;
   jsonPresets := FJSON.Arrays['programs'];
@@ -274,13 +288,34 @@ begin
     Preset.ExternalMidi := jsonPreset.Get('externalMidi');
     Preset.InternalMidi := jsonPreset.Get('internalMidi');
 
+    // get buttons
+    jsonArray := jsonPreset.Arrays['buttons'];
+
+    for x := 0 to jsonArray.Count - 1 do
+    begin
+      jsonButton := jsonArray.Objects[x];
+      Button := TMidiButton.Create;
+      Button.Name := jsonButton.Get('name');
+      Button.ButtonType := uModels.StringToMidiButtonType(jsonButton.Get('type'));
+      Button.Color := jsonButton.Get('color');
+
+      Preset.AddButton(Button);
+    end;
+    // get sequences
+
     frmPreset.Preset := Preset;
+    if (Length(Preset.Buttons) > 0) then
+      frmMidiSwitch1.MidiButton := Preset.Buttons[0];
+    if (Length(Preset.Buttons) > 1) then
+      frmMidiSwitch2.MidiButton := Preset.Buttons[1];
+    if (Length(Preset.Buttons) > 2) then
+      frmMidiSwitch3.MidiButton := Preset.Buttons[2];
 
     item := ListView1.Items.Add();
     item.Caption := Preset.Name;
-    Preset.Free;
 
-    exit;
+    SetLength(Presets, Length(Presets)+1);
+    Presets[Length(Presets)-1] := Preset;
   end;
 
 end;
@@ -288,21 +323,49 @@ end;
 function TForm1.GetActualPreset(): TMidiPreset;
 var
   myButton: TMidiButton;
+  i: integer;
+  mySequences: TMidiSequenceArray;
 begin
   Result := frmPreset.Preset;
   if (Assigned(Result)) then
   begin
-{
+
     myButton := frmMidiSwitch1.MidiButton;
-    myPreset.AddButton(myButton);
+    Result.AddButton(myButton);
+    mySequences := frmMidiSwitch1.MidiSequences;
+    if (assigned(mySequences)) then
+    begin
+      for i := 0 to Length(mySequences) - 1 do
+      begin
+        Result.AddSequence(mySequences[i]);
+      end;
+    end;
 
     myButton := frmMidiSwitch2.MidiButton;
-    myPreset.AddButton(myButton);
+    Result.AddButton(myButton);
+    mySequences := frmMidiSwitch2.MidiSequences;
+    if (assigned(mySequences)) then
+    begin
+      for i := 0 to Length(mySequences) - 1 do
+      begin
+        Result.AddSequence(mySequences[i]);
+      end;
+    end;
 
     myButton := frmMidiSwitch3.MidiButton;
-    myPreset.AddButton(myBUtton);
- }
-  end else begin
+    Result.AddButton(myButton);
+    mySequences := frmMidiSwitch3.MidiSequences;
+    if (assigned(mySequences)) then
+    begin
+      for i := 0 to Length(mySequences) - 1 do
+      begin
+        Result.AddSequence(mySequences[i]);
+      end;
+    end;
+
+  end
+  else
+  begin
     Result := TMidiPreset.Create;
   end;
 end;

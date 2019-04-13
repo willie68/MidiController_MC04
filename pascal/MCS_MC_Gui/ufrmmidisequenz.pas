@@ -22,6 +22,7 @@ type
     sbAddMidiCommand: TSpeedButton;
     sbSave: TSpeedButton;
     sbReloadCommandString: TSpeedButton;
+    procedure FormShow(Sender: TObject);
     procedure sbAddMidiCommandClick(Sender: TObject);
     procedure sbCancelClick(Sender: TObject);
     procedure sbSaveClick(Sender: TObject);
@@ -65,6 +66,11 @@ begin
     Application.MessageBox('no more midi commands possible', 'Information',
       MB_OK + MB_ICONWARNING);
   end;
+end;
+
+procedure TFrmMidiSequenz.FormShow(Sender: TObject);
+begin
+     LabeledEdit1.Text:= '';
 end;
 
 procedure TFrmMidiSequenz.sbCancelClick(Sender: TObject);

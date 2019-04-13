@@ -9,6 +9,7 @@ object FrmMidiSequenz: TFrmMidiSequenz
   ClientHeight = 447
   ClientWidth = 320
   FormStyle = fsStayOnTop
+  OnShow = FormShow
   Position = poMainFormCenter
   LCLVersion = '2.0.0.4'
   object LabeledEdit1: TLabeledEdit

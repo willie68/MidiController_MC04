@@ -48,7 +48,7 @@ type
     property toJson: TJsonObject read GetJson;
   end;
 
-  TMidiButtonType = (MOMENTARY, TOGGLE);
+  TMidiButtonType = (MOMENTARY, SWITCH);
 
   { TMidiButton }
 
@@ -120,14 +120,24 @@ type
     property toJson: TJsonObject read GetJson;
   end;
 
+function StringToMidiButtonType(midiButtonType: string): TMidiButtonType;
+
 implementation
 
 function MidiButtonTypeToString(midiButtonType: TMidiButtonType): string;
 begin
   case midiButtonType of
     MOMENTARY: Result := 'MOMENTARY';
-    TOGGLE: Result := 'TOGGLE';
+    SWITCH: Result := 'SWITCH';
   end;
+end;
+
+function StringToMidiButtonType(midiButtonType: string): TMidiButtonType;
+begin
+  if  midiButtonType = 'MOMENTARY' then
+    Result := MOMENTARY;
+  if  midiButtonType = 'SWITCH' then
+    Result := SWITCH;
 end;
 
 function MidiSequenceEventToString(midiSequenceEvent: TMidiSequenceEvent): string;

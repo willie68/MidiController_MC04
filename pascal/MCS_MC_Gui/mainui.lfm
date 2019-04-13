@@ -8,6 +8,7 @@ object Form1: TForm1
   ClientWidth = 972
   Menu = MainMenu1
   OnCreate = FormCreate
+  OnDestroy = FormDestroy
   SessionProperties = 'Left;Top;Width;Height'
   ShowHint = True
   LCLVersion = '2.0.0.4'

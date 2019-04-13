@@ -33,7 +33,6 @@ type
     rbToggle: TRadioButton;
     rbMomentary: TRadioButton;
     procedure ebClickButtonClick(Sender: TObject);
-    procedure FrameClick(Sender: TObject);
   private
     FButtonNumber: integer;
 
@@ -66,11 +65,6 @@ implementation
 uses ufrmMidiSequenz;
 
 { TfrmMidiSwitch }
-
-procedure TfrmMidiSwitch.FrameClick(Sender: TObject);
-begin
-
-end;
 
 procedure TfrmMidiSwitch.ebClickButtonClick(Sender: TObject);
 var
@@ -179,42 +173,52 @@ begin
     if (Length(FMidiClickSequence.Datas) > 0) then
     begin
       FMidiClickSequence.Value := FButtonNumber;
-      Result[Count] := FMidiClickSequence;
+      FMidiClickSequence.Event := SINGLECLICK;
+      Result[Count] := FMidiClickSequence.Clone;
       Inc(Count);
     end;
   if (Assigned(FMidiDblClickSequence)) then
     if (Length(FMidiDblClickSequence.Datas) > 0) then
     begin
       FMidiDblClickSequence.Value := FButtonNumber;
-      Result[Count] := FMidiDblClickSequence;
+      FMidiDblClickSequence.Event := DOUBLECLICK;
+      Result[Count] := FMidiDblClickSequence.Clone;
       Inc(Count);
     end;
   if (Assigned(FMidiLongClickSequence)) then
     if (Length(FMidiLongClickSequence.Datas) > 0) then
     begin
       FMidiLongClickSequence.Value := FButtonNumber;
-      Result[Count] := FMidiLongClickSequence;
+      FMidiLongClickSequence.Event := LONGCLICK;
+      Result[Count] := FMidiLongClickSequence.Clone;
       Inc(Count);
     end;
   if (Assigned(FMidiPushSequence)) then
     if (Length(FMidiPushSequence.Datas) > 0) then
     begin
       FMidiPushSequence.Value := FButtonNumber;
-      Result[Count] := FMidiPushSequence;
+      FMidiPushSequence.Event := PUSH;
+      Result[Count] := FMidiPushSequence.Clone;
       Inc(Count);
     end;
   if (Assigned(FMidiReleaseSequence)) then
     if (Length(FMidiReleaseSequence.Datas) > 0) then
     begin
       FMidiReleaseSequence.Value := FButtonNumber;
-      Result[Count] := FMidiReleaseSequence;
+      FMidiReleaseSequence.Event := Release;
+      Result[Count] := FMidiReleaseSequence.Clone;
       Inc(Count);
     end;
 end;
 
 procedure TfrmMidiSwitch.SetButton(AValue: TMidiButton);
 begin
-
+  lbName.Text := AValue.Name;
+  if AValue.ButtonType = MOMENTARY then
+    rbMomentary.Checked := True;
+  if AValue.ButtonType = SWITCH then
+    rbToggle.Checked := True;
+  btnColor.ButtonColor := AValue.Color;
 end;
 
 function TfrmMidiSwitch.GetButton: TMidiButton;
@@ -224,7 +228,7 @@ begin
   if rbMomentary.Checked then
     Result.ButtonType := MOMENTARY;
   if rbToggle.Checked then
-    Result.ButtonType := TOGGLE;
+    Result.ButtonType := SWITCH;
   Result.Color := btnColor.ButtonColor;
 end;
 
@@ -237,6 +241,8 @@ begin
   FMidiLongClickSequence.Value := FButtonNumber;
   FMidiPushSequence.Value := FButtonNumber;
   FMidiReleaseSequence.Value := FButtonNumber;
+
+  Label1.Caption := 'Switch ' + IntToStr(AValue);
 end;
 
 constructor TfrmMidiSwitch.Create(TheOwner: TComponent);
@@ -244,17 +250,24 @@ begin
   inherited Create(TheOwner);
 
   FMidiClickSequence := TMidiSequence.Create;
-  FMidiDblClickSequence := TMidiSequence.Create;
-  FMidiLongClickSequence := TMidiSequence.Create;
-  FMidiPushSequence := TMidiSequence.Create;
-  FMidiReleaseSequence := TMidiSequence.Create;
-
   FMidiClickSequence.SequenceType := BUTTON;
-  FMidiDblClickSequence.SequenceType := BUTTON;
-  FMidiLongClickSequence.SequenceType := BUTTON;
-  FMidiPushSequence.SequenceType := BUTTON;
-  FMidiReleaseSequence.SequenceType := BUTTON;
+  FMidiClickSequence.Event := SINGLECLICK;
 
+  FMidiDblClickSequence := TMidiSequence.Create;
+  FMidiDblClickSequence.SequenceType := BUTTON;
+  FMidiDblClickSequence.Event := DOUBLECLICK;
+
+  FMidiLongClickSequence := TMidiSequence.Create;
+  FMidiLongClickSequence.SequenceType := BUTTON;
+  FMidiLongClickSequence.Event := LONGCLICK;
+
+  FMidiPushSequence := TMidiSequence.Create;
+  FMidiPushSequence.SequenceType := BUTTON;
+  FMidiPushSequence.Event := PUSH;
+
+  FMidiReleaseSequence := TMidiSequence.Create;
+  FMidiReleaseSequence.SequenceType := BUTTON;
+  FMidiReleaseSequence.Event := Release;
 end;
 
 destructor TfrmMidiSwitch.Destroy;

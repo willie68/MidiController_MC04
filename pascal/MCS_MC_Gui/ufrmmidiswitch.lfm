@@ -2,24 +2,23 @@ object frmMidiSwitch: TfrmMidiSwitch
   Left = 0
   Height = 116
   Top = 0
-  Width = 758
+  Width = 806
   AutoSize = True
   ClientHeight = 116
-  ClientWidth = 758
-  OnClick = FrameClick
+  ClientWidth = 806
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 255
-  DesignTop = 175
+  DesignLeft = 417
+  DesignTop = 230
   object GroupBox2: TGroupBox
     Left = 0
     Height = 116
     Top = 0
-    Width = 275
+    Width = 304
     Align = alLeft
     Caption = 'Button'
     ClientHeight = 96
-    ClientWidth = 271
+    ClientWidth = 300
     ParentFont = False
     TabOrder = 0
     object Label1: TLabel
@@ -709,14 +708,14 @@ object frmMidiSwitch: TfrmMidiSwitch
     end
   end
   object GroupBox1: TGroupBox
-    Left = 275
+    Left = 304
     Height = 116
     Top = 0
-    Width = 483
+    Width = 502
     Align = alClient
     Caption = 'Midi'
     ClientHeight = 96
-    ClientWidth = 479
+    ClientWidth = 498
     ParentFont = False
     TabOrder = 1
     object ebClick: TEditButton
