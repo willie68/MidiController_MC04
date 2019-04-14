@@ -145,18 +145,33 @@ begin
     for i := 0 to Length(AValue) - 1 do
     begin
       mySequence := AValue[i];
-      if (mySequence.SequenceType = BUTTON) then
+      if (mySequence.SequenceType = BUTTON) AND (mySequence.Value = FButtonNumber) then
       begin
         if (mySequence.Event = PUSH) then
-          FMidiClickSequence := mySequence.Clone;
+        begin
+          FMidiPushSequence := mySequence.Clone;
+          ebPush.Text:= getMidiDataString(FMidiPushSequence.Datas);
+        end;
         if (mySequence.Event = Release) then
+        begin
           FMidiReleaseSequence := mySequence.Clone;
+          ebRelease.Text:= getMidiDataString(FMidiReleaseSequence.Datas);
+        end;
         if (mySequence.Event = SINGLECLICK) then
+        begin
           FMidiClickSequence := mySequence.Clone;
+          ebClick.Text:= getMidiDataString(FMidiClickSequence.Datas);
+        end;
         if (mySequence.Event = DOUBLECLICK) then
+        begin
           FMidiDblClickSequence := mySequence.Clone;
+          ebDblClick.Text:= getMidiDataString(FMidiDblClickSequence.Datas);
+        end;
         if (mySequence.Event = LONGCLICK) then
+        begin
           FMidiLongClickSequence := mySequence.Clone;
+          ebLongClick.Text:= getMidiDataString(FMidiLongClickSequence.Datas);
+        end;
       end;
     end;
   end;

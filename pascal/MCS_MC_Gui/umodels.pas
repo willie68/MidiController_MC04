@@ -121,14 +121,25 @@ type
     property toJson: TJsonObject read GetJson;
   end;
 
+function getMidiDataString(MidiDatas: TMidiDataArray): string;
 function StringToMidiButtonType(midiButtonType: string): TMidiButtonType;
-
 function StringToMidiSequnceEvent(AValue: string): TMidiSequenceEvent;
 function StringToMidiSequenceType(AValue: string): TMidiSequenceType;
-
 function StringToMidiDataType(AValue: string): TMidiDataType;
 
 implementation
+
+function getMidiDataString(MidiDatas: TMidiDataArray): string;
+var
+  i: integer;
+begin
+  for i := 0 to Length(MidiDatas) - 1 do
+  begin
+    if (i > 0) then
+      Result := Result + ', ';
+    Result := Result + MidiDatas[i].HumanString;
+  end;
+end;
 
 function MidiButtonTypeToString(midiButtonType: TMidiButtonType): string;
 begin

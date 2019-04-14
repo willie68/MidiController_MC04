@@ -44,18 +44,6 @@ implementation
 
 uses ufrmMidiSequenz;
 
-function getMidiDataString(MidiDatas: TMidiDataArray): string;
-var
-  i: integer;
-begin
-  for i := 0 to Length(MidiDatas) - 1 do
-  begin
-    if (i > 0) then
-      Result := Result + ', ';
-    Result := Result + MidiDatas[i].HumanString;
-  end;
-end;
-
 { TfrmPreset }
 
 procedure TfrmPreset.EditButtonButtonClick(Sender: TObject);

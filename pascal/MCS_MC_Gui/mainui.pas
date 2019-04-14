@@ -357,13 +357,17 @@ begin
 
   if (Length(Presets) > 0) then
   begin
-    frmPreset.Preset := Presets[0];
+    preset := Presets[0];
+    frmPreset.Preset := Preset;
     if (Length(Preset.Buttons) > 0) then
       frmMidiSwitch1.MidiButton := Preset.Buttons[0];
     if (Length(Preset.Buttons) > 1) then
       frmMidiSwitch2.MidiButton := Preset.Buttons[1];
     if (Length(Preset.Buttons) > 2) then
       frmMidiSwitch3.MidiButton := Preset.Buttons[2];
+    frmMidiSwitch1.MidiSequences := Preset.Sequences;
+    frmMidiSwitch2.MidiSequences := Preset.Sequences;
+    frmMidiSwitch3.MidiSequences := Preset.Sequences;
   end;
 end;
 
