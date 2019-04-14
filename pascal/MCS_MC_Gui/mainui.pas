@@ -70,7 +70,7 @@ type
     FileName: string;
     FJSON: TJSONObject;
 
-    Presets : TMidiPresets;
+    Presets: TMidiPresets;
 
 
     frmPreset: TfrmPreset;
@@ -153,9 +153,10 @@ begin
 end;
 
 procedure TForm1.FormDestroy(Sender: TObject);
-var i : integer;
+var
+  i: integer;
 begin
-  for i := 0 to Length(Presets) -1 do
+  for i := 0 to Length(Presets) - 1 do
   begin
     FreeAndNil(Presets[i]);
   end;
@@ -270,11 +271,15 @@ var
   jsonPreset: TJSONObject;
   jsonArray: TJSONArray;
   jsonButton: TJSONObject;
+  jsonDatas: TJSONArray;
+  jsonData: TJSONObject;
   presetName: string;
   item: TListItem;
   i, x, y: integer;
   Preset: TMidiPreset;
   Button: TMidiButton;
+  Sequence: TMidiSequence;
+  Data : TMidiData;
 begin
   ListView1.Clear;
   jsonPresets := FJSON.Arrays['programs'];
@@ -301,8 +306,42 @@ begin
 
       Preset.AddButton(Button);
     end;
-    // get sequences
 
+    // get sequences
+    if (jsonPreset.Find('sequences') <> nil) then
+    begin
+      jsonArray := jsonPreset.Arrays['sequences'];
+
+      for x := 0 to jsonArray.Count - 1 do
+      begin
+        jsonButton := jsonArray.Objects[x];
+        Sequence := TMidiSequence.Create;
+        Sequence.Event := uModels.StringToMidiSequnceEvent(jsonButton.Get('event'));
+        Sequence.SequenceType := uModels.StringToMidiSequenceType(jsonButton.Get('type'));
+        if (jsonButton.Find('value') <> nil) then
+          Sequence.Value := jsonButton.Get('value');
+
+        if (jsonButton.Arrays['datas'] <> nil) then
+        begin
+          jsonDatas := jsonButton.Arrays['datas'];
+          for y := 0 to jsonDatas.Count - 1 do
+          begin
+            jsonData := jsonDatas.Objects[y];
+
+            Data := TMidiData.Create;
+            Data.Channel:=jsonData.Get('channel');
+            Data.MidiType:=StringToMidiDataType(jsonData.Get('channel'));
+            Data.Data1:=jsonData.Get('data1');
+            Data.Data2:=jsonData.Get('data2');
+
+            Sequence.AddMidiData(Data);
+          end;
+        end;
+
+
+        Preset.AddSequence(Sequence);
+      end;
+    end;
     frmPreset.Preset := Preset;
     if (Length(Preset.Buttons) > 0) then
       frmMidiSwitch1.MidiButton := Preset.Buttons[0];
@@ -314,8 +353,8 @@ begin
     item := ListView1.Items.Add();
     item.Caption := Preset.Name;
 
-    SetLength(Presets, Length(Presets)+1);
-    Presets[Length(Presets)-1] := Preset;
+    SetLength(Presets, Length(Presets) + 1);
+    Presets[Length(Presets) - 1] := Preset;
   end;
 
 end;

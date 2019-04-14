@@ -85,7 +85,8 @@ type
     destructor Destroy; override;
     procedure AddMidiDatas(MidiDatas: TMidiDataArray);
     procedure FreeDatas;
-    function Clone:TMidiSequence;
+    function Clone: TMidiSequence;
+    procedure AddMidiData(MidiData: TMidiData);
   published
     property SequenceType: TMidiSequenceType read FSequenceType write FSequenceType;
     property Event: TMidiSequenceEvent read FEvent write FEvent;
@@ -122,6 +123,11 @@ type
 
 function StringToMidiButtonType(midiButtonType: string): TMidiButtonType;
 
+function StringToMidiSequnceEvent(AValue: string): TMidiSequenceEvent;
+function StringToMidiSequenceType(AValue: string): TMidiSequenceType;
+
+function StringToMidiDataType(AValue: string): TMidiDataType;
+
 implementation
 
 function MidiButtonTypeToString(midiButtonType: TMidiButtonType): string;
@@ -134,9 +140,9 @@ end;
 
 function StringToMidiButtonType(midiButtonType: string): TMidiButtonType;
 begin
-  if  midiButtonType = 'MOMENTARY' then
+  if midiButtonType = 'MOMENTARY' then
     Result := MOMENTARY;
-  if  midiButtonType = 'SWITCH' then
+  if midiButtonType = 'SWITCH' then
     Result := SWITCH;
 end;
 
@@ -154,6 +160,27 @@ begin
   end;
 end;
 
+function StringToMidiSequnceEvent(AValue: string): TMidiSequenceEvent;
+begin
+  if AValue = 'PUSH' then
+    Result := PUSH;
+  if AValue = 'RELEASE' then
+    Result := Release;
+  if AValue = 'START' then
+    Result := START;
+  if AValue = 'STOP' then
+    Result := STOP;
+  if AValue = 'CLICK' then
+    Result := SINGLECLICK;
+  if AValue = 'DOUBLECLICK' then
+    Result := DOUBLECLICK;
+  if AValue = 'LONGCLICK' then
+    Result := LONGCLICK;
+  if AValue = 'VALUECHANGE' then
+    Result := VALUECHANGE;
+end;
+
+
 function MidiSequenceTypeToString(midiSequenceType: TMidiSequenceType): string;
 begin
   case midiSequenceType of
@@ -161,6 +188,16 @@ begin
     BUTTON: Result := 'BUTTON';
     EXPRESSION: Result := 'EXPRESSION';
   end;
+end;
+
+function StringToMidiSequenceType(AValue: string): TMidiSequenceType;
+begin
+  if AValue = 'INTERNAL' then
+    Result := INTERNAL;
+  if AValue = 'BUTTON' then
+    Result := BUTTON;
+  if AValue = 'EXPRESSION' then
+    Result := EXPRESSION;
 end;
 
 function MidiDataTypeToString(mididatatype: TMidiDataType): string;
@@ -175,6 +212,25 @@ begin
     WAIT: Result := 'WAIT';
   end;
 end;
+
+function StringToMidiDataType(AValue: string): TMidiDataType;
+begin
+  if AValue = 'PC' then
+    Result := PC;
+  if AValue = 'CC' then
+    Result := CC;
+  if AValue = 'NOTE_ON' then
+    Result := NON;
+  if AValue = 'NOTE_OFF' then
+    Result := NOFF;
+  if AValue = 'PC_PREV' then
+    Result := PC_PREV;
+  if AValue = 'PC_NEXT' then
+    Result := PC_NEXT;
+  if AValue = 'WAIT' then
+    Result := WAIT;
+end;
+
 
 { TMidiButton }
 
@@ -315,7 +371,8 @@ begin
 end;
 
 procedure TMidiSequence.FreeDatas;
-var i : integer;
+var
+  i: integer;
 begin
   if (Assigned(FDatas)) then
   begin
@@ -328,20 +385,30 @@ begin
 end;
 
 function TMidiSequence.Clone: TMidiSequence;
-var i : integer;
+var
+  i: integer;
 begin
   Result := TMidiSequence.Create;
-  Result.FValue:= Self.FValue;
-  Result.FEvent:= Self.Event;
-  Result.FSequenceType:= Self.FSequenceType;
+  Result.FValue := Self.FValue;
+  Result.FEvent := Self.Event;
+  Result.FSequenceType := Self.FSequenceType;
   if (Assigned(FDatas)) then
   begin
     SetLength(Result.FDatas, Length(Self.FDatas));
-    for i := 0 to Length(Self.FDatas) -1 do
+    for i := 0 to Length(Self.FDatas) - 1 do
     begin
       Result.FDatas[i] := Self.FDatas[i].Clone;
     end;
   end;
+end;
+
+procedure TMidiSequence.AddMidiData(MidiData: TMidiData);
+begin
+  if (not Assigned(FDatas)) then
+    SetLength(FDatas, 1)
+  else
+    SetLength(FDatas, Length(FDatas) + 1);
+  FDatas[Length(FDatas) - 1] := MidiData;
 end;
 
 { TMidiPreset }
@@ -373,7 +440,7 @@ begin
     begin
       sequence := FSequences[i];
       if (length(sequence.Fdatas) > 0) then
-      jsonDatas.add(sequence.toJson);
+        jsonDatas.add(sequence.toJson);
     end;
   end;
   Result.Add('sequences', jsonDatas);
