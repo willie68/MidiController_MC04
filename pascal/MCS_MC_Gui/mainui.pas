@@ -279,7 +279,7 @@ var
   Preset: TMidiPreset;
   Button: TMidiButton;
   Sequence: TMidiSequence;
-  Data : TMidiData;
+  Data: TMidiData;
 begin
   ListView1.Clear;
   jsonPresets := FJSON.Arrays['programs'];
@@ -317,7 +317,8 @@ begin
         jsonButton := jsonArray.Objects[x];
         Sequence := TMidiSequence.Create;
         Sequence.Event := uModels.StringToMidiSequnceEvent(jsonButton.Get('event'));
-        Sequence.SequenceType := uModels.StringToMidiSequenceType(jsonButton.Get('type'));
+        Sequence.SequenceType :=
+          uModels.StringToMidiSequenceType(jsonButton.Get('type'));
         if (jsonButton.Find('value') <> nil) then
           Sequence.Value := jsonButton.Get('value');
 
@@ -329,10 +330,14 @@ begin
             jsonData := jsonDatas.Objects[y];
 
             Data := TMidiData.Create;
-            Data.Channel:=jsonData.Get('channel');
-            Data.MidiType:=StringToMidiDataType(jsonData.Get('channel'));
-            Data.Data1:=jsonData.Get('data1');
-            Data.Data2:=jsonData.Get('data2');
+            if (jsonData.Find('channel') <> nil) then
+              Data.Channel := jsonData.Get('channel');
+            if (jsonData.Find('type') <> nil) then
+              Data.MidiType := StringToMidiDataType(jsonData.Get('type'));
+            if (jsonData.Find('data1') <> nil) then
+              Data.Data1 := jsonData.Get('data1');
+            if (jsonData.Find('data2') <> nil) then
+              Data.Data2 := jsonData.Get('data2');
 
             Sequence.AddMidiData(Data);
           end;
@@ -342,13 +347,6 @@ begin
         Preset.AddSequence(Sequence);
       end;
     end;
-    frmPreset.Preset := Preset;
-    if (Length(Preset.Buttons) > 0) then
-      frmMidiSwitch1.MidiButton := Preset.Buttons[0];
-    if (Length(Preset.Buttons) > 1) then
-      frmMidiSwitch2.MidiButton := Preset.Buttons[1];
-    if (Length(Preset.Buttons) > 2) then
-      frmMidiSwitch3.MidiButton := Preset.Buttons[2];
 
     item := ListView1.Items.Add();
     item.Caption := Preset.Name;
@@ -357,6 +355,16 @@ begin
     Presets[Length(Presets) - 1] := Preset;
   end;
 
+  if (Length(Presets) > 0) then
+  begin
+    frmPreset.Preset := Presets[0];
+    if (Length(Preset.Buttons) > 0) then
+      frmMidiSwitch1.MidiButton := Preset.Buttons[0];
+    if (Length(Preset.Buttons) > 1) then
+      frmMidiSwitch2.MidiButton := Preset.Buttons[1];
+    if (Length(Preset.Buttons) > 2) then
+      frmMidiSwitch3.MidiButton := Preset.Buttons[2];
+  end;
 end;
 
 function TForm1.GetActualPreset(): TMidiPreset;

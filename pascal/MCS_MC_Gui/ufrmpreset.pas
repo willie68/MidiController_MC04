@@ -44,6 +44,18 @@ implementation
 
 uses ufrmMidiSequenz;
 
+function getMidiDataString(MidiDatas: TMidiDataArray): string;
+var
+  i: integer;
+begin
+  for i := 0 to Length(MidiDatas) - 1 do
+  begin
+    if (i > 0) then
+      Result := Result + ', ';
+    Result := Result + MidiDatas[i].HumanString;
+  end;
+end;
+
 { TfrmPreset }
 
 procedure TfrmPreset.EditButtonButtonClick(Sender: TObject);
@@ -103,9 +115,15 @@ begin
       if (mySequence.SequenceType = INTERNAL) then
       begin
         if (mySequence.Event = START) then
+        begin
           FMidiStartSequence := mySequence.Clone;
+          ebStart.Text := getMidiDataString(FMidiStartSequence.Datas);
+        end;
         if (mySequence.Event = STOP) then
+        begin
           FMidiStopSequence := mySequence.Clone;
+          ebStop.Text := getMidiDataString(FMidiStopSequence.Datas);
+        end;
       end;
     end;
   end;
@@ -130,9 +148,9 @@ begin
   FMidiStopSequence := TMidiSequence.Create;
 
   FMidiStartSequence.SequenceType := INTERNAL;
-  FMidiStartSequence.Event:=START;
+  FMidiStartSequence.Event := START;
   FMidiStopSequence.SequenceType := INTERNAL;
-  FMidiStopSequence.Event:=START;
+  FMidiStopSequence.Event := START;
 end;
 
 destructor TfrmPreset.Destroy;
