@@ -5,7 +5,7 @@ unit uModels;
 interface
 
 uses
-  Classes, SysUtils, Graphics, contnrs, fpjson, jsonparser;
+  Classes, SysUtils, Graphics, fpjson, jsonparser;
 
 type
   TMidiButton = class;
@@ -38,6 +38,7 @@ type
     procedure ClearButtons;
     procedure AddSequence(Sequence: TMidiSequence);
     procedure ClearSequences;
+    class function parseJsonToMidiPreset(jsonData: TJsonObject): TMidiPreset; static;
   published
     property Name: string read FName write FName;
     property ProgramNumber: integer read FPrgNumber write FPrgNumber default 0;
@@ -59,7 +60,8 @@ type
     FColor: TColor;
     function GetJson: TJsonObject;
   public
-    function clone: TMidiButton;
+    function Clone: TMidiButton;
+    class function parseJsonToMidiButton(jsonData: TJsonObject): TMidiButton; static;
   published
     property Name: string read FName write FName;
     property ButtonType: TMidiButtonType read FType write FType default MOMENTARY;
@@ -87,6 +89,7 @@ type
     procedure FreeDatas;
     function Clone: TMidiSequence;
     procedure AddMidiData(MidiData: TMidiData);
+    class function parseJsonToMidiSequence(jsonData: TJsonObject): TMidiSequence; static;
   published
     property SequenceType: TMidiSequenceType read FSequenceType write FSequenceType;
     property Event: TMidiSequenceEvent read FEvent write FEvent;
@@ -107,17 +110,17 @@ type
     FData2: byte;
     function GetHumanString: string;
     function GetJson: TJsonObject;
-    procedure SetHumanString(AValue: string);
   public
     constructor Create;
     destructor Destroy; override;
     function clone: TMidiData;
+    class function parseJsonToMidiData(jsonData: TJsonObject): TMidiData; static;
   published
     property MidiType: TMidiDataType read FMidiType write FMidiType;
     property Channel: byte read FChannel write FChannel;
     property Data1: byte read FData1 write FData1;
     property Data2: byte read FData2 write FData2;
-    property HumanString: string read GetHumanString write SetHumanString;
+    property HumanString: string read GetHumanString;
     property toJson: TJsonObject read GetJson;
   end;
 
@@ -133,6 +136,7 @@ function getMidiDataString(MidiDatas: TMidiDataArray): string;
 var
   i: integer;
 begin
+  Result := '';
   for i := 0 to Length(MidiDatas) - 1 do
   begin
     if (i > 0) then
@@ -253,12 +257,20 @@ begin
   Result.Add('color', '0x' + IntToHex(FColor, 6));
 end;
 
-function TMidiButton.clone: TMidiButton;
+function TMidiButton.Clone: TMidiButton;
 begin
   Result := TMidiButton.Create;
   Result.FName := Self.FName;
   Result.FType := Self.FType;
   Result.FColor := Self.FColor;
+end;
+
+class function TMidiButton.parseJsonToMidiButton(jsonData: TJsonObject): TMidiButton;
+begin
+  Result := TMidiButton.Create;
+  Result.Name := jsonData.Get('name');
+  Result.ButtonType := uModels.StringToMidiButtonType(jsonData.Get('type'));
+  Result.Color := jsonData.Get('color');
 end;
 
 { TMidiData }
@@ -316,11 +328,6 @@ begin
   Result.Add('data2', FData2);
 end;
 
-procedure TMidiData.SetHumanString(AValue: string);
-begin
-
-end;
-
 constructor TMidiData.Create;
 begin
   inherited Create;
@@ -338,6 +345,19 @@ begin
   Result.FData2 := self.FData2;
   Result.FChannel := self.FChannel;
   Result.FMidiType := self.FMidiType;
+end;
+
+class function TMidiData.parseJsonToMidiData(jsonData: TJsonObject): TMidiData;
+begin
+  Result := TMidiData.Create;
+  if (jsonData.Find('channel') <> nil) then
+    Result.Channel := jsonData.Get('channel');
+  if (jsonData.Find('type') <> nil) then
+    Result.MidiType := StringToMidiDataType(jsonData.Get('type'));
+  if (jsonData.Find('data1') <> nil) then
+    Result.Data1 := jsonData.Get('data1');
+  if (jsonData.Find('data2') <> nil) then
+    Result.Data2 := jsonData.Get('data2');
 end;
 
 { TMidiSequence }
@@ -367,8 +387,6 @@ begin
 end;
 
 destructor TMidiSequence.Destroy;
-var
-  i: integer;
 begin
   FreeDatas;
   inherited Destroy;
@@ -420,6 +438,32 @@ begin
   else
     SetLength(FDatas, Length(FDatas) + 1);
   FDatas[Length(FDatas) - 1] := MidiData;
+end;
+
+class function TMidiSequence.parseJsonToMidiSequence(jsonData: TJsonObject):
+TMidiSequence;
+
+var
+  jsonDatas: TJsonArray;
+  jsonMidiData: TJsonObject;
+  y: integer;
+begin
+  Result := TMidiSequence.Create;
+  Result.Event := uModels.StringToMidiSequnceEvent(jsonData.Get('event'));
+  Result.SequenceType :=
+    uModels.StringToMidiSequenceType(jsonData.Get('type'));
+  if (jsonData.Find('value') <> nil) then
+    Result.Value := jsonData.Get('value');
+
+  if (jsonData.Arrays['datas'] <> nil) then
+  begin
+    jsonDatas := jsonData.Arrays['datas'];
+    for y := 0 to jsonDatas.Count - 1 do
+    begin
+      jsonMidiData := jsonDatas.Objects[y];
+      Result.AddMidiData(TMidiData.parseJsonToMidiData(jsonMidiData));
+    end;
+  end;
 end;
 
 { TMidiPreset }
@@ -520,6 +564,40 @@ begin
     FreeAndNil(FSequences[i]);
   end;
   SetLength(FSequences, 0);
+end;
+
+class function TMidiPreset.parseJsonToMidiPreset(jsonData: TJsonObject): TMidiPreset;
+var
+  x: integer;
+  jsonArray: TJSONArray;
+  jsonObject: TJSONObject;
+
+begin
+  Result := TMidiPreset.Create;
+  Result.Name := jsonData.Get('name');
+  Result.ProgramNumber := jsonData.Get('prgNumber');
+  Result.ExternalMidi := jsonData.Get('externalMidi');
+  Result.InternalMidi := jsonData.Get('internalMidi');
+
+  // get buttons
+  jsonArray := jsonData.Arrays['buttons'];
+  for x := 0 to jsonArray.Count - 1 do
+  begin
+    jsonObject := jsonArray.Objects[x];
+    Result.AddButton(TMidiButton.parseJsonToMidiButton(jsonObject));
+  end;
+
+  // get sequences
+  if (jsonData.Find('sequences') <> nil) then
+  begin
+    jsonArray := jsonData.Arrays['sequences'];
+
+    for x := 0 to jsonArray.Count - 1 do
+    begin
+      jsonObject := jsonArray.Objects[x];
+      Result.AddSequence(TMidiSequence.parseJsonToMidiSequence(jsonObject));
+    end;
+  end;
 end;
 
 end.

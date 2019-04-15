@@ -271,15 +271,9 @@ var
   jsonPreset: TJSONObject;
   jsonArray: TJSONArray;
   jsonButton: TJSONObject;
-  jsonDatas: TJSONArray;
-  jsonData: TJSONObject;
-  presetName: string;
   item: TListItem;
-  i, x, y: integer;
+  i, x: integer;
   Preset: TMidiPreset;
-  Button: TMidiButton;
-  Sequence: TMidiSequence;
-  Data: TMidiData;
 begin
   ListView1.Clear;
   jsonPresets := FJSON.Arrays['programs'];
@@ -287,67 +281,7 @@ begin
   begin
     jsonPreset := jsonPresets.Objects[i];
 
-    Preset := TMidiPreset.Create;
-    Preset.Name := jsonPreset.Get('name');
-    Preset.ProgramNumber := jsonPreset.Get('prgNumber');
-    Preset.ExternalMidi := jsonPreset.Get('externalMidi');
-    Preset.InternalMidi := jsonPreset.Get('internalMidi');
-
-    // get buttons
-    jsonArray := jsonPreset.Arrays['buttons'];
-
-    for x := 0 to jsonArray.Count - 1 do
-    begin
-      jsonButton := jsonArray.Objects[x];
-      Button := TMidiButton.Create;
-      Button.Name := jsonButton.Get('name');
-      Button.ButtonType := uModels.StringToMidiButtonType(jsonButton.Get('type'));
-      Button.Color := jsonButton.Get('color');
-
-      Preset.AddButton(Button);
-    end;
-
-    // get sequences
-    if (jsonPreset.Find('sequences') <> nil) then
-    begin
-      jsonArray := jsonPreset.Arrays['sequences'];
-
-      for x := 0 to jsonArray.Count - 1 do
-      begin
-        jsonButton := jsonArray.Objects[x];
-        Sequence := TMidiSequence.Create;
-        Sequence.Event := uModels.StringToMidiSequnceEvent(jsonButton.Get('event'));
-        Sequence.SequenceType :=
-          uModels.StringToMidiSequenceType(jsonButton.Get('type'));
-        if (jsonButton.Find('value') <> nil) then
-          Sequence.Value := jsonButton.Get('value');
-
-        if (jsonButton.Arrays['datas'] <> nil) then
-        begin
-          jsonDatas := jsonButton.Arrays['datas'];
-          for y := 0 to jsonDatas.Count - 1 do
-          begin
-            jsonData := jsonDatas.Objects[y];
-
-            Data := TMidiData.Create;
-            if (jsonData.Find('channel') <> nil) then
-              Data.Channel := jsonData.Get('channel');
-            if (jsonData.Find('type') <> nil) then
-              Data.MidiType := StringToMidiDataType(jsonData.Get('type'));
-            if (jsonData.Find('data1') <> nil) then
-              Data.Data1 := jsonData.Get('data1');
-            if (jsonData.Find('data2') <> nil) then
-              Data.Data2 := jsonData.Get('data2');
-
-            Sequence.AddMidiData(Data);
-          end;
-        end;
-
-
-        Preset.AddSequence(Sequence);
-      end;
-    end;
-
+    Preset := TMidiPreset.parseJsonToMidiPreset(jsonPreset);
     item := ListView1.Items.Add();
     item.Caption := Preset.Name;
 
