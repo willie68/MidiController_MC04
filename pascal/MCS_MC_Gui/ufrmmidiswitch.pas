@@ -49,6 +49,8 @@ type
     function GetSequencesCount: integer;
     procedure SetSequences(AValue: TMidiSequenceArray);
 
+    procedure ClearSequences();
+
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
@@ -140,42 +142,81 @@ var
   i: integer;
   mySequence: TMidiSequence;
 begin
+
+  clearSequences();
+
   if (Assigned(AValue)) then
   begin
     for i := 0 to Length(AValue) - 1 do
     begin
       mySequence := AValue[i];
-      if (mySequence.SequenceType = BUTTON) AND (mySequence.Value = FButtonNumber) then
+      if (mySequence.SequenceType = BUTTON) and (mySequence.Value = FButtonNumber) then
       begin
         if (mySequence.Event = PUSH) then
         begin
+          if (Assigned(FMidiPushSequence)) then
+            FreeAndNil(FMidiPushSequence);
           FMidiPushSequence := mySequence.Clone;
-          ebPush.Text:= getMidiDataString(FMidiPushSequence.Datas);
+          ebPush.Text := getMidiDataString(FMidiPushSequence.Datas);
         end;
         if (mySequence.Event = Release) then
         begin
+          if (Assigned(FMidiReleaseSequence)) then
+            FreeAndNil(FMidiReleaseSequence);
           FMidiReleaseSequence := mySequence.Clone;
-          ebRelease.Text:= getMidiDataString(FMidiReleaseSequence.Datas);
+          ebRelease.Text := getMidiDataString(FMidiReleaseSequence.Datas);
         end;
         if (mySequence.Event = SINGLECLICK) then
         begin
+          if (Assigned(FMidiClickSequence)) then
+            FreeAndNil(FMidiClickSequence);
           FMidiClickSequence := mySequence.Clone;
-          ebClick.Text:= getMidiDataString(FMidiClickSequence.Datas);
+          ebClick.Text := getMidiDataString(FMidiClickSequence.Datas);
         end;
         if (mySequence.Event = DOUBLECLICK) then
         begin
+          if (Assigned(FMidiDblClickSequence)) then
+            FreeAndNil(FMidiDblClickSequence);
           FMidiDblClickSequence := mySequence.Clone;
-          ebDblClick.Text:= getMidiDataString(FMidiDblClickSequence.Datas);
+          ebDblClick.Text := getMidiDataString(FMidiDblClickSequence.Datas);
         end;
         if (mySequence.Event = LONGCLICK) then
         begin
+          if (Assigned(FMidiLongClickSequence)) then
+            FreeAndNil(FMidiLongClickSequence);
           FMidiLongClickSequence := mySequence.Clone;
-          ebLongClick.Text:= getMidiDataString(FMidiLongClickSequence.Datas);
+          ebLongClick.Text := getMidiDataString(FMidiLongClickSequence.Datas);
         end;
       end;
     end;
   end;
 
+end;
+
+procedure TfrmMidiSwitch.ClearSequences();
+begin
+  if (Assigned(FMidiClickSequence)) then
+    FreeAndNil(FMidiClickSequence);
+  if (Assigned(FMidiDblClickSequence)) then
+    FreeAndNil(FMidiDblClickSequence);
+  if (Assigned(FMidiLongClickSequence)) then
+    FreeAndNil(FMidiLongClickSequence);
+  if (Assigned(FMidiPushSequence)) then
+    FreeAndNil(FMidiPushSequence);
+  if (Assigned(FMidiReleaseSequence)) then
+    FreeAndNil(FMidiReleaseSequence);
+
+  FMidiClickSequence := TMidiSequence.Create;
+  FMidiDblClickSequence := TMidiSequence.Create;
+  FMidiLongClickSequence := TMidiSequence.Create;
+  FMidiPushSequence := TMidiSequence.Create;
+  FMidiReleaseSequence := TMidiSequence.Create;
+
+  ebClick.Text := '';
+  ebDblClick.Text := '';
+  ebLongClick.Text := '';
+  ebPush.Text := '';
+  ebRelease.Text := '';
 end;
 
 function TfrmMidiSwitch.GetSequences: TMidiSequenceArray;

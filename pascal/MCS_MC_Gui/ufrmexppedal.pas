@@ -28,6 +28,9 @@ type
     procedure SetCaption(Value: TCaption);
     procedure SetExpressionNumber(AValue: integer);
     procedure SetSequences(AValue: TMidiSequenceArray);
+
+    procedure ClearSequences();
+
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
@@ -106,6 +109,9 @@ var
   i: integer;
   mySequence: TMidiSequence;
 begin
+
+  clearSequences();
+
   if (Assigned(AValue)) then
   begin
     for i := 0 to Length(AValue) - 1 do
@@ -116,12 +122,24 @@ begin
       begin
         if (mySequence.Event = VALUECHANGE) then
         begin
+          if (Assigned(FMidiChangeSequence)) then
+            FreeAndNil(FMidiChangeSequence);
           FMidiChangeSequence := mySequence.Clone;
           ebValueChange.Text := getMidiDataString(FMidiChangeSequence.Datas);
         end;
       end;
     end;
   end;
+end;
+
+procedure TfrmExpPedal.ClearSequences();
+begin
+  if (Assigned(FMidiChangeSequence)) then
+    FreeAndNil(FMidiChangeSequence);
+
+  FMidiChangeSequence := TMidiSequence.Create;
+
+  ebValueChange.Text := '';
 end;
 
 constructor TfrmExpPedal.Create(TheOwner: TComponent);

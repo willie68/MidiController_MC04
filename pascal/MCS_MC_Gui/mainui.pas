@@ -60,6 +60,9 @@ type
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
+    procedure ListView1Change(Sender: TObject; Item: TListItem;
+      Change: TItemChange);
+    procedure ListView1Click(Sender: TObject);
     procedure PresetAddExecute(Sender: TObject);
     procedure PresetCopyExecute(Sender: TObject);
     procedure PresetDeleteExecute(Sender: TObject);
@@ -82,6 +85,7 @@ type
     procedure OpenFile();
     procedure GettingPrograms();
     function GetActualPreset(): TMidiPreset;
+    procedure switchToPreset(Preset: TMidiPreset);
   public
 
   end;
@@ -189,6 +193,30 @@ begin
   Infobox.Show;
 end;
 
+procedure TForm1.ListView1Change(Sender: TObject; Item: TListItem; Change: TItemChange);
+begin
+end;
+
+procedure TForm1.ListView1Click(Sender: TObject);
+var
+  presetName: string;
+  Preset: TMidiPreset;
+  i: integer;
+begin
+  Preset := nil;
+  if (ListView1.ItemIndex >= 0) then
+  begin
+    presetName := ListView1.Items[ListView1.ItemIndex].Caption;
+    for i := 0 to Length(Presets) - 1 do
+    begin
+      if (presetName = Presets[i].Name) then
+        Preset := Presets[i];
+    end;
+    if (Assigned(Preset)) then
+      switchToPreset(Preset);
+  end;
+end;
+
 procedure TForm1.PresetAddExecute(Sender: TObject);
 var
   presetName: string;
@@ -270,10 +298,8 @@ procedure TForm1.GettingPrograms();
 var
   jsonPresets: TJSONArray;
   jsonPreset: TJSONObject;
-  jsonArray: TJSONArray;
-  jsonButton: TJSONObject;
   item: TListItem;
-  i, x: integer;
+  i: integer;
   Preset: TMidiPreset;
 begin
   ListView1.Clear;
@@ -293,19 +319,7 @@ begin
   if (Length(Presets) > 0) then
   begin
     preset := Presets[0];
-    frmPreset.Preset := Preset;
-    if (Length(Preset.Buttons) > 0) then
-      frmMidiSwitch1.MidiButton := Preset.Buttons[0];
-    if (Length(Preset.Buttons) > 1) then
-      frmMidiSwitch2.MidiButton := Preset.Buttons[1];
-    if (Length(Preset.Buttons) > 2) then
-      frmMidiSwitch3.MidiButton := Preset.Buttons[2];
-    frmMidiSwitch1.MidiSequences := Preset.Sequences;
-    frmMidiSwitch2.MidiSequences := Preset.Sequences;
-    frmMidiSwitch3.MidiSequences := Preset.Sequences;
-
-    frmexppedal.ExpressionNumber := 1;
-    frmexppedal.MidiSequences := Preset.Sequences;
+    switchToPreset(preset);
   end;
 end;
 
@@ -365,6 +379,23 @@ begin
   begin
     Result := TMidiPreset.Create;
   end;
+end;
+
+procedure TForm1.switchToPreset(Preset: TMidiPreset);
+begin
+  frmPreset.Preset := Preset;
+  if (Length(Preset.Buttons) > 0) then
+    frmMidiSwitch1.MidiButton := Preset.Buttons[0];
+  if (Length(Preset.Buttons) > 1) then
+    frmMidiSwitch2.MidiButton := Preset.Buttons[1];
+  if (Length(Preset.Buttons) > 2) then
+    frmMidiSwitch3.MidiButton := Preset.Buttons[2];
+  frmMidiSwitch1.MidiSequences := Preset.Sequences;
+  frmMidiSwitch2.MidiSequences := Preset.Sequences;
+  frmMidiSwitch3.MidiSequences := Preset.Sequences;
+
+  frmexppedal.ExpressionNumber := 1;
+  frmexppedal.MidiSequences := Preset.Sequences;
 end;
 
 

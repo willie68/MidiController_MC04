@@ -31,6 +31,8 @@ type
   private
     FMidiStartSequence: TMidiSequence;
     FMidiStopSequence: TMidiSequence;
+
+    procedure ClearSequences();
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
@@ -94,6 +96,8 @@ begin
   seExtChannel.Value := AValue.ExternalMidi;
   seIntChannel.Value := AValue.InternalMidi;
 
+  clearSequences();
+
   mySequences := AValue.Sequences;
   if (Assigned(mySequences)) then
   begin
@@ -104,17 +108,35 @@ begin
       begin
         if (mySequence.Event = START) then
         begin
+          if (Assigned(FMidiStartSequence)) then
+            FreeAndNil(FMidiStartSequence);
           FMidiStartSequence := mySequence.Clone;
           ebStart.Text := getMidiDataString(FMidiStartSequence.Datas);
         end;
         if (mySequence.Event = STOP) then
         begin
+          if (Assigned(FMidiStopSequence)) then
+            FreeAndNil(FMidiStopSequence);
           FMidiStopSequence := mySequence.Clone;
           ebStop.Text := getMidiDataString(FMidiStopSequence.Datas);
         end;
       end;
     end;
   end;
+end;
+
+procedure TfrmPreset.ClearSequences();
+begin
+  if (Assigned(FMidiStartSequence)) then
+    FreeAndNil(FMidiStartSequence);
+  if (Assigned(FMidiStopSequence)) then
+    FreeAndNil(FMidiStopSequence);
+
+  FMidiStartSequence := TMidiSequence.Create;
+  FMidiStopSequence := TMidiSequence.Create;
+
+  ebStart.Text := '';
+  ebStop.Text := '';
 end;
 
 function TfrmPreset.GetPreset: TMidiPreset;
