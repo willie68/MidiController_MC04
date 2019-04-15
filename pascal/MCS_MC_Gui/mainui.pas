@@ -119,6 +119,7 @@ begin
   FlowPanel1.InsertControl(frmPreset, 0);
 
   frmexppedal := TfrmExpPedal.Create(FlowPanel1);
+  frmexppedal.ExpressionNumber := 1;
   FlowPanel1.InsertControl(frmexppedal, 1);
 
   frmMidiSwitch1 := TfrmMidiSwitch.Create(FlowPanel1);
@@ -303,7 +304,7 @@ begin
     frmMidiSwitch2.MidiSequences := Preset.Sequences;
     frmMidiSwitch3.MidiSequences := Preset.Sequences;
 
-    frmexppedal.ExpressionNumber:=1;
+    frmexppedal.ExpressionNumber := 1;
     frmexppedal.MidiSequences := Preset.Sequences;
   end;
 end;
