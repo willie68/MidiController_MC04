@@ -86,6 +86,7 @@ type
     procedure GettingPrograms();
     function GetActualPreset(): TMidiPreset;
     procedure switchToPreset(Preset: TMidiPreset);
+    procedure SaveOldPreset(Preset: TMidiPreset);
   public
 
   end;
@@ -383,6 +384,7 @@ end;
 
 procedure TForm1.switchToPreset(Preset: TMidiPreset);
 begin
+  SaveOldPreset(GetActualPreset());
   frmPreset.Preset := Preset;
   if (Length(Preset.Buttons) > 0) then
     frmMidiSwitch1.MidiButton := Preset.Buttons[0];
@@ -396,6 +398,19 @@ begin
 
   frmexppedal.ExpressionNumber := 1;
   frmexppedal.MidiSequences := Preset.Sequences;
+end;
+
+procedure TForm1.SaveOldPreset(Preset: TMidiPreset);
+var i : integer;
+begin
+  for i := 0 to Length(Presets) - 1 do
+  begin
+    if (Preset.Name = Presets[i].Name) then
+    begin
+      Presets[i].Free;
+      Presets[i] := Preset;
+    end;
+  end;
 end;
 
 
