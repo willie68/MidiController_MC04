@@ -21,14 +21,21 @@ type
     procedure Image1Click(Sender: TObject);
   private
     FCaption: TCaption;
+    FExpressionNumber: integer;
     FMidiChangeSequence: TMidiSequence;
 
+    function GetSequences: TMidiSequenceArray;
     procedure SetCaption(Value: TCaption);
+    procedure SetExpressionNumber(AValue: integer);
+    procedure SetSequences(AValue: TMidiSequenceArray);
   public
     constructor Create(TheOwner: TComponent); override;
     destructor Destroy; override;
 
     property Caption: TCaption read FCaption write SetCaption;
+
+    property ExpressionNumber: integer read FExpressionNumber write SetExpressionNumber;
+    property MidiSequences: TMidiSequenceArray read GetSequences write SetSequences;
   end;
 
 implementation
@@ -48,24 +55,18 @@ procedure TfrmExpPedal.ebValueChangeButtonClick(Sender: TObject);
 var
   MidiDatas: TMidiDataArray;
   eb: TEditButton;
-  i: integer;
-  midiData: TMidiData;
-  commandString: string;
 begin
+  SetLength(MidiDatas, 0);
+  if (Sender = ebValueChange) then
+    MidiDatas := FMidiChangeSequence.Datas;
+  FrmMidiSequenz.MidiDatas := MidiDatas;
   if (FrmMidiSequenz.ShowModal() = mrOk) then
   begin
-    commandString := '';
     MidiDatas := FrmMidiSequenz.MidiDatas;
     if (Sender is TEditButton) then
     begin
       eb := Sender as TEditButton;
-      for i := 0 to Length(MidiDatas) - 1 do
-      begin
-        if (i > 0) then
-          commandString := commandString + ', ';
-        commandString := commandString + MidiDatas[i].HumanString;
-      end;
-      eb.Text := commandString;
+      eb.Text := getMidiDataString(MidiDatas);
       eb.Tag := Length(MidiDatas);
     end;
     if (Sender = ebValueChange) then
@@ -77,6 +78,50 @@ procedure TfrmExpPedal.SetCaption(Value: TCaption);
 begin
   FCaption := Value;
   Label1.Caption := Value;
+end;
+
+function TfrmExpPedal.GetSequences: TMidiSequenceArray;
+begin
+  SetLength(Result, 0);
+  if (Assigned(FMidiChangeSequence)) then
+    if (Length(FMidiChangeSequence.Datas) > 0) then
+    begin
+      SetLength(Result, 1);
+      FMidiChangeSequence.SequenceType := EXPRESSION;
+      FMidiChangeSequence.Value := FExpressionNumber;
+      FMidiChangeSequence.Event := VALUECHANGE;
+      Result[0] := FMidiChangeSequence.Clone;
+    end;
+end;
+
+procedure TfrmExpPedal.SetExpressionNumber(AValue: integer);
+begin
+  if FExpressionNumber = AValue then
+    Exit;
+  FExpressionNumber := AValue;
+end;
+
+procedure TfrmExpPedal.SetSequences(AValue: TMidiSequenceArray);
+var
+  i: integer;
+  mySequence: TMidiSequence;
+begin
+  if (Assigned(AValue)) then
+  begin
+    for i := 0 to Length(AValue) - 1 do
+    begin
+      mySequence := AValue[i];
+      if (mySequence.SequenceType = EXPRESSION) and
+        (mySequence.Value = FExpressionNumber) then
+      begin
+        if (mySequence.Event = VALUECHANGE) then
+        begin
+          FMidiChangeSequence := mySequence.Clone;
+          ebValueChange.Text := getMidiDataString(FMidiChangeSequence.Datas);
+        end;
+      end;
+    end;
+  end;
 end;
 
 constructor TfrmExpPedal.Create(TheOwner: TComponent);
@@ -93,4 +138,3 @@ begin
 end;
 
 end.
-

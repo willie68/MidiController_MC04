@@ -149,6 +149,7 @@
 				{
 					"type": "EXPRESSION",
 					"event": "VALUECHANGE",
+					"value" : 1,
 					"datas": 
 					[
 						{

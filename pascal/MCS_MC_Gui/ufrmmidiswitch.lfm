@@ -8,8 +8,8 @@ object frmMidiSwitch: TfrmMidiSwitch
   ClientWidth = 806
   ParentFont = False
   TabOrder = 0
-  DesignLeft = 417
-  DesignTop = 230
+  DesignLeft = 396
+  DesignTop = 137
   object GroupBox2: TGroupBox
     Left = 0
     Height = 116

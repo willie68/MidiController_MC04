@@ -368,6 +368,9 @@ begin
     frmMidiSwitch1.MidiSequences := Preset.Sequences;
     frmMidiSwitch2.MidiSequences := Preset.Sequences;
     frmMidiSwitch3.MidiSequences := Preset.Sequences;
+
+    frmexppedal.ExpressionNumber:=1;
+    frmexppedal.MidiSequences := Preset.Sequences;
   end;
 end;
 
@@ -414,6 +417,14 @@ begin
       end;
     end;
 
+    mySequences := frmexppedal.MidiSequences;
+    if (assigned(mySequences)) then
+    begin
+      for i := 0 to Length(mySequences) - 1 do
+      begin
+        Result.AddSequence(mySequences[i]);
+      end;
+    end;
   end
   else
   begin
