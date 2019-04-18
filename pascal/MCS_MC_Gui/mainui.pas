@@ -88,6 +88,7 @@ type
     function GetActualPreset(): TMidiPreset;
     procedure switchToPreset(Preset: TMidiPreset);
     procedure SaveOldPreset(Preset: TMidiPreset);
+    procedure buildBinSwitch(var Data: array of byte; var i: integer; Button: TMidiButton);
   public
 
   end;
@@ -100,7 +101,7 @@ implementation
 {$R *.lfm}
 
 uses MCSMessageBox, MCSStrings, MCSLogging, MCSIniFiles,
-  MCSIO, MCSTools, MCSAbout, jsonscanner;
+  MCSIO, MCSTools, MCSAbout, jsonscanner, hexfile;
 
 { TForm1 }
 
@@ -184,32 +185,27 @@ var
   jsonString: string;
   preset: TMidiPreset;
   F: TextFile;
-  jsonArray : TJsonArray;
-  jsonObject : TJsonObject;
-  i : integer;
+  jsonArray: TJsonArray;
+  jsonObject: TJsonObject;
+  i: integer;
 begin
   filename := FileSaveAs1.Dialog.FileName;
 
-  AssignFile(F, filename);
-  try
-    SaveOldPreset(GetActualPreset());
+  SaveOldPreset(GetActualPreset());
 
-    jsonArray := TJsonArray.Create();
-    for i := 0 to length(Presets) - 1 do
-    begin
-      jsonArray.Add(Presets[i].toJson);
-    end;
-    jsonObject := TJsonObject.Create;
-    jsonObject.Add('version', 1);
-    jsonObject.Add('programs', jsonArray);
-    jsonString := jsonObject.AsJSON;
-    jsonObject.Free;
-
-    ReWrite(F);
-    Write(F, jsonString);
-  finally
-    CloseFile(F);
+  jsonArray := TJsonArray.Create();
+  for i := 0 to length(Presets) - 1 do
+  begin
+    jsonArray.Add(Presets[i].toJson);
   end;
+  jsonObject := TJsonObject.Create;
+  jsonObject.Add('version', 1);
+  jsonObject.Add('programs', jsonArray);
+  jsonString := jsonObject.AsJSON;
+  jsonObject.Free;
+
+  MCSIO.StrToFile(fileName, jsonString);
+
   ShowMessage('presets saved');
 end;
 
@@ -290,13 +286,61 @@ end;
 
 procedure TForm1.ToolButton9Click(Sender: TObject);
 var
-  jsonString: string;
-  preset: TMidiPreset;
+  hexFile: THexFile;
+  myFilename: string;
+  Data: array [0..1023] of byte;
+  i, x: integer;
+  Preset: TMidiPreset;
+  switchSettings : byte;
 begin
-  preset := GetActualPreset();
-  jsonString := preset.toJson.AsJSON;
-  ShowMessage(jsonString);
-  preset.Free;
+  for i := 0 to length(Data) - 1 do
+    Data[i] := 0;
+  i := 0;
+  switchSettings := 0;
+  Preset := GetActualPreset();
+  try
+    for x := 1 to 12 do
+    begin
+      if (x > length(Preset.Name)) then
+        Data[i] := 0
+      else
+        Data[i] := Ord(Preset.Name[x]);
+      Inc(i);
+    end;
+
+    Data[i] := Preset.ProgramNumber;
+    Inc(i);
+    Data[i] := Preset.InternalMidi;
+    Inc(i);
+    Data[i] := Preset.ExternalMidi;
+    Inc(i);
+
+    for x := 0 to 5 do
+    begin
+      if (x < Length(Preset.Buttons)) then
+      begin
+        if (Preset.Buttons[x].ButtonType = SWITCH) then
+        switchSettings := switchSettings or (1 shl x);
+        buildBinSwitch(Data, i, Preset.Buttons[x])
+      end
+      else      begin
+        Inc(i, 8);
+        Data[i] := $0F;
+        inc(i);
+      end;
+    end;
+
+    Data[i] := switchSettings;
+    inc(i);
+    Data[i] := $FF;
+    hexFile := THexFile.Create(Form1);
+    hexFile.RecordLength := 8;
+    myFilename := 'e:\temp\rock.hex';
+    hexFile.FileName := myFilename;
+    hexFile.SaveHEX(Data);
+  finally
+    Preset.Free;
+  end;
 end;
 
 procedure TForm1.OpenFile();
@@ -443,6 +487,23 @@ begin
       Presets[i] := Preset;
     end;
   end;
+end;
+
+procedure TForm1.buildBinSwitch(var Data: array of byte; var i: integer; Button: TMidiButton);
+var x : integer;
+begin
+  for x := 1 to 8 do
+  begin
+    if (x > length(Button.Name)) then
+      Data[i] := 0
+    else
+      Data[i] := Ord(Button.Name[x]);
+    Inc(i);
+  end;
+
+  Data[i] := Button.Color MOD 255;
+  Inc(i);
+
 end;
 
 
