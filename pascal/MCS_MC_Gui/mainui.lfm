@@ -1,11 +1,11 @@
 object Form1: TForm1
-  Left = 237
+  Left = 306
   Height = 677
-  Top = 112
-  Width = 972
+  Top = 115
+  Width = 960
   Caption = 'Form1'
   ClientHeight = 657
-  ClientWidth = 972
+  ClientWidth = 960
   Menu = MainMenu1
   OnCreate = FormCreate
   OnDestroy = FormDestroy
@@ -14,9 +14,9 @@ object Form1: TForm1
   LCLVersion = '2.0.0.4'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 23
-    Top = 634
-    Width = 972
+    Height = 28
+    Top = 629
+    Width = 960
     BorderWidth = 1
     Panels = <    
       item
@@ -37,7 +37,7 @@ object Form1: TForm1
     Left = 0
     Height = 34
     Top = 0
-    Width = 972
+    Width = 960
     ButtonHeight = 32
     ButtonWidth = 32
     Caption = 'ToolBar1'
@@ -88,21 +88,21 @@ object Form1: TForm1
   end
   object ScrollBox1: TScrollBox
     Left = 175
-    Height = 600
+    Height = 595
     Top = 34
-    Width = 797
+    Width = 785
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
     Align = alClient
-    ClientHeight = 596
-    ClientWidth = 793
+    ClientHeight = 591
+    ClientWidth = 781
     ParentFont = False
     TabOrder = 2
     object FlowPanel1: TFlowPanel
       Left = 0
-      Height = 596
+      Height = 591
       Top = 0
-      Width = 793
+      Width = 781
       Align = alClient
       AutoSize = True
       ControlList = <>
@@ -114,24 +114,24 @@ object Form1: TForm1
   end
   object Splitter1: TSplitter
     Left = 170
-    Height = 600
+    Height = 595
     Top = 34
     Width = 5
   end
   object Panel3: TPanel
     Left = 0
-    Height = 600
+    Height = 595
     Top = 34
     Width = 170
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 600
+    ClientHeight = 595
     ClientWidth = 170
     ParentFont = False
     TabOrder = 4
     object ListView1: TListView
       Left = 0
-      Height = 566
+      Height = 561
       Top = 34
       Width = 170
       Align = alClient
@@ -242,6 +242,7 @@ object Form1: TForm1
       Dialog.Options = [ofOverwritePrompt, ofPathMustExist, ofEnableSizing]
       Hint = 'save as'
       ImageIndex = 55
+      BeforeExecute = FileSaveAs1BeforeExecute
       OnAccept = FileSaveAs1Accept
     end
     object FileExit1: TFileExit

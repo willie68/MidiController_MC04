@@ -57,6 +57,7 @@ type
     TrayIcon1: TTrayIcon;
     procedure FileOpen1Accept(Sender: TObject);
     procedure FileSaveAs1Accept(Sender: TObject);
+    procedure FileSaveAs1BeforeExecute(Sender: TObject);
     procedure FormCreate(Sender: TObject);
     procedure FormDestroy(Sender: TObject);
     procedure HelpAboutExecute(Sender: TObject);
@@ -182,11 +183,40 @@ procedure TForm1.FileSaveAs1Accept(Sender: TObject);
 var
   jsonString: string;
   preset: TMidiPreset;
+  F: TextFile;
+  jsonArray : TJsonArray;
+  jsonObject : TJsonObject;
+  i : integer;
 begin
-  preset := GetActualPreset();
-  jsonString := preset.toJson.AsJSON;
-  ShowMessage(jsonString);
-  preset.Free;
+  filename := FileSaveAs1.Dialog.FileName;
+
+  AssignFile(F, filename);
+  try
+    SaveOldPreset(GetActualPreset());
+
+    jsonArray := TJsonArray.Create();
+    for i := 0 to length(Presets) - 1 do
+    begin
+      jsonArray.Add(Presets[i].toJson);
+    end;
+    jsonObject := TJsonObject.Create;
+    jsonObject.Add('version', 1);
+    jsonObject.Add('programs', jsonArray);
+    jsonString := jsonObject.AsJSON;
+    jsonObject.Free;
+
+    ReWrite(F);
+    Write(F, jsonString);
+  finally
+    CloseFile(F);
+  end;
+  ShowMessage('presets saved');
+end;
+
+procedure TForm1.FileSaveAs1BeforeExecute(Sender: TObject);
+begin
+  if (Filename <> '') then
+    FileSaveAs1.Dialog.FileName := Filename;
 end;
 
 procedure TForm1.HelpAboutExecute(Sender: TObject);
@@ -256,6 +286,7 @@ begin
     StatusBar1.Panels[2].Width;
   StatusBar1.Panels[0].Width := size;
 end;
+
 
 procedure TForm1.ToolButton9Click(Sender: TObject);
 var
@@ -401,7 +432,8 @@ begin
 end;
 
 procedure TForm1.SaveOldPreset(Preset: TMidiPreset);
-var i : integer;
+var
+  i: integer;
 begin
   for i := 0 to Length(Presets) - 1 do
   begin
