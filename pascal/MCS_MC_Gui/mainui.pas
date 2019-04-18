@@ -89,6 +89,7 @@ type
     procedure switchToPreset(Preset: TMidiPreset);
     procedure SaveOldPreset(Preset: TMidiPreset);
     procedure buildBinSwitch(var Data: array of byte; var i: integer; Button: TMidiButton);
+    procedure buildBinSequence(var Data: array of byte; var i: integer; Sequence: TMidiSequence);
   public
 
   end;
@@ -292,6 +293,7 @@ var
   i, x: integer;
   Preset: TMidiPreset;
   switchSettings : byte;
+  sequence : TMidiSequence;
 begin
   for i := 0 to length(Data) - 1 do
     Data[i] := 0;
@@ -332,6 +334,15 @@ begin
 
     Data[i] := switchSettings;
     inc(i);
+    for x := 0 to 15 do
+    begin
+      if (x < Length(Preset.Sequences)) then begin
+        buildBinSequence(Data, i, Preset.Sequences[x]);
+      end
+      else
+        Inc(i, (3 * 16)+1);
+
+    end;
     Data[i] := $FF;
     hexFile := THexFile.Create(Form1);
     hexFile.RecordLength := 8;
@@ -503,6 +514,30 @@ begin
 
   Data[i] := Button.Color MOD 255;
   Inc(i);
+
+end;
+
+procedure TForm1.buildBinSequence(var Data: array of byte; var i: integer;
+  Sequence: TMidiSequence);
+var eventType : byte;
+begin
+  case Sequence.SequenceType of
+  INTERNAL: begin
+    eventType := 0;
+  end;
+  EXPRESSION: begin
+    eventType := $70;
+    if (Sequence.Value = 2) then
+        eventType := $80;
+  end;
+  BUTTON: begin
+    eventType := $10 * Sequence.Value;
+  end;
+  end;
+  eventType := eventType + getOridnalEventType(Sequence.Event);
+
+  Data[i] := eventType;
+  inc(i);
 
 end;
 

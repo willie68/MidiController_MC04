@@ -71,7 +71,7 @@ type
 
   TMidiSequenceType = (INTERNAL, BUTTON, EXPRESSION);
   TMidiSequenceEvent = (PUSH, Release, START, STOP, SINGLECLICK, DOUBLECLICK,
-    LONGCLICK, VALUECHANGE);
+    LONGCLICK, VALUECHANGE, CC_EVENT);
 
   { TMidiSequence }
 
@@ -129,6 +129,8 @@ function StringToMidiButtonType(midiButtonType: string): TMidiButtonType;
 function StringToMidiSequnceEvent(AValue: string): TMidiSequenceEvent;
 function StringToMidiSequenceType(AValue: string): TMidiSequenceType;
 function StringToMidiDataType(AValue: string): TMidiDataType;
+
+function getOridnalEventType(SequenceEvent : TMidiSequenceEvent): integer;
 
 implementation
 
@@ -244,6 +246,21 @@ begin
     Result := PC_NEXT;
   if AValue = 'WAIT' then
     Result := WAIT;
+end;
+
+function getOridnalEventType(SequenceEvent: TMidiSequenceEvent): integer;
+begin
+  case SequenceEvent of
+    PUSH: Result := 2;
+    Release: Result := 3;
+    START: Result := 0;
+    STOP: Result := 1;
+    SINGLECLICK: Result := 4;
+    DOUBLECLICK: Result := 5;
+    LONGCLICK: Result := 6;
+    VALUECHANGE: Result := 7;
+    CC_EVENT: Result := 8;
+  end;
 end;
 
 
