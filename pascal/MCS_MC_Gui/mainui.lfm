@@ -11,11 +11,11 @@ object Form1: TForm1
   OnDestroy = FormDestroy
   SessionProperties = 'Left;Top;Width;Height'
   ShowHint = True
-  LCLVersion = '2.0.0.4'
+  LCLVersion = '2.0.2.0'
   object StatusBar1: TStatusBar
     Left = 0
-    Height = 28
-    Top = 629
+    Height = 23
+    Top = 634
     Width = 960
     BorderWidth = 1
     Panels = <    
@@ -88,19 +88,19 @@ object Form1: TForm1
   end
   object ScrollBox1: TScrollBox
     Left = 175
-    Height = 595
+    Height = 600
     Top = 34
     Width = 785
     HorzScrollBar.Page = 1
     VertScrollBar.Page = 1
     Align = alClient
-    ClientHeight = 591
+    ClientHeight = 596
     ClientWidth = 781
     ParentFont = False
     TabOrder = 2
     object FlowPanel1: TFlowPanel
       Left = 0
-      Height = 591
+      Height = 596
       Top = 0
       Width = 781
       Align = alClient
@@ -114,24 +114,24 @@ object Form1: TForm1
   end
   object Splitter1: TSplitter
     Left = 170
-    Height = 595
+    Height = 600
     Top = 34
     Width = 5
   end
   object Panel3: TPanel
     Left = 0
-    Height = 595
+    Height = 600
     Top = 34
     Width = 170
     Align = alLeft
     BevelOuter = bvNone
-    ClientHeight = 595
+    ClientHeight = 600
     ClientWidth = 170
     ParentFont = False
     TabOrder = 4
     object ListView1: TListView
       Left = 0
-      Height = 561
+      Height = 566
       Top = 34
       Width = 170
       Align = alClient
